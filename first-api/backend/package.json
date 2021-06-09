@@ -1,0 +1,23 @@
+{
+  "name": "first-api-backend",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "proto": "tsrpc proto -i src/shared/protocols -o src/shared/protocols/serviceProto.ts",
+    "sync": "tsrpc sync --from src/shared --to ../frontend/src/shared",
+    "api": "tsrpc api -i src/shared/protocols/serviceProto.ts -o src/api",
+    "dev": "onchange \"src/**/*.ts\" -i -k -- ts-node \"src/index.ts\"",
+    "build": "tsrpc build"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.2",
+    "onchange": "^7.1.0",
+    "ts-node": "^9.1.1",
+    "tsrpc-cli": "^2.0.1-dev.11",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "tsrpc": "^3.0.0-dev.17"
+  }
+}

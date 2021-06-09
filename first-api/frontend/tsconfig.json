@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es2018"
+    ],
+    "module": "esnext",
+    "target": "es2018",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src"
+  ]
+}
