@@ -7,18 +7,19 @@ let client = new HttpClient(serviceProto, {
 });
 
 async function upload() {
-    // Load File
-    let file = document.querySelector('input[type=file]') as HTMLInputElement;
-    if (!file.files || !file.files[0]) {
+    let file = (document.querySelector('input[type=file]') as HTMLInputElement).files?.[0];
+    if (!file) {
         alert('Please select a file')
         return;
     }
-    let fileData = await loadFile(file.files[0]);
+
+    // Load file as Uint8Array
+    let fileData = await loadFile(file);
 
     // Upload
     let ret = await client.callApi('Upload', {
         fileData: fileData,
-        fileName: file.files[0].name
+        fileName: file.name
     });
 
     // Error
@@ -29,7 +30,6 @@ async function upload() {
 
     // Succ
     document.querySelector('ol')!.innerHTML += `<li><a href="${ret.res.url}" target="_blank">${ret.res.url}</a></li>\n`;
-    file.value = '';
     alert('Upload successfully!')
 }
 
