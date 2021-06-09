@@ -6,14 +6,14 @@ Examples for [TSRPC](https://github.com/k8w/tsrpc).
 
 Start local backend server:
 ```
-cd <project-dir>/backend
+cd <example-dir>/backend
 npm install
 npm run dev
 ```
 
 Start local frontend server:
 ```
-cd <project-dir>/frontend
+cd <example-dir>/frontend
 npm install
 npm run dev
 ```
