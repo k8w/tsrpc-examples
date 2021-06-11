@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+}
+
+body>* {
+    margin: 20px auto;
+}
+
+.buttons {
+    width: 450px;
+    font-size: 0px;
+}
+
+.buttons>button {
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    padding: 20px;
+    width: calc(50% - 20px);
+    background: #3178c6;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+}
+
+.buttons>button:hover {
+    background: #5ea8e9;
+}
+
+pre {
+    background: #333;
+    width: 450px;
+    padding: 20px;
+    min-height: 100px;
+    font-size: 14px;
+    color: #fff;
+    text-align: left;
+    border-radius: 4px;
+}
