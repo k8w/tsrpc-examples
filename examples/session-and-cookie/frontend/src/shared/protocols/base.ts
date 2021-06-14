@@ -1,9 +1,12 @@
 export interface BaseRequest {
-    __session?: { [key: string]: any };
-    __cookie?: { [key: string]: any };
+    __cookie?: Cookie;
 }
 
 export interface BaseResponse {
-    __session?: { [key: string]: any };
-    __cookie?: { [key: string]: any };
+    __cookie?: Cookie;
+}
+
+export interface Cookie {
+    sessionId?: string,
+    [key: string]: any
 }

@@ -1,6 +1,7 @@
 import * as path from "path";
 import { HttpServer } from "tsrpc";
-import { BaseRequest, BaseResponse } from "./shared/protocols/base";
+import { enableCookie } from "./models/enableCookie";
+import { ServerSession } from "./models/ServerSession";
 import { serviceProto } from "./shared/protocols/serviceProto";
 
 // Create the Server
@@ -9,16 +10,11 @@ const server = new HttpServer(serviceProto, {
     cors: '*'
 });
 
-// Return session and cookie as they are, except reset by res
-server.flows.preApiReturnFlow.push(v => {
-    if (v.return.isSucc) {
-        let req = v.call.req as BaseRequest;
-        let res = v.return.res as BaseResponse;
-        res.__session = res.__session ?? req.__session;
-        res.__cookie = res.__cookie ?? req.__cookie;
-    }
-    return v;
-});
+// Enable Cookie
+enableCookie(server);
+
+// Enable Session
+new ServerSession().enable(server);
 
 // Entry function
 async function main() {

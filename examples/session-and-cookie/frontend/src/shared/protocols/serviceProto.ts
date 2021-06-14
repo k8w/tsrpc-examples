@@ -1,7 +1,7 @@
 import { ServiceProto } from 'tsrpc-proto';
 import { ReqClear, ResClear } from './PtlClear';
-import { ReqGetCookie, ResGetCookie } from './PtlGetCookie';
-import { ReqGetSession, ResGetSession } from './PtlGetSession';
+import { ReqSetCookie, ResSetCookie } from './PtlSetCookie';
+import { ReqSetSession, ResSetSession } from './PtlSetSession';
 import { ReqTest, ResTest } from './PtlTest';
 
 export interface ServiceType {
@@ -10,13 +10,13 @@ export interface ServiceType {
             req: ReqClear,
             res: ResClear
         },
-        "GetCookie": {
-            req: ReqGetCookie,
-            res: ResGetCookie
+        "SetCookie": {
+            req: ReqSetCookie,
+            res: ResSetCookie
         },
-        "GetSession": {
-            req: ReqGetSession,
-            res: ResGetSession
+        "SetSession": {
+            req: ReqSetSession,
+            res: ResSetSession
         },
         "Test": {
             req: ReqTest,
@@ -29,25 +29,24 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
     "services": [
         {
-            "id": 3,
+            "id": 0,
             "name": "Clear",
             "type": "api"
         },
         {
-            "id": 0,
-            "name": "GetCookie",
-            "type": "api"
-        },
-        {
             "id": 1,
-            "name": "GetSession",
+            "name": "SetCookie",
             "type": "api"
         },
         {
             "id": 2,
+            "name": "SetSession",
+            "type": "api"
+        },
+        {
+            "id": 3,
             "name": "Test",
             "type": "api"
         }
@@ -70,33 +69,33 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
-                    "name": "__session",
-                    "type": {
-                        "type": "Interface",
-                        "indexSignature": {
-                            "keyType": "String",
-                            "type": {
-                                "type": "Any"
-                            }
-                        }
-                    },
-                    "optional": true
-                },
-                {
-                    "id": 1,
                     "name": "__cookie",
                     "type": {
-                        "type": "Interface",
-                        "indexSignature": {
-                            "keyType": "String",
-                            "type": {
-                                "type": "Any"
-                            }
-                        }
+                        "type": "Reference",
+                        "target": "base/Cookie"
                     },
                     "optional": true
                 }
             ]
+        },
+        "base/Cookie": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "sessionId",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
+                }
+            ],
+            "indexSignature": {
+                "keyType": "String",
+                "type": {
+                    "type": "Any"
+                }
+            }
         },
         "PtlClear/ResClear": {
             "type": "Interface",
@@ -115,35 +114,16 @@ export const serviceProto: ServiceProto<ServiceType> = {
             "properties": [
                 {
                     "id": 0,
-                    "name": "__session",
-                    "type": {
-                        "type": "Interface",
-                        "indexSignature": {
-                            "keyType": "String",
-                            "type": {
-                                "type": "Any"
-                            }
-                        }
-                    },
-                    "optional": true
-                },
-                {
-                    "id": 1,
                     "name": "__cookie",
                     "type": {
-                        "type": "Interface",
-                        "indexSignature": {
-                            "keyType": "String",
-                            "type": {
-                                "type": "Any"
-                            }
-                        }
+                        "type": "Reference",
+                        "target": "base/Cookie"
                     },
                     "optional": true
                 }
             ]
         },
-        "PtlGetCookie/ReqGetCookie": {
+        "PtlSetCookie/ReqSetCookie": {
             "type": "Interface",
             "extends": [
                 {
@@ -155,7 +135,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlGetCookie/ResGetCookie": {
+        "PtlSetCookie/ResSetCookie": {
             "type": "Interface",
             "extends": [
                 {
@@ -167,7 +147,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlGetSession/ReqGetSession": {
+        "PtlSetSession/ReqSetSession": {
             "type": "Interface",
             "extends": [
                 {
@@ -179,7 +159,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlGetSession/ResGetSession": {
+        "PtlSetSession/ResSetSession": {
             "type": "Interface",
             "extends": [
                 {
@@ -212,6 +192,16 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Reference",
                         "target": "base/BaseResponse"
                     }
+                }
+            ],
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "testSession",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
                 }
             ]
         }

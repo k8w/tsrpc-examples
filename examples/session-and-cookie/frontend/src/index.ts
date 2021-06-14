@@ -1,5 +1,5 @@
 import { HttpClient } from 'tsrpc-browser';
-import { enableSessionAndCookie } from './models/enableSessionAndCookie';
+import { enableCookie } from './models/enableCookie';
 import { showReqAndRes } from './models/showReqAndRes';
 import { serviceProto } from './shared/protocols/serviceProto';
 
@@ -10,7 +10,7 @@ let client = new HttpClient(serviceProto, {
 });
 
 // Session and Cookie
-enableSessionAndCookie(client);
+enableCookie(client);
 
 // Show Req and Return to View
 showReqAndRes(client);
@@ -23,9 +23,9 @@ $('#btnTest').onclick = () => {
 $('#btnClear').onclick = () => {
     client.callApi('Clear', {});
 };
-$('#btnGetCookie').onclick = () => {
-    client.callApi('GetCookie', {});
+$('#btnSetCookie').onclick = () => {
+    client.callApi('SetCookie', {});
 };
-$('#btnGetSession').onclick = () => {
-    client.callApi('GetSession', {});
+$('#btnSetSession').onclick = () => {
+    client.callApi('SetSession', {});
 };
