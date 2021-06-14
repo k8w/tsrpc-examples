@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSRPC Example</title>
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+    <h1>Login and Role Authentication</h1>
+
+    <div class="status">Not Logined</div>
+
+    <div class="row user">
+        <div class="login-normal">
+            <h2>Normal</h2>
+            <p><button>Login as Normal Role</button></p>
+        </div>
+
+        <div class="login-admin">
+            <h2>Admin</h2>
+            <p><button>Login as Admin Role</button></p>
+        </div>
+
+        <div class="logout">
+            <h2>Logout</h2>
+            <p><button>Logout</button></p>
+        </div>
+    </div>
+
+    <div class="row action">
+        <div class="normal">
+            <h2>Normal Action</h2>
+            <p class="hint">Need login</p>
+            <p><button>Do This</button></p>
+            <div class="return">
+                <h3>Return</h3>
+                <pre></pre>
+            </div>
+        </div>
+
+        <div class="admin">
+            <h2>Admin Action</h2>
+            <p class="hint">Need Admin role</p>
+            <p><button>Do This</button></p>
+            <div class="return">
+                <h3>Return</h3>
+                <pre></pre>
+            </div>
+        </div>
+
+        <div class="guest">
+            <h2>Guest Action</h2>
+            <p class="hint">Do NOT need login</p>
+            <p><button>Do This</button></p>
+            <div class="return">
+                <h3>Return</h3>
+                <pre></pre>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
