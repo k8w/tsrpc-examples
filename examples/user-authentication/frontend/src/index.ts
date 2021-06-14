@@ -10,7 +10,7 @@ let client = new HttpClient(serviceProto, {
     logger: console
 });
 
-// Flow
+// When server return a SSOToken, store it to localStorage
 client.flows.postApiReturnFlow.push(v => {
     if (v.return.isSucc) {
         let res = v.return.res as BaseResponse;
@@ -24,6 +24,7 @@ client.flows.postApiReturnFlow.push(v => {
     }
     return v;
 });
+// Append "__ssoToken" to request automatically
 client.flows.preCallApiFlow.push(v => {
     let ssoToken = localStorage.getItem('SSO_TOKEN');
     if (ssoToken) {
@@ -32,7 +33,7 @@ client.flows.preCallApiFlow.push(v => {
     return v;
 })
 
-// User
+// Login & Logout
 $('.login-normal button').onclick = async () => {
     let ret = await client.callApi('user/Login', {
         username: 'Normal',
@@ -75,7 +76,7 @@ $('.logout button').onclick = async () => {
     document.querySelectorAll<HTMLElement>('.return').forEach(v => { v.style.display = 'none' });
 }
 
-// Actions
+// Actions (server validation)
 $('.action .guest button').onclick = async () => {
     let ret = await client.callApi('action/GuestAction', {});
     $('.action .guest pre').innerText = JSON.stringify(ret, null, 2);
@@ -105,4 +106,5 @@ function setStatus(logined: boolean) {
         $('.status').innerText = 'Not Logined';
     }
 }
+// Init logined status
 setStatus(!!localStorage.getItem('SSO_TOKEN'));
