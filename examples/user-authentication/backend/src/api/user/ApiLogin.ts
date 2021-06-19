@@ -12,6 +12,7 @@ export async function ApiLogin(call: ApiCall<ReqLogin, ResLogin>) {
     let sso = await UserUtil.createSsoToken(user.uid);
 
     call.succ({
-        __ssoToken: sso
+        __ssoToken: sso,
+        user: user
     })
 }
