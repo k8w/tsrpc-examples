@@ -9,12 +9,14 @@ export async function ApiUpdatePost(call: ApiCall<ReqUpdatePost, ResUpdatePost>)
     let op = await Global.collection('Post').updateOne({
         _id: new ObjectID(_id)
     }, {
-        $set: update
+        $set: {
+            ...update,
+            update: {
+                uid: 'xxx',
+                time: new Date()
+            }
+        }
     });
-
-    console.log('ssss', {
-        matchedCount: op.matchedCount
-    })
 
     call.succ({
         matchedCount: op.matchedCount
