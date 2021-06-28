@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { HttpClient } from 'tsrpc';
 import { Post } from '../../src/shared/protocols/models/Post';
 import { serviceProto } from '../../src/shared/protocols/serviceProto';
