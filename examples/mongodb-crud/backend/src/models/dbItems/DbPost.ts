@@ -1,4 +1,4 @@
-import { ObjectID } from "bson";
+import { ObjectID } from "mongodb";
 import { Overwrite } from "tsrpc";
 import { Post } from "../../shared/protocols/models/Post";
 
