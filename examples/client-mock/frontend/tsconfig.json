@@ -15,7 +15,7 @@
     "strict": true,
     "jsx": "react-jsx",
     "sourceMap": true,
-    "isolatedModules": true
+    "isolatedModules": false
   },
   "include": [
     "src"
