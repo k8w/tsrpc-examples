@@ -9,6 +9,7 @@ const data: {
     time: Date
 }[] = [];
 
+// { 接口名: (req: 请求) => 响应 }
 export const mockApis: { [K in keyof ServiceType['api']]?: (req: ServiceType['api'][K]['req']) => ApiReturn<ServiceType['api'][K]['res']> } = {
     AddData: req => {
         let time = new Date();
