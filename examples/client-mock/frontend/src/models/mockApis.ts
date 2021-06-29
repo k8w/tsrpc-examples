@@ -10,7 +10,9 @@ const data: {
 }[] = [];
 
 // { 接口名: (req: 请求) => 响应 }
-export const mockApis: { [K in keyof ServiceType['api']]?: (req: ServiceType['api'][K]['req']) => ApiReturn<ServiceType['api'][K]['res']> } = {
+export const mockApis: {
+    [K in keyof ServiceType['api']]?: (req: ServiceType['api'][K]['req']) => ApiReturn<ServiceType['api'][K]['res']> | Promise<ApiReturn<ServiceType['api'][K]['res']>>
+} = {
     AddData: req => {
         let time = new Date();
         data.unshift({ content: req.content, time: time })
@@ -20,7 +22,12 @@ export const mockApis: { [K in keyof ServiceType['api']]?: (req: ServiceType['ap
         }
     },
 
-    GetData: req => {
+    GetData: async req => {
+        // 模拟 1 秒延时
+        await new Promise(rs => {
+            setTimeout(rs, 1000);
+        })
+
         return {
             isSucc: true,
             res: {
