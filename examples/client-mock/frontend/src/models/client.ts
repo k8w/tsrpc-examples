@@ -10,7 +10,7 @@ export const client = new HttpClient(serviceProto, {
 
 // Client Mock
 client.flows.preCallApiFlow.push(async v => {
-    // 有对应的 MockAPI 则 Mock，否则请求真实后端
+    // Mock if exists, otherwise send request to server
     let mockApi = mockApis[v.apiName];
     if (mockApi) {
         client.logger?.log('[MockReq]', v.apiName, v.req);

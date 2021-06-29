@@ -1,15 +1,15 @@
-// 模拟后端，Mock API 请求
+// Mock API request, simulate server
 
 import { ApiReturn } from "tsrpc-browser";
 import { ServiceType } from "../shared/protocols/serviceProto";
 
-// 临时存储数据
+// Storage test data for mock
 const data: {
     content: string,
     time: Date
 }[] = [];
 
-// { 接口名: (req: 请求) => 响应 }
+// { apiName: (req: ReqXXX) => ResXXX }
 export const mockApis: {
     [K in keyof ServiceType['api']]?: (req: ServiceType['api'][K]['req']) => ApiReturn<ServiceType['api'][K]['res']> | Promise<ApiReturn<ServiceType['api'][K]['res']>>
 } = {
@@ -23,9 +23,9 @@ export const mockApis: {
     },
 
     GetData: async req => {
-        // 模拟 1 秒延时
+        // simulate latency
         await new Promise(rs => {
-            setTimeout(rs, 1000);
+            setTimeout(rs, 500);
         })
 
         return {
