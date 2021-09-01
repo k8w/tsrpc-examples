@@ -1,0 +1,10 @@
+{
+  "name": "tsrpc-cocos-3-3-0",
+  "type": "3d",
+  "uuid": "cd1e2fff-2ab5-4407-b917-e60b25207723",
+  "version": "3.3.0",
+  "dependencies": {
+    "tsrpc-browser": "^3.0.6",
+    "tsrpc-miniapp": "^3.0.6"
+  }
+}

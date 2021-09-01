@@ -1,0 +1,60 @@
+{
+  "__version__": "1.2.8",
+  "log": {
+    "level": 4
+  },
+  "common": {
+    "outputName": "web-mobile",
+    "mainBundleCompressionType": "merge_dep",
+    "platform": "web-mobile"
+  },
+  "BuildTaskManager": {
+    "taskMap": {
+      "1630512909207": {
+        "id": "1630512909207",
+        "progress": 1,
+        "state": "success",
+        "message": "2021-9-2 00:23 Build success in 30639 ms!",
+        "options": {
+          "name": "tsrpc-cocos-3-3-0",
+          "platform": "wechatgame",
+          "buildPath": "project://build",
+          "debug": false,
+          "md5Cache": false,
+          "sourceMaps": false,
+          "replaceSplashScreen": false,
+          "mainBundleCompressionType": "merge_dep",
+          "mainBundleIsRemote": false,
+          "mergeStartScene": false,
+          "experimentalEraseModules": false,
+          "compressTexture": true,
+          "packAutoAtlas": true,
+          "startScene": "86c03e47-dc7e-4335-92f0-cf39fcd2462e",
+          "scenes": [
+            {
+              "url": "db://assets/scenes/ChatScene/ChatScene.scene",
+              "uuid": "86c03e47-dc7e-4335-92f0-cf39fcd2462e",
+              "inBundle": false
+            }
+          ],
+          "outputName": "wechatgame",
+          "packages": {
+            "cocos-service": {
+              "configID": "ad0366",
+              "services": []
+            },
+            "wechatgame": {
+              "startSceneAssetBundle": false,
+              "orientation": "portrait",
+              "appid": "wx6ac3f5090a6b99c5",
+              "separateEngine": false,
+              "wasm": "js"
+            }
+          }
+        },
+        "time": "2021-9-2 00:23",
+        "dirty": false
+      }
+    }
+  }
+}
