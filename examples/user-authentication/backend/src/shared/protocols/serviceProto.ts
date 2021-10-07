@@ -34,7 +34,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
+    "version": 3,
     "services": [
         {
             "id": 0,
@@ -247,6 +247,43 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "__ssoToken",
                     "type": {
                         "type": "String"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "user",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../../models/CurrentUser/CurrentUser"
+                    }
+                }
+            ]
+        },
+        "../../models/CurrentUser/CurrentUser": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "username",
+                    "type": {
+                        "type": "String"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "roles",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "String"
+                        }
                     }
                 }
             ]

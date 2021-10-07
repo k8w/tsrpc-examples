@@ -4,27 +4,24 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "watch:proto": "onchange \"src/shared/protocols/**/Ptl*.ts\" -- npm run protoAndSync",
-    "protoAndSync": "npm run proto && npm run sync",
-    "proto": "tsrpc proto -i src/shared/protocols -o src/shared/protocols/serviceProto.ts",
-    "sync": "tsrpc sync --from src/shared --to ../frontend/src/shared",
-    "api": "tsrpc api -i src/shared/protocols/serviceProto.ts -o src/api",
-    "dev": "onchange \"src/**/*.ts\" -i -k -- ts-node \"src/index.ts\"",
-    "test": "mocha test/**/*.test.ts",
-    "build": "tsrpc build"
+    "proto": "tsrpc proto --config tsrpc.config.ts",
+    "sync": "tsrpc sync --config tsrpc.config.ts",
+    "api": "tsrpc api --config tsrpc.config.ts",
+    "dev": "tsrpc dev --config tsrpc.config.ts",
+    "build": "tsrpc build --config tsrpc.config.ts"
   },
   "devDependencies": {
-    "@types/mocha": "^8.2.2",
-    "@types/mongodb": "^3.6.18",
-    "@types/node": "^15.12.4",
-    "mocha": "^9.0.1",
+    "@types/mocha": "^8.2.3",
+    "@types/mongodb": "^3.6.20",
+    "@types/node": "^15.14.9",
+    "mocha": "^9.1.2",
     "onchange": "^7.1.0",
-    "ts-node": "^10.0.0",
-    "tsrpc-cli": "^2.0.3",
-    "typescript": "^4.3.4"
+    "ts-node": "^10.2.1",
+    "tsrpc-cli": "^2.0.8",
+    "typescript": "^4.4.3"
   },
   "dependencies": {
-    "mongodb": "^3.6.9",
-    "tsrpc": "^3.0.2"
+    "mongodb": "^3.7.2",
+    "tsrpc": "^3.0.9"
   }
 }

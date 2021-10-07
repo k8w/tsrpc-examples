@@ -14,13 +14,14 @@ server.flows.preRecvBufferFlow.push(async v => {
     let conn = v.conn as HttpConnection;
 
     if (conn.httpReq.method === 'GET') {
+        conn.logger.log('[GET]', conn.httpReq.url);
         // Static File Service
         if (conn.httpReq.url) {
-            // Check whether the file is existed
+            // Check if the file is existed
             let resFilePath = path.join('res', conn.httpReq.url)
             let isExisted = await fs.access(resFilePath).then(() => true).catch(() => false);
-            if (isExisted) {
-                // Response the file
+            if (isExisted && (await fs.stat(resFilePath)).isFile()) {
+                // Send the file
                 let content = await fs.readFile(resFilePath);
                 conn.httpRes.end(content);
                 return undefined;
