@@ -1,0 +1,23 @@
+{
+  "name": "chatroom-backend",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "proto": "tsrpc proto --config tsrpc.config.ts",
+    "sync": "tsrpc sync --config tsrpc.config.ts",
+    "api": "tsrpc api --config tsrpc.config.ts",
+    "dev": "tsrpc dev --config tsrpc.config.ts",
+    "build": "tsrpc build --config tsrpc.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^15.14.9",
+    "onchange": "^7.1.0",
+    "ts-node": "^9.1.1",
+    "tsrpc-cli": "^2.2.0",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "tsrpc": "^3.1.2"
+  }
+}
