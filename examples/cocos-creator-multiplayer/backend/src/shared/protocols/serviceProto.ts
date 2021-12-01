@@ -1,75 +1,279 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { MsgChat } from './MsgChat';
-import { ReqSend, ResSend } from './PtlSend';
-
-// This is a demo service proto file (auto generated)
-// Feel free to delete it
+import { MsgInput } from './clientMsgs/MsgInput';
+import { ReqJoinRoom, ResJoinRoom } from './PtlJoinRoom';
+import { MsgFrame } from './serverMsgs/MsgFrame';
+import { MsgJoin } from './serverMsgs/MsgJoin';
+import { MsgLeave } from './serverMsgs/MsgLeave';
 
 export interface ServiceType {
     api: {
-        "Send": {
-            req: ReqSend,
-            res: ResSend
+        "JoinRoom": {
+            req: ReqJoinRoom,
+            res: ResJoinRoom
         }
     },
     msg: {
-        "Chat": MsgChat
+        "clientMsgs/Input": MsgInput,
+        "serverMsgs/Frame": MsgFrame,
+        "serverMsgs/Join": MsgJoin,
+        "serverMsgs/Leave": MsgLeave
     }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
+    "version": 3,
     "services": [
         {
-            "id": 0,
-            "name": "Chat",
+            "id": 2,
+            "name": "clientMsgs/Input",
             "type": "msg"
         },
         {
-            "id": 1,
-            "name": "Send",
+            "id": 3,
+            "name": "JoinRoom",
             "type": "api"
+        },
+        {
+            "id": 7,
+            "name": "serverMsgs/Frame",
+            "type": "msg"
+        },
+        {
+            "id": 4,
+            "name": "serverMsgs/Join",
+            "type": "msg"
+        },
+        {
+            "id": 5,
+            "name": "serverMsgs/Leave",
+            "type": "msg"
         }
     ],
     "types": {
-        "MsgChat/MsgChat": {
+        "clientMsgs/MsgInput/MsgInput": {
+            "type": "Intersection",
+            "members": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "sn",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../states/Player/PlayerInput"
+                    }
+                }
+            ]
+        },
+        "../states/Player/PlayerInput": {
+            "type": "Reference",
+            "target": "../states/Player/PlayerMove"
+        },
+        "../states/Player/PlayerMove": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "content",
+                    "name": "type",
+                    "type": {
+                        "type": "Literal",
+                        "literal": "move"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "offset",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "PtlJoinRoom/ReqJoinRoom": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "nickname",
                     "type": {
                         "type": "String"
                     }
                 },
                 {
                     "id": 1,
-                    "name": "time",
+                    "name": "skinId",
                     "type": {
-                        "type": "Date"
+                        "type": "Number"
                     }
                 }
             ]
         },
-        "PtlSend/ReqSend": {
+        "PtlJoinRoom/ResJoinRoom": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "content",
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "roomState",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../states/RoomState/RoomState"
+                    }
+                }
+            ]
+        },
+        "../states/RoomState/RoomState": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "players",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../states/Player/PlayerState"
+                        }
+                    }
+                }
+            ]
+        },
+        "../states/Player/PlayerState": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "nickname",
                     "type": {
                         "type": "String"
                     }
+                },
+                {
+                    "id": 2,
+                    "name": "skinId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "pos",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
                 }
             ]
         },
-        "PtlSend/ResSend": {
+        "serverMsgs/MsgFrame/MsgFrame": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "time",
+                    "name": "inputs",
                     "type": {
-                        "type": "Date"
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Interface",
+                            "properties": [
+                                {
+                                    "id": 0,
+                                    "name": "uid",
+                                    "type": {
+                                        "type": "Number"
+                                    }
+                                },
+                                {
+                                    "id": 1,
+                                    "name": "msgInput",
+                                    "type": {
+                                        "type": "Reference",
+                                        "target": "clientMsgs/MsgInput/MsgInput"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "serverMsgs/MsgJoin/MsgJoin": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "player",
+                    "type": {
+                        "type": "Reference",
+                        "target": "../states/Player/PlayerState"
+                    }
+                }
+            ]
+        },
+        "serverMsgs/MsgLeave/MsgLeave": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "uid",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
