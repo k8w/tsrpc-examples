@@ -46,12 +46,8 @@ export class GameManager {
         if (!this.client.isConnected) {
             let resConnect = await this.client.connect();
             if (!resConnect.isSucc) {
-                if (confirm('连接到服务器失败，是否重试')) {
-                    return this.join();
-                }
-                else {
-                    return;
-                }
+                await new Promise(rs => { setTimeout(rs, 2000) })
+                return this.join();
             }
         }
 
@@ -92,13 +88,6 @@ export class GameManager {
                 });
             })
         })
-
-        // 本地时间流逝（会被下一次服务器状态覆盖）
-        this.gameSystem.applyInput({
-            type: 'TimePast',
-            dt: Date.now() - this.lastRecvSetverStateTime
-        });
-        this.lastRecvSetverStateTime = Date.now();
     }
 
     pendingInputMsgs: MsgClientInput[] = [];
@@ -119,13 +108,15 @@ export class GameManager {
             ...input,
             playerId: this.selfPlayerId
         });
+    }
 
-        // 本地时间流逝（会被下一次服务器状态覆盖）
-        // this.gameSystem.applyInput({
-        //     type: 'TimePast',
-        //     dt: Date.now() - this.lastRecvSetverStateTime
-        // });
-        // this.lastRecvSetverStateTime = Date.now();
+    // 本地时间流逝（会被下一次服务器状态覆盖）
+    localTimePast() {
+        this.gameSystem.applyInput({
+            type: 'TimePast',
+            dt: Date.now() - this.lastRecvSetverStateTime
+        });
+        this.lastRecvSetverStateTime = Date.now();
     }
 
 }
