@@ -10,6 +10,7 @@
   "_techIdx": 0,
   "_defines": [
     {
+      "USE_INSTANCING": true,
       "USE_TEXTURE": true
     }
   ],
@@ -27,7 +28,7 @@
   "_props": [
     {
       "mainTexture": {
-        "__uuid__": "27e1fcb7-5016-4252-8c43-ac9c1c97308e@6c48a",
+        "__uuid__": "e90ad74a-b668-4e2c-bf91-51a2a91b02aa@6c48a",
         "__expectedType__": "cc.Texture2D"
       }
     }

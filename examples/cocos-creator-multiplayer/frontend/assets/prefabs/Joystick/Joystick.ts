@@ -1,10 +1,8 @@
-import { _decorator, Component, Node, EventTouch, tween, Vec2, Vec3 } from 'cc';
-import { MathUtil } from '../../../scripts/models/MathUtil';
+import { Component, EventTouch, Node, Vec2, Vec3, _decorator } from 'cc';
+import { MathUtil } from '../../scripts/models/MathUtil';
 const { ccclass, property } = _decorator;
 
 const v3_1 = new Vec3;
-const v3_2 = new Vec3;
-
 export interface JoystickOptions {
     onOperate: (output: JoystickOutput) => void,
     onOperateEnd: () => void,
@@ -38,7 +36,6 @@ export class Joystick extends Component {
         this._options = v;
     }
 
-
     onLoad() {
         this.node.on(Node.EventType.TOUCH_START, this.onTouch, this);
         this.node.on(Node.EventType.TOUCH_MOVE, this.onTouch, this);
@@ -49,6 +46,10 @@ export class Joystick extends Component {
 
     private _touchStartPos?: Vec2;
     onTouch(e: EventTouch) {
+        if (!e.touch) {
+            return;
+        }
+
         this.disk.active = true;
         let loc = e.touch.getUILocation();
 

@@ -1,102 +1,100 @@
 import { WsConnection, WsServer } from "tsrpc";
-import { ReqJoinRoom } from "../shared/protocols/PtlJoinRoom";
-import { MsgFrame } from "../shared/protocols/serverMsgs/MsgFrame";
+import { GameSystem, GameSystemInput, PlayerJoin } from "../shared/game/GameSystem";
+import { ReqJoin } from "../shared/protocols/PtlJoin";
 import { ServiceType } from "../shared/protocols/serviceProto";
-import { applyPlayerInput, PlayerInput, PlayerState } from "../shared/states/Player";
-import { RoomState } from "../shared/states/RoomState";
 
 /**
  * 服务端 - 房间 - 逻辑系统
  */
 export class Room {
 
-    state: RoomState = {
-        players: []
-    }
-
     // 次数/秒
-    syncRate = 10;
-    lastUid = 0;
+    syncRate = 3;
+    nextPlayerId = 1;
+
+    gameSystem = new GameSystem();
 
     server: WsServer<ServiceType>;
-    conns: WsConnection[] = [];
-
-    pendingInputs: MsgFrame['inputs'] = [];
+    conns: WsConnection<ServiceType>[] = [];
+    pendingInputs: GameSystemInput[] = [];
+    playerLastSn: { [playerId: number]: number | undefined } = {};
+    lastSyncTime?: number;
 
     constructor(server: WsServer<ServiceType>) {
         this.server = server;
-        setInterval(() => { this.sendSyncFrame() }, 1000 / this.syncRate);
-    }
-
-    sendSyncFrame() {
-        // 发送同步帧
-        this.server.broadcastMsg('serverMsgs/Frame', {
-            inputs: this.pendingInputs
-        }, this.conns);
-        this.pendingInputs = [];
+        setInterval(() => { this.sync() }, 1000 / this.syncRate);
     }
 
     /** 加入房间 */
-    join(req: ReqJoinRoom, conn: WsConnection<ServiceType>) {
-        let player: PlayerState = {
-            ...req,
-            uid: ++this.lastUid,
+    join(req: ReqJoin, conn: WsConnection<ServiceType>) {
+        let input: PlayerJoin = {
+            type: 'PlayerJoin',
+            playerId: this.nextPlayerId++,
             // 初始位置随机
             pos: {
                 x: Math.random() * 10,
                 y: Math.random() * 10
             }
         }
-        this.conns.push(conn);
-        this.state.players.push(player);
+        this.applyInput(input);
 
-        conn.uid = player.uid;
-        conn.listenMsg('clientMsgs/Input', call => {
-            this.pendingInputs.push({
-                uid: player.uid,
-                msgInput: call.msg
-            });
-            this.applyInput({
-                uid: player.uid,
-                input: call.msg
-            });
+        this.conns.push(conn);
+        conn.playerId = input.playerId;
+        conn.listenMsg('client/ClientInput', call => {
+            this.playerLastSn[input.playerId] = call.msg.sn;
+            call.msg.inputs.forEach(v => {
+                this.applyInput({
+                    ...v,
+                    playerId: input.playerId
+                });
+            })
         });
 
-        this.server.broadcastMsg('serverMsgs/Join', {
-            player: player
-        }, this.conns);
+        return input.playerId;
+    }
 
-        return player.uid;
+    applyInput(input: GameSystemInput) {
+        this.pendingInputs.push(input);
+    }
+
+    sync() {
+        let inputs = this.pendingInputs;
+        this.pendingInputs = [];
+
+        // Apply inputs
+        inputs.forEach(v => {
+            this.gameSystem.applyInput(v)
+        });
+
+        // TimePast
+        let now = process.uptime();
+        this.applyInput({
+            type: 'TimePast',
+            dt: now - (this.lastSyncTime ?? now)
+        });
+        this.lastSyncTime = now;
+
+        // 发送同步帧
+        this.conns.forEach(v => {
+            v.sendMsg('server/Frame', {
+                inputs: inputs,
+                lastSn: this.playerLastSn[v.playerId!]
+            })
+        });
     }
 
     /** 离开房间 */
-    leave(uid: number, conn: WsConnection<ServiceType>) {
-        this.conns.removeOne(v => v.uid === uid);
-        this.state.players.removeOne(v => v.uid === uid);
-
-        conn.unlistenMsgAll('clientMsgs/Input');
-
-        this.server.broadcastMsg('serverMsgs/Leave', {
-            uid: uid
-        }, this.conns);
+    leave(playerId: number, conn: WsConnection<ServiceType>) {
+        this.conns.removeOne(v => v.playerId === playerId);
+        this.applyInput({
+            type: 'PlayerLeave',
+            playerId: playerId
+        });
     }
-
-    applyInput(input: RoomInput) {
-        let playerIndex = this.state.players.findIndex(v => v.uid === input.uid);
-        if (playerIndex > -1) {
-            this.state.players[playerIndex] = applyPlayerInput(this.state.players[playerIndex], input.input);
-        }
-    }
-
-}
-
-export interface RoomInput {
-    uid: number,
-    input: PlayerInput
 }
 
 declare module 'tsrpc' {
     export interface WsConnection {
-        uid?: number;
+        playerId?: number;
     }
 }

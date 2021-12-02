@@ -1,66 +1,128 @@
 import { ServiceProto } from 'tsrpc-proto';
-import { MsgInput } from './clientMsgs/MsgInput';
-import { ReqJoinRoom, ResJoinRoom } from './PtlJoinRoom';
-import { MsgFrame } from './serverMsgs/MsgFrame';
-import { MsgJoin } from './serverMsgs/MsgJoin';
-import { MsgLeave } from './serverMsgs/MsgLeave';
+import { MsgClientInput } from './client/MsgClientInput';
+import { ReqJoin, ResJoin } from './PtlJoin';
+import { MsgFrame } from './server/MsgFrame';
 
 export interface ServiceType {
     api: {
-        "JoinRoom": {
-            req: ReqJoinRoom,
-            res: ResJoinRoom
+        "Join": {
+            req: ReqJoin,
+            res: ResJoin
         }
     },
     msg: {
-        "clientMsgs/Input": MsgInput,
-        "serverMsgs/Frame": MsgFrame,
-        "serverMsgs/Join": MsgJoin,
-        "serverMsgs/Leave": MsgLeave
+        "client/ClientInput": MsgClientInput,
+        "server/Frame": MsgFrame
     }
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
     "services": [
         {
-            "id": 2,
-            "name": "clientMsgs/Input",
+            "id": 0,
+            "name": "client/ClientInput",
             "type": "msg"
         },
         {
-            "id": 3,
-            "name": "JoinRoom",
+            "id": 1,
+            "name": "Join",
             "type": "api"
         },
         {
-            "id": 7,
-            "name": "serverMsgs/Frame",
-            "type": "msg"
-        },
-        {
-            "id": 4,
-            "name": "serverMsgs/Join",
-            "type": "msg"
-        },
-        {
-            "id": 5,
-            "name": "serverMsgs/Leave",
+            "id": 2,
+            "name": "server/Frame",
             "type": "msg"
         }
     ],
     "types": {
-        "clientMsgs/MsgInput/MsgInput": {
-            "type": "Intersection",
+        "client/MsgClientInput/MsgClientInput": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "sn",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "inputs",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "client/MsgClientInput/ClientInput"
+                        }
+                    }
+                }
+            ]
+        },
+        "client/MsgClientInput/ClientInput": {
+            "type": "Union",
             "members": [
                 {
                     "id": 0,
+                    "type": {
+                        "target": {
+                            "type": "Reference",
+                            "target": "../game/GameSystem/PlayerMove"
+                        },
+                        "keys": [
+                            "playerId"
+                        ],
+                        "type": "Omit"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "target": {
+                            "type": "Reference",
+                            "target": "../game/GameSystem/PlayerAttack"
+                        },
+                        "keys": [
+                            "playerId"
+                        ],
+                        "type": "Omit"
+                    }
+                }
+            ]
+        },
+        "../game/GameSystem/PlayerMove": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "type",
+                    "type": {
+                        "type": "Literal",
+                        "literal": "PlayerMove"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "playerId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "speed",
                     "type": {
                         "type": "Interface",
                         "properties": [
                             {
                                 "id": 0,
-                                "name": "sn",
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
                                 "type": {
                                     "type": "Number"
                                 }
@@ -69,19 +131,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 1,
+                    "id": 3,
+                    "name": "dt",
                     "type": {
-                        "type": "Reference",
-                        "target": "../states/Player/PlayerInput"
+                        "type": "Number"
                     }
                 }
             ]
         },
-        "../states/Player/PlayerInput": {
-            "type": "Reference",
-            "target": "../states/Player/PlayerMove"
-        },
-        "../states/Player/PlayerMove": {
+        "../game/GameSystem/PlayerAttack": {
             "type": "Interface",
             "properties": [
                 {
@@ -89,12 +147,19 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "type",
                     "type": {
                         "type": "Literal",
-                        "literal": "move"
+                        "literal": "PlayerAttack"
                     }
                 },
                 {
                     "id": 1,
-                    "name": "offset",
+                    "name": "playerId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "direction",
                     "type": {
                         "type": "Interface",
                         "properties": [
@@ -117,87 +182,276 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "PtlJoinRoom/ReqJoinRoom": {
+        "PtlJoin/ReqJoin": {
+            "type": "Interface"
+        },
+        "PtlJoin/ResJoin": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "nickname",
+                    "name": "playerId",
                     "type": {
-                        "type": "String"
+                        "type": "Number"
                     }
                 },
                 {
                     "id": 1,
-                    "name": "skinId",
+                    "name": "gameState",
                     "type": {
-                        "type": "Number"
+                        "type": "Reference",
+                        "target": "../game/GameSystem/GameSystemState"
                     }
                 }
             ]
         },
-        "PtlJoinRoom/ResJoinRoom": {
+        "../game/GameSystem/GameSystemState": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "uid",
+                    "name": "now",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
-                    "id": 3,
-                    "name": "roomState",
-                    "type": {
-                        "type": "Reference",
-                        "target": "../states/RoomState/RoomState"
-                    }
-                }
-            ]
-        },
-        "../states/RoomState/RoomState": {
-            "type": "Interface",
-            "properties": [
-                {
-                    "id": 0,
+                    "id": 1,
                     "name": "players",
                     "type": {
                         "type": "Array",
                         "elementType": {
                             "type": "Reference",
-                            "target": "../states/Player/PlayerState"
+                            "target": "../game/state/PlayerState/PlayerState"
                         }
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "arrow",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../game/state/ArrowState/ArrowState"
+                        }
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "nextArrowId",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
         },
-        "../states/Player/PlayerState": {
+        "../game/state/PlayerState/PlayerState": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "uid",
+                    "name": "id",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
                     "id": 1,
-                    "name": "nickname",
+                    "name": "pos",
                     "type": {
-                        "type": "String"
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
                     }
                 },
                 {
                     "id": 2,
-                    "name": "skinId",
+                    "name": "dizzyEndTime",
+                    "type": {
+                        "type": "Number"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "../game/state/ArrowState/ArrowState": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "id",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "fromPlayerId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "startTime",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
                     "id": 3,
+                    "name": "startPos",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": 4,
+                    "name": "targetTime",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 5,
+                    "name": "targetPos",
+                    "type": {
+                        "type": "Interface",
+                        "properties": [
+                            {
+                                "id": 0,
+                                "name": "x",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "name": "y",
+                                "type": {
+                                    "type": "Number"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "server/MsgFrame/MsgFrame": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "inputs",
+                    "type": {
+                        "type": "Array",
+                        "elementType": {
+                            "type": "Reference",
+                            "target": "../game/GameSystem/GameSystemInput"
+                        }
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "lastSn",
+                    "type": {
+                        "type": "Number"
+                    },
+                    "optional": true
+                }
+            ]
+        },
+        "../game/GameSystem/GameSystemInput": {
+            "type": "Union",
+            "members": [
+                {
+                    "id": 0,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../game/GameSystem/PlayerMove"
+                    }
+                },
+                {
+                    "id": 1,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../game/GameSystem/PlayerAttack"
+                    }
+                },
+                {
+                    "id": 2,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../game/GameSystem/PlayerJoin"
+                    }
+                },
+                {
+                    "id": 3,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../game/GameSystem/PlayerLeave"
+                    }
+                },
+                {
+                    "id": 4,
+                    "type": {
+                        "type": "Reference",
+                        "target": "../game/GameSystem/TimePast"
+                    }
+                }
+            ]
+        },
+        "../game/GameSystem/PlayerJoin": {
+            "type": "Interface",
+            "properties": [
+                {
+                    "id": 0,
+                    "name": "type",
+                    "type": {
+                        "type": "Literal",
+                        "literal": "PlayerJoin"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "playerId",
+                    "type": {
+                        "type": "Number"
+                    }
+                },
+                {
+                    "id": 2,
                     "name": "pos",
                     "type": {
                         "type": "Interface",
@@ -221,57 +475,40 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "serverMsgs/MsgFrame/MsgFrame": {
+        "../game/GameSystem/PlayerLeave": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "inputs",
+                    "name": "type",
                     "type": {
-                        "type": "Array",
-                        "elementType": {
-                            "type": "Interface",
-                            "properties": [
-                                {
-                                    "id": 0,
-                                    "name": "uid",
-                                    "type": {
-                                        "type": "Number"
-                                    }
-                                },
-                                {
-                                    "id": 1,
-                                    "name": "msgInput",
-                                    "type": {
-                                        "type": "Reference",
-                                        "target": "clientMsgs/MsgInput/MsgInput"
-                                    }
-                                }
-                            ]
-                        }
+                        "type": "Literal",
+                        "literal": "PlayerLeave"
+                    }
+                },
+                {
+                    "id": 1,
+                    "name": "playerId",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
         },
-        "serverMsgs/MsgJoin/MsgJoin": {
+        "../game/GameSystem/TimePast": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
-                    "name": "player",
+                    "name": "type",
                     "type": {
-                        "type": "Reference",
-                        "target": "../states/Player/PlayerState"
+                        "type": "Literal",
+                        "literal": "TimePast"
                     }
-                }
-            ]
-        },
-        "serverMsgs/MsgLeave/MsgLeave": {
-            "type": "Interface",
-            "properties": [
+                },
                 {
-                    "id": 0,
-                    "name": "uid",
+                    "id": 1,
+                    "name": "dt",
                     "type": {
                         "type": "Number"
                     }
