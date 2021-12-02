@@ -49,8 +49,8 @@ export class GameSystem {
                     startPos: { ...player.pos },
                     startTime: this._state.now,
                     targetPos: {
-                        x: player.pos.x + input.direction.x * gameConfig.arrowDistance,
-                        y: player.pos.y + input.direction.y * gameConfig.arrowDistance
+                        x: player.pos.x + input.offset.x,
+                        y: player.pos.y + input.offset.y
                     },
                     targetTime: this._state.now + gameConfig.arrowFlyTime
                 });
@@ -75,11 +75,11 @@ export class GameSystem {
                     // 伤害判定
                     let damagedPlayers = this._state.players.filter(v => {
                         // 不能伤害自己
-                        if (v.id === arrow.fromPlayerId) {
-                            return false;
-                        }
+                        // if (v.id === arrow.fromPlayerId) {
+                        //     return false;
+                        // }
 
-                        return (v.pos.x - arrow.targetPos.x) * (v.pos.x - arrow.targetPos.x) + (v.pos.y - arrow.targetPos.y) * (v.pos.y - arrow.targetPos.y) <= gameConfig.arrowDistance * gameConfig.arrowDistance
+                        return (v.pos.x - arrow.targetPos.x) * (v.pos.x - arrow.targetPos.x) + (v.pos.y - arrow.targetPos.y) * (v.pos.y - arrow.targetPos.y) <= gameConfig.arrowAttackRadius * gameConfig.arrowAttackRadius
                     });
                     damagedPlayers.forEach(p => {
                         // 设置击晕状态
@@ -112,7 +112,7 @@ export interface PlayerMove {
 export interface PlayerAttack {
     type: 'PlayerAttack',
     playerId: number,
-    direction: { x: number, y: number },
+    offset: { x: number, y: number },
 }
 export interface PlayerJoin {
     type: 'PlayerJoin',

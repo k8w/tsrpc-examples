@@ -11,6 +11,7 @@ export class GameManager {
 
     gameSystem = new GameSystem();
     lastServerState: GameSystemState = this.gameSystem.state;
+    lastRecvSetverStateTime = 0;
     selfPlayerId: number = -1;
     lastSN = 0;
 
@@ -67,6 +68,7 @@ export class GameManager {
 
         this.gameSystem.reset(ret.res.gameState);
         this.lastServerState = Object.merge(ret.res.gameState);
+        this.lastRecvSetverStateTime = Date.now();
         this.selfPlayerId = ret.res.playerId;
     }
 
@@ -77,6 +79,7 @@ export class GameManager {
             this.gameSystem.applyInput(input);
         }
         this.lastServerState = Object.merge({}, this.gameSystem.state);
+        this.lastRecvSetverStateTime = Date.now();
 
         // 和解
         let lastSn = frame.lastSn ?? -1;
@@ -89,6 +92,13 @@ export class GameManager {
                 });
             })
         })
+
+        // 本地时间流逝（会被下一次服务器状态覆盖）
+        this.gameSystem.applyInput({
+            type: 'TimePast',
+            dt: Date.now() - this.lastRecvSetverStateTime
+        });
+        this.lastRecvSetverStateTime = Date.now();
     }
 
     pendingInputMsgs: MsgClientInput[] = [];
@@ -109,6 +119,13 @@ export class GameManager {
             ...input,
             playerId: this.selfPlayerId
         });
+
+        // 本地时间流逝（会被下一次服务器状态覆盖）
+        // this.gameSystem.applyInput({
+        //     type: 'TimePast',
+        //     dt: Date.now() - this.lastRecvSetverStateTime
+        // });
+        // this.lastRecvSetverStateTime = Date.now();
     }
 
 }

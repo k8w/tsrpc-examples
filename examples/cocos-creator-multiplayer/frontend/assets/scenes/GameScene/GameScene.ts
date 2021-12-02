@@ -143,9 +143,10 @@ export class GameScene extends Component {
     }
 
     onBtnAttack() {
+        let offset = this._playerInstances[this.gameManager.selfPlayerId].node.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance);
         this.gameManager.sendClientInput({
             type: 'PlayerAttack',
-            direction: this._playerInstances[this.gameManager.selfPlayerId].node.forward
+            offset: { x: offset.x, y: -offset.z }
         })
     }
 

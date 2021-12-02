@@ -17,7 +17,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 1,
+    "version": 2,
     "services": [
         {
             "id": 0,
@@ -159,8 +159,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 2,
-                    "name": "direction",
+                    "id": 3,
+                    "name": "offset",
                     "type": {
                         "type": "Interface",
                         "properties": [

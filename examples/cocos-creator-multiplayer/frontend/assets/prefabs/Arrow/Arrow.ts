@@ -22,7 +22,6 @@ export class Arrow extends Component {
         this._endPos.set(state.targetPos.x, 0, -state.targetPos.y);
     }
 
-
     updateState(state: ArrowState, now: number) {
         let percent = MathUtil.limit((now - state.startTime) / (state.targetTime - state.startTime), 0, 1);
 
