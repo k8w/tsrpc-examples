@@ -1,8 +1,9 @@
 import { WsClient } from "tsrpc-browser";
+import { gameConfig } from "../shared/game/gameConfig";
 import { GameSystem, GameSystemState } from "../shared/game/GameSystem";
 import { ClientInput, MsgClientInput } from "../shared/protocols/client/MsgClientInput";
 import { MsgFrame } from "../shared/protocols/server/MsgFrame";
-import { ServiceType } from "../shared/protocols/serviceProto";
+import { serviceProto, ServiceType } from "../shared/protocols/serviceProto";
 
 export class GameManager {
 
@@ -17,9 +18,26 @@ export class GameManager {
         return this.gameSystem.state;
     }
 
-    constructor(client: WsClient<ServiceType>) {
-        this.client = client;
+    constructor() {
+        let client = this.client = new WsClient(serviceProto, {
+            server: `ws://${location.hostname}:3000`,
+            json: true,
+            // logger: console
+        });;
         client.listenMsg('server/Frame', msg => { this._onServerSync(msg) });
+
+        // 模拟网络延迟
+        if (gameConfig.networkLag) {
+            client.flows.preRecvDataFlow.push(async v => {
+                await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
+                return v;
+            });
+            client.flows.preSendDataFlow.push(async v => {
+                await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
+                return v;
+            });
+        }
+
 
         (window as any).gm = this;
     }

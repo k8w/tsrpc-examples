@@ -1,4 +1,5 @@
 import { WsConnection, WsServer } from "tsrpc";
+import { gameConfig } from "../shared/game/gameConfig";
 import { GameSystem, GameSystemInput, PlayerJoin } from "../shared/game/GameSystem";
 import { ReqJoin } from "../shared/protocols/PtlJoin";
 import { ServiceType } from "../shared/protocols/serviceProto";
@@ -9,7 +10,7 @@ import { ServiceType } from "../shared/protocols/serviceProto";
 export class Room {
 
     // 次数/秒
-    syncRate = 3;
+    syncRate = gameConfig.syncRate;
     nextPlayerId = 1;
 
     gameSystem = new GameSystem();
@@ -32,8 +33,8 @@ export class Room {
             playerId: this.nextPlayerId++,
             // 初始位置随机
             pos: {
-                x: Math.random() * 10,
-                y: Math.random() * 10
+                x: Math.random() * 10 - 5,
+                y: Math.random() * 10 - 5
             }
         }
         this.applyInput(input);

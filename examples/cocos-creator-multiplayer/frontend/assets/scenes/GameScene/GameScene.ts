@@ -1,12 +1,10 @@
 
 import { Component, instantiate, Node, Prefab, Vec2, _decorator } from 'cc';
-import { WsClient } from 'tsrpc-browser';
 import { Joystick } from '../../prefabs/Joystick/Joystick';
 import { Player } from '../../prefabs/Player/Player';
 import { FollowCamera } from '../../scripts/components/FollowCamera';
 import { GameManager } from '../../scripts/models/GameManager';
 import { gameConfig } from '../../scripts/shared/game/gameConfig';
-import { serviceProto, ServiceType } from '../../scripts/shared/protocols/serviceProto';
 const { ccclass, property } = _decorator;
 
 /**
@@ -36,8 +34,7 @@ export class GameScene extends Component {
     @property(FollowCamera)
     camera: FollowCamera = null as any;
 
-    client!: WsClient<ServiceType>;
-    gameManager!: GameManager;
+    gameManager = new GameManager();
 
     private _playerInstances: { [playerId: number]: Player } = {};
     private _selfSpeed?: Vec2 = new Vec2(0, 0);
@@ -57,20 +54,16 @@ export class GameScene extends Component {
             }
         }
 
-        this.client = new WsClient(serviceProto, {
-            server: 'ws://127.0.0.1:3000',
-            logger: console
-        });
-        this.client.flows.postDisconnectFlow.push(v => {
+        this.gameManager.client.flows.postDisconnectFlow.push(v => {
             location.reload()
             return v;
         })
-        this.gameManager = new GameManager(this.client);
 
         this.gameManager.join();
     }
 
     update(dt: number) {
+
         // Send Inputs
         if (this._selfSpeed && this._selfSpeed.lengthSqr()) {
             this._selfSpeed.normalize().multiplyScalar(gameConfig.moveSpeed);
@@ -84,32 +77,34 @@ export class GameScene extends Component {
             })
         }
 
-        let gameState = this.gameManager.state;
-
-        // console.log('update', gameState.players.length)
-
         // Update pos
-        for (let playerState of gameState.players) {
+        let playerStates = this.gameManager.state.players;
+        for (let playerState of playerStates) {
             let player: Player = this._playerInstances[playerState.id];
             if (!player) {
                 let node = instantiate(this.prefabPlayer);
                 this.players.addChild(node);
-                player = node.getComponent(Player)!;
-                player.init(playerState);
+                player = this._playerInstances[playerState.id] = node.getComponent(Player)!;
+                player.init(playerState, playerState.id === this.gameManager.selfPlayerId)
 
+                // 摄像机拍摄自己
                 if (playerState.id === this.gameManager.selfPlayerId) {
                     this.camera.focusTarget = node;
                 }
+            }
 
-                this._playerInstances[playerState.id] = player;
-            }
-            else {
-                // console.log('setPos', playerState.id, playerState.pos.x, playerState.pos.y)
-                player.setPos(playerState.pos);
-            }
+            // 自己不插值（本地预测），插值其它人
+            player.isSelf ? player.updateSelf(playerState) : player.updateOther(playerState);
         }
 
-        // Clear left players        
+        // Clear left players
+        for (let i = this.players.children.length - 1; i > -1; --i) {
+            let player = this.players.children[i].getComponent(Player)!;
+            if (!this.gameManager.state.players.find(v => v.id === player.playerId)) {
+                player.node.removeFromParent();
+                delete this._playerInstances[player.playerId];
+            }
+        }
     }
 
 }
