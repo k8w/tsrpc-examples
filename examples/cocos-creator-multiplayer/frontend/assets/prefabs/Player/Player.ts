@@ -19,9 +19,15 @@ export class Player extends Component {
 
     playerId!: number;
     isSelf = false;
+    state!: PlayerState;
+    now: number = 0;
 
     private _tweens: Tween<any>[] = [];
     private _targetPos = new Vec3;
+
+    start() {
+        this.ani.getState('win').speed = 4;
+    }
 
     init(state: PlayerState, isSelf: boolean) {
         this.playerId = state.id;
@@ -29,8 +35,24 @@ export class Player extends Component {
         this.mesh.material!.setProperty('mainTexture', this.isSelf ? this.texSelf : this.texOther);
     }
 
-    // 把 GameSystem 空间映射到游戏空间
-    updateSelf(state: PlayerState) {
+    updateState(state: PlayerState, now: number) {
+        this.state = state;
+        this.now = now;
+
+        if (state.dizzyEndTime && state.dizzyEndTime >= now) {
+            this.setAni('win');
+        }
+        else {
+            if (this._lastAni === 'win') {
+                this.setAni('idle')
+            }
+        }
+
+        this.isSelf ? this._resetState(state, now) : this._tweenState(state, now);
+    }
+
+    // 直接更新
+    private _resetState(state: PlayerState, now: number) {
         // 更新位置
         this._targetPos.set(state.pos.x, 0, -state.pos.y);
         if (!this.node.position.equals(this._targetPos)) {
@@ -45,7 +67,9 @@ export class Player extends Component {
             this.setAni('idle');
         }
     }
-    updateOther(state: PlayerState) {
+
+    // 插值更新
+    private _tweenState(state: PlayerState, now: number) {
         // 更新位置
         let newPos = new Vec3(state.pos.x, 0, -state.pos.y);
         if (!this._targetPos.equals(newPos)) {
@@ -73,10 +97,16 @@ export class Player extends Component {
         }
     }
 
+    private _lastAni?: string;
     setAni(ani: string) {
-        if (this.ani.getState(ani)?.isPlaying) {
+        if (this.state.dizzyEndTime && this.state.dizzyEndTime >= this.now) {
+            ani = 'win';
+        }
+
+        if (this._lastAni === ani) {
             return;
         }
+        this._lastAni = ani;
 
         this.ani.crossFade(ani, 0.1);
     }

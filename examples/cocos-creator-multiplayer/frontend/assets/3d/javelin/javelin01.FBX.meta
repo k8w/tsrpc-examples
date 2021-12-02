@@ -2,33 +2,17 @@
   "ver": "2.1.4",
   "importer": "fbx",
   "imported": true,
-  "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c",
+  "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21",
   "files": [
     "__original-animation-0.cconb"
   ],
   "subMetas": {
-    "95953": {
-      "importer": "gltf-material",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@95953",
-      "displayName": "",
-      "id": "95953",
-      "name": "Material #7.material",
-      "userData": {
-        "gltfIndex": 0
-      },
-      "ver": "1.0.14",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
-    "6868c": {
+    "2ed96": {
       "importer": "gltf-mesh",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@6868c",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@2ed96",
       "displayName": "",
-      "id": "6868c",
-      "name": "soldier01.mesh",
+      "id": "2ed96",
+      "name": "javelin01.mesh",
       "userData": {
         "gltfIndex": 0
       },
@@ -42,7 +26,7 @@
     },
     "1f586": {
       "importer": "gltf-animation",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@1f586",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@1f586",
       "displayName": "",
       "id": "1f586",
       "name": "idle.animation",
@@ -65,7 +49,7 @@
     },
     "cf5ee": {
       "importer": "gltf-animation",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@cf5ee",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@cf5ee",
       "displayName": "",
       "id": "cf5ee",
       "name": "run.animation",
@@ -88,7 +72,7 @@
     },
     "989ed": {
       "importer": "gltf-animation",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@989ed",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@989ed",
       "displayName": "",
       "id": "989ed",
       "name": "attack.animation",
@@ -102,12 +86,12 @@
         },
         "events": [
           {
-            "frame": 0.23333333333333334,
+            "frame": 0.3,
             "func": "",
             "params": []
           },
           {
-            "frame": 0.23333333333333334,
+            "frame": 0.3,
             "func": "triggerEffect",
             "params": []
           }
@@ -123,7 +107,7 @@
     },
     "ee525": {
       "importer": "gltf-animation",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@ee525",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@ee525",
       "displayName": "",
       "id": "ee525",
       "name": "win.animation",
@@ -146,7 +130,7 @@
     },
     "5b2e9": {
       "importer": "gltf-animation",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@5b2e9",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@5b2e9",
       "displayName": "",
       "id": "5b2e9",
       "name": "died.animation",
@@ -156,7 +140,7 @@
         "sample": 30,
         "span": {
           "from": 2.8,
-          "to": 4.333333333333333
+          "to": 4.125
         },
         "events": []
       },
@@ -169,7 +153,7 @@
     },
     "438fe": {
       "importer": "gltf-skeleton",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@438fe",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@438fe",
       "displayName": "",
       "id": "438fe",
       "name": "UnnamedSkeleton.skeleton",
@@ -184,12 +168,12 @@
       ],
       "subMetas": {}
     },
-    "fa1d4": {
+    "ab717": {
       "importer": "gltf-embeded-image",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@fa1d4",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@ab717",
       "displayName": "",
-      "id": "fa1d4",
-      "name": "soldier01.jpg.image",
+      "id": "ab717",
+      "name": "javelin01.jpg.image",
       "userData": {
         "gltfIndex": 0
       },
@@ -201,12 +185,12 @@
       ],
       "subMetas": {}
     },
-    "291d4": {
+    "eb794": {
       "importer": "texture",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@291d4",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@eb794",
       "displayName": "",
-      "id": "291d4",
-      "name": "贴图 #6.texture",
+      "id": "eb794",
+      "name": "贴图 #5.texture",
       "userData": {
         "wrapModeS": "repeat",
         "wrapModeT": "repeat",
@@ -215,7 +199,7 @@
         "mipfilter": "none",
         "anisotropy": 0,
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "57d4c4ef-3199-4596-bf79-7c065964ca9c@fa1d4"
+        "imageUuidOrDatabaseUri": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@ab717"
       },
       "ver": "1.0.21",
       "imported": true,
@@ -224,12 +208,28 @@
       ],
       "subMetas": {}
     },
-    "33dba": {
-      "importer": "gltf-scene",
-      "uuid": "57d4c4ef-3199-4596-bf79-7c065964ca9c@33dba",
+    "a47c6": {
+      "importer": "gltf-material",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@a47c6",
       "displayName": "",
-      "id": "33dba",
-      "name": "soldier01.prefab",
+      "id": "a47c6",
+      "name": "Material #6.material",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.14",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "665d9": {
+      "importer": "gltf-scene",
+      "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@665d9",
+      "displayName": "",
+      "id": "665d9",
+      "name": "javelin01.prefab",
       "userData": {
         "gltfIndex": 0
       },
@@ -244,14 +244,14 @@
   "userData": {
     "imageMetas": [
       {
-        "name": "soldier01.jpg",
-        "uri": "57d4c4ef-3199-4596-bf79-7c065964ca9c@fa1d4"
+        "name": "javelin01.jpg",
+        "uri": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@ab717"
       }
     ],
     "animationImportSettings": [
       {
         "name": "Take 001",
-        "duration": 4.666666507720947,
+        "duration": 4.125,
         "fps": 30,
         "splits": [
           {
@@ -281,30 +281,32 @@
           {
             "name": "died",
             "from": 2.8,
-            "to": 4.333333333333333,
+            "to": 4.125,
             "wrapMode": 2
           }
         ]
       }
     ],
-    "redirect": "57d4c4ef-3199-4596-bf79-7c065964ca9c@33dba",
+    "redirect": "e8fe9966-5f03-4cc0-ad69-01d536be6c21@665d9",
     "assetFinder": {
       "meshes": [
-        "57d4c4ef-3199-4596-bf79-7c065964ca9c@6868c"
+        "e8fe9966-5f03-4cc0-ad69-01d536be6c21@2ed96"
       ],
       "skeletons": [
-        "57d4c4ef-3199-4596-bf79-7c065964ca9c@438fe"
+        "e8fe9966-5f03-4cc0-ad69-01d536be6c21@438fe"
       ],
       "textures": [
-        "57d4c4ef-3199-4596-bf79-7c065964ca9c@291d4"
+        "e8fe9966-5f03-4cc0-ad69-01d536be6c21@eb794"
       ],
       "materials": [
-        "57d4c4ef-3199-4596-bf79-7c065964ca9c@95953"
+        "e8fe9966-5f03-4cc0-ad69-01d536be6c21@a47c6"
       ],
       "scenes": [
-        "57d4c4ef-3199-4596-bf79-7c065964ca9c@33dba"
+        "e8fe9966-5f03-4cc0-ad69-01d536be6c21@665d9"
       ]
     },
-    "legacyFbxImporter": true
+    "dumpMaterials": false,
+    "legacyFbxImporter": true,
+    "materialDumpDir": "db://assets/resources/subPackage/model/javelin/Materials_javelin01"
   }
 }

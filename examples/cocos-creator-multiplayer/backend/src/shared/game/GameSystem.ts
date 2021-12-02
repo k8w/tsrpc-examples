@@ -5,7 +5,7 @@ import { PlayerState } from "./state/PlayerState";
 export interface GameSystemState {
     now: number,
     players: PlayerState[],
-    arrow: ArrowState[],
+    arrows: ArrowState[],
     nextArrowId: number
 }
 
@@ -15,7 +15,7 @@ export class GameSystem {
     private _state: GameSystemState = {
         now: 0,
         players: [],
-        arrow: [],
+        arrows: [],
         nextArrowId: 1
     }
     get state(): Readonly<GameSystemState> {
@@ -43,7 +43,7 @@ export class GameSystem {
         else if (input.type === 'PlayerAttack') {
             let player = this._state.players.find(v => v.id === input.playerId);
             if (player) {
-                this._state.arrow.push({
+                this._state.arrows.push({
                     id: this._state.nextArrowId++,
                     fromPlayerId: input.playerId,
                     startPos: { ...player.pos },
@@ -69,11 +69,16 @@ export class GameSystem {
             this._state.now += input.dt;
 
             // 落地的 Arrow
-            for (let i = this._state.arrow.length - 1; i > -1; --i) {
-                let arrow = this._state.arrow[i];
+            for (let i = this._state.arrows.length - 1; i > -1; --i) {
+                let arrow = this._state.arrows[i];
                 if (arrow.targetTime <= this._state.now) {
                     // 伤害判定
                     let damagedPlayers = this._state.players.filter(v => {
+                        // 不能伤害自己
+                        if (v.id === arrow.fromPlayerId) {
+                            return false;
+                        }
+
                         return (v.pos.x - arrow.targetPos.x) * (v.pos.x - arrow.targetPos.x) + (v.pos.y - arrow.targetPos.y) * (v.pos.y - arrow.targetPos.y) <= gameConfig.arrowDistance * gameConfig.arrowDistance
                     });
                     damagedPlayers.forEach(p => {
@@ -86,6 +91,7 @@ export class GameSystem {
                             toPlayerId: p.id
                         }))
                     })
+                    this._state.arrows.splice(i, 1);
                 }
             }
         }

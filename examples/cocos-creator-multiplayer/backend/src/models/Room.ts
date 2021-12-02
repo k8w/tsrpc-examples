@@ -68,7 +68,7 @@ export class Room {
         });
 
         // TimePast
-        let now = process.uptime();
+        let now = process.uptime() * 1000;
         this.applyInput({
             type: 'TimePast',
             dt: now - (this.lastSyncTime ?? now)

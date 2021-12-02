@@ -4,14 +4,18 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "a3cd009f-0ab0-420d-9278-b9fdab939bbc",
+    "__uuid__": "1baf0fc9-befa-459c-8bdd-af1a450a0319",
     "__expectedType__": "cc.EffectAsset"
   },
   "_techIdx": 0,
   "_defines": [
     {
-      "USE_TEXTURE": true
-    }
+      "USE_INSTANCING": true,
+      "USE_ALBEDO_MAP": true
+    },
+    {},
+    {},
+    {}
   ],
   "_states": [
     {
@@ -22,14 +26,23 @@
           {}
         ]
       }
-    }
+    },
+    {},
+    {},
+    {}
   ],
   "_props": [
     {
+      "alphaThreshold": 0,
+      "roughness": 0.333333402872086,
+      "metallic": 0.400000005960464,
       "mainTexture": {
-        "__uuid__": "96c88bc3-119a-412a-ac6f-5936ba8b9dc7@6c48a",
+        "__uuid__": "00463b4b-2098-43bf-ab0f-75d68a7b19aa@6c48a",
         "__expectedType__": "cc.Texture2D"
       }
-    }
+    },
+    {},
+    {},
+    {}
   ]
 }

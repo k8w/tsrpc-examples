@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, Quat, Tween, tween } from "cc";
+import { Component, Node, Tween, Vec3, _decorator } from "cc";
 import { MathUtil } from '../models/MathUtil';
 const { ccclass, property } = _decorator;
 
@@ -34,7 +34,7 @@ export class FollowCamera extends Component {
     minZ = -Infinity;
     maxZ = Infinity;
 
-    protected _tweenFollow?: Tween;
+    protected _tweenFollow?: Tween<any>;
     protected _targetWorldPos = new Vec3;
     protected _lastTargetPos = new Vec3;
 

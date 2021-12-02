@@ -38,7 +38,6 @@ export class GameManager {
             });
         }
 
-
         (window as any).gm = this;
     }
 

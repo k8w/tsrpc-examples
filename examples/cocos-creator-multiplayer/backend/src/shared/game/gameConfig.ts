@@ -8,7 +8,7 @@ export const gameConfig = {
 
     moveSpeed: 10,
 
-    arrowFlyTime: 1000,
-    arrowDistance: 2,
+    arrowFlyTime: 500,
+    arrowDistance: 7,
     arrowDizzyTime: 1000
 }

@@ -1,5 +1,6 @@
 
 import { Component, instantiate, Node, Prefab, Vec2, _decorator } from 'cc';
+import { Arrow } from '../../prefabs/Arrow/Arrow';
 import { Joystick } from '../../prefabs/Joystick/Joystick';
 import { Player } from '../../prefabs/Player/Player';
 import { FollowCamera } from '../../scripts/components/FollowCamera';
@@ -27,9 +28,13 @@ export class GameScene extends Component {
 
     @property(Prefab)
     prefabPlayer!: Prefab;
+    @property(Prefab)
+    prefabArrow!: Prefab;
 
     @property(Node)
     players!: Node;
+    @property(Node)
+    arrows!: Node;
 
     @property(FollowCamera)
     camera: FollowCamera = null as any;
@@ -37,6 +42,7 @@ export class GameScene extends Component {
     gameManager = new GameManager();
 
     private _playerInstances: { [playerId: number]: Player } = {};
+    private _arrowInstances: { [arrowId: number]: Arrow } = {};
     private _selfSpeed?: Vec2 = new Vec2(0, 0);
 
     onLoad() {
@@ -63,7 +69,6 @@ export class GameScene extends Component {
     }
 
     update(dt: number) {
-
         // Send Inputs
         if (this._selfSpeed && this._selfSpeed.lengthSqr()) {
             this._selfSpeed.normalize().multiplyScalar(gameConfig.moveSpeed);
@@ -77,6 +82,11 @@ export class GameScene extends Component {
             })
         }
 
+        this._updatePlayers();
+        this._updateArrows();
+    }
+
+    private _updatePlayers() {
         // Update pos
         let playerStates = this.gameManager.state.players;
         for (let playerState of playerStates) {
@@ -94,7 +104,7 @@ export class GameScene extends Component {
             }
 
             // 自己不插值（本地预测），插值其它人
-            player.isSelf ? player.updateSelf(playerState) : player.updateOther(playerState);
+            player.updateState(playerState, this.gameManager.state.now);
         }
 
         // Clear left players
@@ -105,6 +115,38 @@ export class GameScene extends Component {
                 delete this._playerInstances[player.playerId];
             }
         }
+    }
+
+    private _updateArrows() {
+        // Update pos
+        let arrowStates = this.gameManager.state.arrows;
+        for (let arrowState of arrowStates) {
+            let arrow: Arrow = this._arrowInstances[arrowState.id];
+            if (!arrow) {
+                let node = instantiate(this.prefabArrow);
+                this.arrows.addChild(node);
+                arrow = this._arrowInstances[arrowState.id] = node.getComponent(Arrow)!;
+                arrow.init(arrowState)
+            }
+
+            arrow.updateState(arrowState, this.gameManager.state.now);
+        }
+
+        // Clear left players
+        for (let i = this.arrows.children.length - 1; i > -1; --i) {
+            let arrow = this.arrows.children[i].getComponent(Arrow)!;
+            if (!this.gameManager.state.arrows.find(v => v.id === arrow.id)) {
+                arrow.node.removeFromParent();
+                delete this._arrowInstances[arrow.id];
+            }
+        }
+    }
+
+    onBtnAttack() {
+        this.gameManager.sendClientInput({
+            type: 'PlayerAttack',
+            direction: this._playerInstances[this.gameManager.selfPlayerId].node.forward
+        })
     }
 
 }

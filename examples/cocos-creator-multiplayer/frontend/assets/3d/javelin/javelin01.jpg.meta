@@ -2,7 +2,7 @@
   "ver": "1.0.21",
   "importer": "image",
   "imported": true,
-  "uuid": "f35bcb71-cd72-443c-94a9-5482c2d63d66",
+  "uuid": "81f16ace-2b57-44c3-804d-c192ed53aaee",
   "files": [
     ".jpg",
     ".json"
@@ -11,7 +11,7 @@
     "6c48a": {
       "ver": "1.0.21",
       "importer": "texture",
-      "uuid": "f35bcb71-cd72-443c-94a9-5482c2d63d66@6c48a",
+      "uuid": "81f16ace-2b57-44c3-804d-c192ed53aaee@6c48a",
       "imported": true,
       "files": [
         ".json"
@@ -26,16 +26,16 @@
         "premultiplyAlpha": false,
         "anisotropy": 0,
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "f35bcb71-cd72-443c-94a9-5482c2d63d66"
+        "imageUuidOrDatabaseUri": "81f16ace-2b57-44c3-804d-c192ed53aaee"
       },
-      "displayName": "soldier02",
+      "displayName": "javelin01",
       "id": "6c48a",
       "name": "texture"
     }
   },
   "userData": {
     "type": "texture",
-    "redirect": "f35bcb71-cd72-443c-94a9-5482c2d63d66@6c48a",
+    "redirect": "81f16ace-2b57-44c3-804d-c192ed53aaee@6c48a",
     "hasAlpha": false
   }
 }
