@@ -12,31 +12,44 @@ export class Arrow extends Component {
     id!: number;
     state!: ArrowState;
 
+    // 开始位置（场景坐标）
     private _startPos = new Vec3;
+    // 落点位置（场景坐标）
     private _endPos = new Vec3;
+    // 开始时间（场景时间）
+    private _startTime = 0;
+    // 结束时间（场景时间）
+    private _endTime = 0;
 
-    init(state: ArrowState) {
+    init(state: ArrowState, startPos: Vec3, now: number) {
         this.id = state.id;
         this.state = state;
-        this._startPos.set(state.startPos.x, 0, -state.startPos.y);
+        this._startPos.set(startPos);
         this._endPos.set(state.targetPos.x, 0, -state.targetPos.y);
+        this._startTime = Date.now();
+        this._endTime = this._startTime + state.targetTime - now;
+
+        this._updatePosAndForward(0);
     }
 
-    updateState(state: ArrowState, now: number) {
-        let percent = MathUtil.limit((now - state.startTime) / (state.targetTime - state.startTime), 0, 1);
-
+    update() {
         //下一个目标位置
-        let newPos = this._startPos.clone().lerp(this._endPos, percent)
-        //下一个目标位置的高度 
-        newPos.y = ARROW_TOP * Math.cos(percent * Math.PI - Math.PI / 2);
+        let percent = MathUtil.limit((Date.now() - this._startTime) / (this._endTime - this._startTime), 0, 1);
+        this._updatePosAndForward(percent);
+    }
+
+    private _updatePosAndForward(percent: number) {
+        let nextPos = this._getPos(percent);
+        this.node.position = nextPos;
 
         //武器朝向下一个目标位置, 形成曲线飞行的感觉
-        let newForward = newPos.clone().subtract(this.node.position).normalize();
-        if (!newForward.equals(Vec3.ZERO)) {
-            this.node.forward = newForward;
-        }
-
-        this.node.position = newPos;
+        let lastPos = this._getPos(percent - 0.01)
+        this.node.forward = nextPos.clone().subtract(lastPos).normalize();
     }
 
+    private _getPos(percent: number) {
+        let pos = this._startPos.clone().lerp(this._endPos, percent)
+        pos.y = ARROW_TOP * Math.cos(percent * Math.PI - Math.PI / 2);
+        return pos;
+    }
 }

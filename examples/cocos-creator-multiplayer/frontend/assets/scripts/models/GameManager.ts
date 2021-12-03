@@ -23,7 +23,7 @@ export class GameManager {
         let client = this.client = new WsClient(serviceProto, {
             server: `ws://${location.hostname}:3000`,
             json: true,
-            // logger: console
+            logger: console
         });;
         client.listenMsg('server/Frame', msg => { this._onServerSync(msg) });
 
@@ -96,12 +96,18 @@ export class GameManager {
             return;
         }
 
+        console.log('sendClientInput', input, this.state.now);
+
         let msg: MsgClientInput = {
             sn: ++this.lastSN,
             inputs: [input]
         }
         this.pendingInputMsgs.push(msg);
-        this.client.sendMsg('client/ClientInput', msg);
+        this.client.sendMsg('client/ClientInput', msg).then(v => {
+            if (!v.isSucc) {
+                console.error('xxxxxxxxxxxxxx', msg, v)
+            }
+        });
 
         // 预测
         this.gameSystem.applyInput({

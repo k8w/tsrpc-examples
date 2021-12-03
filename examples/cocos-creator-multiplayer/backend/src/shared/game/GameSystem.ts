@@ -46,13 +46,8 @@ export class GameSystem {
                 this._state.arrows.push({
                     id: this._state.nextArrowId++,
                     fromPlayerId: input.playerId,
-                    startPos: { ...player.pos },
-                    startTime: this._state.now,
-                    targetPos: {
-                        x: player.pos.x + input.offset.x,
-                        y: player.pos.y + input.offset.y
-                    },
-                    targetTime: this._state.now + gameConfig.arrowFlyTime
+                    targetPos: { ...input.targetPos },
+                    targetTime: input.targetTime
                 });
             }
         }
@@ -112,7 +107,10 @@ export interface PlayerMove {
 export interface PlayerAttack {
     type: 'PlayerAttack',
     playerId: number,
-    offset: { x: number, y: number },
+    // 落点坐标
+    targetPos: { x: number, y: number },
+    // 落点时间（游戏时间）
+    targetTime: number
 }
 export interface PlayerJoin {
     type: 'PlayerJoin',

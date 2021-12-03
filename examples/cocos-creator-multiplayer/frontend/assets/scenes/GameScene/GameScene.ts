@@ -39,7 +39,7 @@ export class GameScene extends Component {
     @property(FollowCamera)
     camera: FollowCamera = null as any;
 
-    gameManager = new GameManager();
+    gameManager!: GameManager;
 
     private _playerInstances: { [playerId: number]: Player } = {};
     private _arrowInstances: { [arrowId: number]: Arrow } = {};
@@ -60,11 +60,11 @@ export class GameScene extends Component {
             }
         }
 
+        this.gameManager = new GameManager();
         this.gameManager.client.flows.postDisconnectFlow.push(v => {
             location.reload()
             return v;
-        })
-
+        });
         this.gameManager.join();
     }
 
@@ -125,13 +125,17 @@ export class GameScene extends Component {
         for (let arrowState of arrowStates) {
             let arrow: Arrow = this._arrowInstances[arrowState.id];
             if (!arrow) {
+                let playerState = this.gameManager.state.players.find(v => v.id === arrowState.fromPlayerId);
+                if (!playerState) {
+                    continue;
+                }
+                let playerNode = this._playerInstances[playerState.id].node;
+
                 let node = instantiate(this.prefabArrow);
                 this.arrows.addChild(node);
                 arrow = this._arrowInstances[arrowState.id] = node.getComponent(Arrow)!;
-                arrow.init(arrowState)
+                arrow.init(arrowState, playerNode.position, this.gameManager.state.now);
             }
-
-            arrow.updateState(arrowState, this.gameManager.state.now);
         }
 
         // Clear left players
@@ -145,11 +149,21 @@ export class GameScene extends Component {
     }
 
     onBtnAttack() {
-        let offset = this._playerInstances[this.gameManager.selfPlayerId].node.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance);
+        let playerState = this.gameManager.state.players.find(v => v.id === this.gameManager.selfPlayerId);
+        if (!playerState) {
+            return;
+        }
+
+        let playerNode = this._playerInstances[this.gameManager.selfPlayerId].node;
+        // 攻击落点偏移（表现层坐标）
+        let sceneOffset = playerNode.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance);
+        // 攻击落点（逻辑层坐标）
+        let targetPos = new Vec2(playerState.pos.x, playerState.pos.y).add2f(sceneOffset.x, -sceneOffset.z);
         this.gameManager.sendClientInput({
             type: 'PlayerAttack',
-            offset: { x: offset.x, y: -offset.z }
+            // 显示坐标 —> 逻辑坐标
+            targetPos: { x: targetPos.x, y: targetPos.y },
+            targetTime: this.gameManager.state.now + gameConfig.arrowFlyTime
         })
     }
-
 }

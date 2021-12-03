@@ -17,7 +17,6 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 2,
     "services": [
         {
             "id": 0,
@@ -159,8 +158,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 3,
-                    "name": "offset",
+                    "id": 2,
+                    "name": "targetPos",
                     "type": {
                         "type": "Interface",
                         "properties": [
@@ -179,6 +178,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                 }
                             }
                         ]
+                    }
+                },
+                {
+                    "id": 3,
+                    "name": "targetTime",
+                    "type": {
+                        "type": "Number"
                     }
                 }
             ]
@@ -228,7 +234,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     }
                 },
                 {
-                    "id": 4,
+                    "id": 2,
                     "name": "arrows",
                     "type": {
                         "type": "Array",
@@ -309,43 +315,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 },
                 {
                     "id": 2,
-                    "name": "startTime",
-                    "type": {
-                        "type": "Number"
-                    }
-                },
-                {
-                    "id": 3,
-                    "name": "startPos",
-                    "type": {
-                        "type": "Interface",
-                        "properties": [
-                            {
-                                "id": 0,
-                                "name": "x",
-                                "type": {
-                                    "type": "Number"
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "name": "y",
-                                "type": {
-                                    "type": "Number"
-                                }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "id": 4,
                     "name": "targetTime",
                     "type": {
                         "type": "Number"
                     }
                 },
                 {
-                    "id": 5,
+                    "id": 3,
                     "name": "targetPos",
                     "type": {
                         "type": "Interface",
