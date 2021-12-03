@@ -1,5 +1,4 @@
 import { WsClient } from "tsrpc-browser";
-import { gameConfig } from "../shared/game/gameConfig";
 import { GameSystem, GameSystemState } from "../shared/game/GameSystem";
 import { ClientInput, MsgClientInput } from "../shared/protocols/client/MsgClientInput";
 import { MsgFrame } from "../shared/protocols/server/MsgFrame";
@@ -27,14 +26,15 @@ export class GameManager {
         });;
         client.listenMsg('server/Frame', msg => { this._onServerSync(msg) });
 
-        // 模拟网络延迟
-        if (gameConfig.networkLag) {
+        // 模拟网络延迟 可通过 URL 参数 ?lag=200 设置延迟
+        let networkLag = parseInt(new URLSearchParams(location.search).get('lag') || '0') || 0;
+        if (networkLag) {
             client.flows.preRecvDataFlow.push(async v => {
-                await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
+                await new Promise(rs => { setTimeout(rs, networkLag) })
                 return v;
             });
             client.flows.preSendDataFlow.push(async v => {
-                await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
+                await new Promise(rs => { setTimeout(rs, networkLag) })
                 return v;
             });
         }

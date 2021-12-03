@@ -2,7 +2,6 @@ import 'k8w-extend-native';
 import * as path from "path";
 import { WsConnection, WsServer } from "tsrpc";
 import { Room } from './models/Room';
-import { gameConfig } from './shared/game/gameConfig';
 import { serviceProto, ServiceType } from './shared/protocols/serviceProto';
 
 // Create the Server
@@ -19,19 +18,7 @@ server.flows.postDisconnectFlow.push(v => {
     }
 
     return v;
-})
-
-// 模拟网络延迟
-if (gameConfig.networkLag) {
-    server.flows.preRecvDataFlow.push(async v => {
-        await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
-        return v;
-    })
-    server.flows.preSendDataFlow.push(async v => {
-        await new Promise(rs => { setTimeout(rs, gameConfig.networkLag) })
-        return v;
-    })
-}
+});
 
 export const roomInstance = new Room(server);
 

@@ -43,12 +43,14 @@ export class GameSystem {
         else if (input.type === 'PlayerAttack') {
             let player = this._state.players.find(v => v.id === input.playerId);
             if (player) {
-                this._state.arrows.push({
+                let newArrow: ArrowState = {
                     id: this._state.nextArrowId++,
                     fromPlayerId: input.playerId,
                     targetPos: { ...input.targetPos },
                     targetTime: input.targetTime
-                });
+                };
+                this._state.arrows.push(newArrow);
+                this.onNewArrow.forEach(v => v(newArrow));
             }
         }
         else if (input.type === 'PlayerJoin') {
@@ -69,11 +71,6 @@ export class GameSystem {
                 if (arrow.targetTime <= this._state.now) {
                     // 伤害判定
                     let damagedPlayers = this._state.players.filter(v => {
-                        // 不能伤害自己
-                        // if (v.id === arrow.fromPlayerId) {
-                        //     return false;
-                        // }
-
                         return (v.pos.x - arrow.targetPos.x) * (v.pos.x - arrow.targetPos.x) + (v.pos.y - arrow.targetPos.y) * (v.pos.y - arrow.targetPos.y) <= gameConfig.arrowAttackRadius * gameConfig.arrowAttackRadius
                     });
                     damagedPlayers.forEach(p => {
@@ -81,11 +78,8 @@ export class GameSystem {
                         p.dizzyEndTime = this._state.now + gameConfig.arrowDizzyTime;
 
                         // Event
-                        this.onDamage.forEach(h => h({
-                            fromPlayerId: arrow.fromPlayerId,
-                            toPlayerId: p.id
-                        }))
                     })
+
                     this._state.arrows.splice(i, 1);
                 }
             }
@@ -93,7 +87,7 @@ export class GameSystem {
     }
 
     // Events (Game Push)
-    onDamage: ((e: { fromPlayerId: number, toPlayerId: number }) => void)[] = [];
+    onNewArrow: ((arrow: ArrowState) => void)[] = [];
 
 }
 

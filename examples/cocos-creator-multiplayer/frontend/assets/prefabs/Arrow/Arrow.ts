@@ -1,6 +1,7 @@
 
 import { Component, Vec3, _decorator } from 'cc';
 import { MathUtil } from '../../scripts/models/MathUtil';
+import { gameConfig } from '../../scripts/shared/game/gameConfig';
 import { ArrowState } from '../../scripts/shared/game/state/ArrowState';
 const { ccclass, property } = _decorator;
 
@@ -27,7 +28,8 @@ export class Arrow extends Component {
         this._startPos.set(startPos);
         this._endPos.set(state.targetPos.x, 0, -state.targetPos.y);
         this._startTime = Date.now();
-        this._endTime = this._startTime + state.targetTime - now;
+        // 箭的展示与判定相分离，展示就按固定的飞行时长展示
+        this._endTime = this._startTime + gameConfig.arrowFlyTime;
 
         this._updatePosAndForward(0);
     }
@@ -36,6 +38,10 @@ export class Arrow extends Component {
         //下一个目标位置
         let percent = MathUtil.limit((Date.now() - this._startTime) / (this._endTime - this._startTime), 0, 1);
         this._updatePosAndForward(percent);
+
+        if (percent >= 1) {
+            this.node.removeFromParent();
+        }
     }
 
     private _updatePosAndForward(percent: number) {
