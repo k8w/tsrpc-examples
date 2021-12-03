@@ -67,7 +67,7 @@ export class Room {
             this.gameSystem.applyInput(v)
         });
 
-        // TimePast
+        // Apply TimePast
         let now = process.uptime() * 1000;
         this.applyInput({
             type: 'TimePast',
