@@ -69,15 +69,17 @@ export class GameManager {
     }
 
     private _onServerSync(frame: MsgFrame) {
-        // 同步权威状态
+        // 回滚至上一次的权威状态
         this.gameSystem.reset(this.lastServerState);
+
+        // 计算最新的权威状态
         for (let input of frame.inputs) {
             this.gameSystem.applyInput(input);
         }
         this.lastServerState = Object.merge({}, this.gameSystem.state);
         this.lastRecvSetverStateTime = Date.now();
 
-        // 和解
+        // 和解 = 权威状态 + 本地输入 （最新的本地预测状态）
         let lastSn = frame.lastSn ?? -1;
         this.pendingInputMsgs.remove(v => v.sn <= lastSn);
         this.pendingInputMsgs.forEach(m => {
@@ -96,14 +98,17 @@ export class GameManager {
             return;
         }
 
+        // 构造消息
         let msg: MsgClientInput = {
             sn: ++this.lastSN,
             inputs: [input]
         }
+
+        // 向服务端发送输入
         this.pendingInputMsgs.push(msg);
         this.client.sendMsg('client/ClientInput', msg);
 
-        // 预测
+        // 预测状态：本地立即应用输入
         this.gameSystem.applyInput({
             ...input,
             playerId: this.selfPlayerId
