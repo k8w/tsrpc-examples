@@ -3,9 +3,13 @@ import { ArrowState } from "./state/ArrowState";
 import { PlayerState } from "./state/PlayerState";
 
 export interface GameSystemState {
+    // 当前的时间（游戏时间）
     now: number,
+    // 玩家
     players: PlayerState[],
+    // 飞行中的箭矢
     arrows: ArrowState[],
+    // 箭矢的 ID 生成
     nextArrowId: number
 }
 
@@ -119,4 +123,9 @@ export interface TimePast {
     type: 'TimePast',
     dt: number
 }
-export type GameSystemInput = PlayerMove | PlayerAttack | PlayerJoin | PlayerLeave | TimePast;
+
+export type GameSystemInput = PlayerMove
+    | PlayerAttack
+    | PlayerJoin
+    | PlayerLeave
+    | TimePast;
