@@ -101,6 +101,7 @@ export class GameScene extends Component {
         let playerStates = this.gameManager.state.players;
         for (let playerState of playerStates) {
             let player = this._playerInstances[playerState.id];
+            // 场景上还没有这个 Player，新建之
             if (!player) {
                 let node = instantiate(this.prefabPlayer);
                 this.players.addChild(node);
@@ -113,7 +114,7 @@ export class GameScene extends Component {
                 }
             }
 
-            // 自己不插值（本地预测），插值其它人
+            // 根据最新状态，更新 Player 表现组件
             player.updateState(playerState, this.gameManager.state.now);
         }
 
