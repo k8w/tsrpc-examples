@@ -1,5 +1,5 @@
 
-import { Component, instantiate, Node, Prefab, Vec2, _decorator } from 'cc';
+import { Button, Component, instantiate, Node, Prefab, UIOpacity, Vec2, _decorator } from 'cc';
 import { Arrow } from '../../prefabs/Arrow/Arrow';
 import { Joystick } from '../../prefabs/Joystick/Joystick';
 import { Player } from '../../prefabs/Player/Player';
@@ -8,18 +8,6 @@ import { GameManager } from '../../scripts/models/GameManager';
 import { gameConfig } from '../../scripts/shared/game/gameConfig';
 import { ArrowState } from '../../scripts/shared/game/state/ArrowState';
 const { ccclass, property } = _decorator;
-
-/**
- * Predefined variables
- * Name = GameScene
- * DateTime = Thu Dec 02 2021 18:43:36 GMT+0800 (中国标准时间)
- * Author = k8w
- * FileBasename = GameScene.ts
- * FileBasenameNoExtension = GameScene
- * URL = db://assets/scenes/GameScene/GameScene.ts
- * ManualUrl = https://docs.cocos.com/creator/3.3/manual/zh/
- *
- */
 
 @ccclass('GameScene')
 export class GameScene extends Component {
@@ -40,6 +28,9 @@ export class GameScene extends Component {
     @property(FollowCamera)
     camera: FollowCamera = null as any;
 
+    @property(Node)
+    btnAttack: Node = null as any;
+
     gameManager!: GameManager;
 
     private _playerInstances: { [playerId: number]: Player | undefined } = {};
@@ -49,6 +40,7 @@ export class GameScene extends Component {
     onLoad() {
         (window as any).game = this;
 
+        // 初始化摇杆
         this.joyStick.options = {
             onOperate: v => {
                 if (!this._selfSpeed) {
@@ -64,9 +56,10 @@ export class GameScene extends Component {
         this.gameManager = new GameManager();
 
         // 监听数据状态事件
+        // 新箭矢发射（仅表现）
         this.gameManager.gameSystem.onNewArrow.push(v => { this._onNewArrow(v) });
 
-        // 断线一秒后重连
+        // 断线 2 秒后自动重连
         this.gameManager.client.flows.postDisconnectFlow.push(v => {
             setTimeout(() => {
                 this.gameManager.join();
@@ -172,5 +165,13 @@ export class GameScene extends Component {
             targetPos: { x: targetPos.x, y: targetPos.y },
             targetTime: this.gameManager.state.now + gameConfig.arrowFlyTime
         } as any)
+
+        // 冷却时间 1 秒
+        this.btnAttack.getComponent(Button)!.interactable = false;
+        this.btnAttack.getComponent(UIOpacity)!.opacity = 120;
+        this.scheduleOnce(() => {
+            this.btnAttack.getComponent(Button)!.interactable = true;
+            this.btnAttack.getComponent(UIOpacity)!.opacity = 255;
+        }, 1)
     }
 }

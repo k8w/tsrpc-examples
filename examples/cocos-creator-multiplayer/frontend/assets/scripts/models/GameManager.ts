@@ -94,7 +94,8 @@ export class GameManager {
 
     pendingInputMsgs: MsgClientInput[] = [];
     sendClientInput(input: ClientInput) {
-        if (!this.selfPlayerId) {
+        // 已掉线或暂未加入，忽略本地输入
+        if (!this.selfPlayerId || !this.client.isConnected) {
             return;
         }
 

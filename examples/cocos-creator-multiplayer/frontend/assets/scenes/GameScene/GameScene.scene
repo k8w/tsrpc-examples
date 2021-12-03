@@ -33,11 +33,11 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 57
+      "__id__": 58
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 60
+      "__id__": 61
     },
     "_id": "0d3889f6-dc9c-424e-b8cd-6fa78d63af15"
   },
@@ -484,9 +484,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 53
-      },
-      {
         "__id__": 54
       },
       {
@@ -494,6 +491,9 @@
       },
       {
         "__id__": 56
+      },
+      {
+        "__id__": 57
       }
     ],
     "_prefab": null,
@@ -811,7 +811,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "btnAttack",
     "_objFlags": 0,
     "_parent": {
       "__id__": 25
@@ -831,6 +831,9 @@
       },
       {
         "__id__": 51
+      },
+      {
+        "__id__": 53
       }
     ],
     "_prefab": null,
@@ -949,7 +952,7 @@
       "b": 0,
       "a": 255
     },
-    "_string": "射",
+    "_string": "攻击",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
@@ -978,8 +981,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 120,
+      "height": 120
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1105,6 +1108,18 @@
     "customEventData": ""
   },
   {
+    "__type__": "cc.UIOpacity",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 45
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_opacity": 255,
+    "_id": "49xySc2HlNZ7kO4VRCiutC"
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -1196,6 +1211,9 @@
     "camera": {
       "__id__": 4
     },
+    "btnAttack": {
+      "__id__": 45
+    },
     "_id": "86PJf2PFRK5LGUONuKqmzS"
   },
   {
@@ -1203,14 +1221,14 @@
     "fileId": "",
     "targetOverrides": [
       {
-        "__id__": 58
+        "__id__": 59
       }
     ]
   },
   {
     "__type__": "cc.TargetOverrideInfo",
     "source": {
-      "__id__": 56
+      "__id__": 57
     },
     "sourceInfo": null,
     "propertyPath": [
@@ -1220,7 +1238,7 @@
       "__id__": 28
     },
     "targetInfo": {
-      "__id__": 59
+      "__id__": 60
     }
   },
   {
@@ -1232,16 +1250,16 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 61
-    },
-    "shadows": {
       "__id__": 62
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 63
     },
-    "fog": {
+    "_skybox": {
       "__id__": 64
+    },
+    "fog": {
+      "__id__": 65
     }
   },
   {

@@ -5,7 +5,7 @@ const { ccclass, property } = _decorator;
 const v3_1 = new Vec3;
 
 /**
- * 跟随摄像机
+ * 自动跟随目标，并平滑移动的摄像机
  */
 @ccclass
 export class FollowCamera extends Component {
