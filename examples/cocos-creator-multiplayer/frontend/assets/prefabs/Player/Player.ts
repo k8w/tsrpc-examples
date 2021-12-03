@@ -41,11 +41,11 @@ export class Player extends Component {
         this.now = now;
 
         if (state.dizzyEndTime && state.dizzyEndTime >= now) {
-            this.setAni('win');
+            this.setStatus('dizzy');
         }
         else {
             if (this._lastAni === 'win') {
-                this.setAni('idle')
+                this.setStatus('idle')
             }
         }
 
@@ -57,7 +57,7 @@ export class Player extends Component {
         // 更新位置
         this._targetPos.set(state.pos.x, 0, -state.pos.y);
         if (!this.node.position.equals(this._targetPos)) {
-            this.setAni('run');
+            this.setStatus('run');
             // 朝向
             let newForward = this._targetPos.clone().subtract(this.node.position).normalize();
             this.node.forward = new Vec3(newForward);
@@ -65,7 +65,7 @@ export class Player extends Component {
             this.node.setPosition(this._targetPos);
         }
         else {
-            this.setAni('idle');
+            this.setStatus('idle');
         }
     }
 
@@ -87,27 +87,28 @@ export class Player extends Component {
 
             // 新的位置
             this._targetPos.set(newPos)
-            this.setAni('run');
+            this.setStatus('run');
             this._tweens.add(tween(this.node).to(1 / gameConfig.syncRate, {
                 position: this._targetPos
             }).call(() => {
-                this.setAni('idle')
+                this.setStatus('idle')
             }).start());
         }
     }
 
     private _lastAni?: string;
-    setAni(ani: string) {
+    setStatus(status: 'run' | 'idle' | 'dizzy') {
+        let aniName: string = status;
         if (this.state.dizzyEndTime && this.state.dizzyEndTime >= this.now) {
-            ani = 'win';
+            aniName = 'win';
         }
 
-        if (this._lastAni === ani) {
+        if (this._lastAni === aniName) {
             return;
         }
-        this._lastAni = ani;
+        this._lastAni = aniName;
 
-        this.ani.crossFade(ani, 0.1);
+        this.ani.crossFade(aniName, 0.1);
     }
 
 }
