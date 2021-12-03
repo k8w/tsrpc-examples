@@ -164,6 +164,6 @@ export class GameScene extends Component {
             // 显示坐标 —> 逻辑坐标
             targetPos: { x: targetPos.x, y: targetPos.y },
             targetTime: this.gameManager.state.now + gameConfig.arrowFlyTime
-        })
+        } as any)
     }
 }
