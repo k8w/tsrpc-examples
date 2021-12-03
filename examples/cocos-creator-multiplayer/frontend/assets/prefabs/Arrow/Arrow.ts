@@ -40,8 +40,21 @@ export class Arrow extends Component {
         this._updatePosAndForward(percent);
 
         if (percent >= 1) {
-            this.node.removeFromParent();
+            this.remove();
         }
+    }
+
+    private _isRemoved = false;
+    remove() {
+        if (this._isRemoved) {
+            return;
+        }
+        this._isRemoved = true;
+
+        // 落地 1 秒后消失
+        this.scheduleOnce(() => {
+            this.node.removeFromParent()
+        }, 1)
     }
 
     private _updatePosAndForward(percent: number) {

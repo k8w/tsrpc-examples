@@ -216,7 +216,7 @@
     "propertyPath": [
       "_useBakedAnimation"
     ],
-    "value": false
+    "value": true
   },
   {
     "__type__": "cc.TargetInfo",
