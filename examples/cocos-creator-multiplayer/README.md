@@ -33,4 +33,4 @@ npm run dev
 
 ## 效果预览
 
-https://github.com/k8w/tsrpc-examples/blob/main/examples/cocos-creator-multiplayer/preview.mp4?raw=true
+https://github.com/k8w/tsrpc-examples/blob/main/examples/cocos-creator-multiplayer/preview.mp4
