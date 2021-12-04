@@ -33,4 +33,4 @@ npm run dev
 
 ## 效果预览
 
-![](preview.mp4)
+preview.mp4
