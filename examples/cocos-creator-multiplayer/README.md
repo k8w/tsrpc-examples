@@ -33,4 +33,6 @@ npm run dev
 
 ## 效果预览
 
-https://cdn.kingworks.cn/proj/2021/cocos-star-meeting/game-demo.mp4
+https://user-images.githubusercontent.com/6877923/115474571-03c75800-a23e-11eb-8096-8973aad5fa9f.mp4
+
+https://github.com/k8w/tsrpc-examples/blob/main/examples/cocos-creator-multiplayer/preview.mp4
