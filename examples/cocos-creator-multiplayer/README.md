@@ -24,7 +24,7 @@ npm run dev
 
 1. 首先安装 NPM 依赖
     ```shell
-    cd backend
+    cd frontend
 
     # 安装依赖
     npm install
