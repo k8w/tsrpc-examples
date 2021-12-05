@@ -8,7 +8,7 @@
 
 ## 启动
 
-先启动后端：
+### 先启动后端
 
 ```shell
 cd backend
@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-再启动前端：
+### 再启动前端
 
 1. 首先安装 NPM 依赖
     ```shell
