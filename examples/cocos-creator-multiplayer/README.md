@@ -31,6 +31,8 @@ npm run dev
     ```
 2. 然后用 Cocos Creator 3.3.2 以上版本打开前端项目（`frontend` 目录）
 
+**注意：前端项目需要先 `npm install` 后再打开 Cocos，如果报错，可以关闭 Cocos 后重启试一下。**
+
 ## 效果预览
 
 https://user-images.githubusercontent.com/1681689/144695691-c8c556dd-68c4-44bf-8a38-5c37e203dbda.mp4
