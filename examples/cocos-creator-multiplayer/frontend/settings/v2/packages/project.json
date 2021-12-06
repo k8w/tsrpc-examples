@@ -1,11 +1,6 @@
 {
   "__version__": "1.0.1",
-  "layer": [
-    {
-      "name": "canvas_19",
-      "value": 524288
-    }
-  ],
+  "layer": [],
   "general": {
     "designResolution": {
       "width": 750,
