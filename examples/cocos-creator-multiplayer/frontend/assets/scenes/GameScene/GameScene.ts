@@ -1,5 +1,5 @@
 
-import { Button, Component, instantiate, Node, Prefab, UIOpacity, Vec2, _decorator } from 'cc';
+import { Button, Color, Component, instantiate, MeshRenderer, Node, Prefab, UIOpacity, Vec2, _decorator } from 'cc';
 import { Arrow } from '../../prefabs/Arrow/Arrow';
 import { Joystick } from '../../prefabs/Joystick/Joystick';
 import { Player } from '../../prefabs/Player/Player';
@@ -30,6 +30,8 @@ export class GameScene extends Component {
 
     @property(Node)
     btnAttack: Node = null as any;
+    @property(Node)
+    attackPosIndicator!: Node;
 
     gameManager!: GameManager;
 
@@ -39,6 +41,8 @@ export class GameScene extends Component {
 
     onLoad() {
         (window as any).game = this;
+
+        this.attackPosIndicator.getComponent(MeshRenderer)!.material!.setProperty('mainColor', Color.CYAN);
 
         // 初始化摇杆
         this.joyStick.options = {
@@ -87,6 +91,8 @@ export class GameScene extends Component {
         }
 
         this._updatePlayers();
+
+        this._updateAttackIndicator();
     }
 
     private _updatePlayers() {
@@ -159,6 +165,7 @@ export class GameScene extends Component {
         let sceneOffset = playerNode.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance);
         // 攻击落点（逻辑层坐标）
         let targetPos = new Vec2(playerState.pos.x, playerState.pos.y).add2f(sceneOffset.x, -sceneOffset.z);
+
         // 发送输入
         this.gameManager.sendClientInput({
             type: 'PlayerAttack',
@@ -174,5 +181,21 @@ export class GameScene extends Component {
             this.btnAttack.getComponent(Button)!.interactable = true;
             this.btnAttack.getComponent(UIOpacity)!.opacity = 255;
         }, 1)
+    }
+
+    private _updateAttackIndicator() {
+        let playerState = this.gameManager.state.players.find(v => v.id === this.gameManager.selfPlayerId);
+        if (!playerState) {
+            return;
+        }
+
+        let playerNode = this._playerInstances[this.gameManager.selfPlayerId]?.node;
+        if (!playerNode) {
+            return;
+        }
+
+        // 攻击落点位置（表现层坐标）
+        let sceneTargetPos = playerNode.position.clone().add(playerNode.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance));
+        this.attackPosIndicator.setPosition(sceneTargetPos.x, 0.1, sceneTargetPos.z);
     }
 }

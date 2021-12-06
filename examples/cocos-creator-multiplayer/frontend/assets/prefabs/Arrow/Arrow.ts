@@ -1,5 +1,5 @@
 
-import { Component, Vec3, _decorator } from 'cc';
+import { Color, Component, MeshRenderer, Node, Vec3, _decorator } from 'cc';
 import { MathUtil } from '../../scripts/models/MathUtil';
 import { gameConfig } from '../../scripts/shared/game/gameConfig';
 import { ArrowState } from '../../scripts/shared/game/state/ArrowState';
@@ -12,6 +12,11 @@ export class Arrow extends Component {
 
     id!: number;
     state!: ArrowState;
+
+    @property(Node)
+    arrow!: Node;
+    @property(Node)
+    circle!: Node;
 
     // 开始位置（场景坐标）
     private _startPos = new Vec3;
@@ -32,6 +37,8 @@ export class Arrow extends Component {
         this._endTime = this._startTime + gameConfig.arrowFlyTime;
 
         this._updatePosAndForward(0);
+        this.circle.setPosition(this._endPos.x, 0.1, this._endPos.z);
+        this.circle.getComponent(MeshRenderer)?.material!.setProperty('mainColor', new Color(255, 255, 255, 255));
     }
 
     update() {
@@ -51,6 +58,8 @@ export class Arrow extends Component {
         }
         this._isRemoved = true;
 
+        this.circle.getComponent(MeshRenderer)?.material!.setProperty('mainColor', new Color(255, 0, 0, 255));
+
         // 落地 1 秒后消失
         this.scheduleOnce(() => {
             this.node.removeFromParent()
@@ -59,11 +68,11 @@ export class Arrow extends Component {
 
     private _updatePosAndForward(percent: number) {
         let nextPos = this._getPos(percent);
-        this.node.position = nextPos;
+        this.arrow.position = nextPos;
 
         //武器朝向下一个目标位置, 形成曲线飞行的感觉
         let lastPos = this._getPos(percent - 0.01)
-        this.node.forward = nextPos.clone().subtract(lastPos).normalize();
+        this.arrow.forward = nextPos.clone().subtract(lastPos).normalize();
     }
 
     private _getPos(percent: number) {
