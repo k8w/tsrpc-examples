@@ -2,6 +2,7 @@ import { gameConfig } from "./gameConfig";
 import { ArrowState } from "./state/ArrowState";
 import { PlayerState } from "./state/PlayerState";
 
+// 状态定义
 export interface GameSystemState {
     // 当前的时间（游戏时间）
     now: number,
@@ -123,11 +124,12 @@ export interface PlayerLeave {
     type: 'PlayerLeave',
     playerId: number
 }
+// 时间流逝
 export interface TimePast {
     type: 'TimePast',
     dt: number
 }
-
+// 输入定义
 export type GameSystemInput = PlayerMove
     | PlayerAttack
     | PlayerJoin

@@ -9,7 +9,7 @@ import { ServiceType } from "../shared/protocols/serviceProto";
  */
 export class Room {
 
-    // 次数/秒
+    // 帧同步频率，次数/秒
     syncRate = gameConfig.syncRate;
     nextPlayerId = 1;
 
