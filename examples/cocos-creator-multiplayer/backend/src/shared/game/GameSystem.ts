@@ -13,9 +13,12 @@ export interface GameSystemState {
     nextArrowId: number
 }
 
+/**
+ * 前后端复用的状态计算模块
+ */
 export class GameSystem {
 
-    // State (Render Pull)
+    // 当前状态
     private _state: GameSystemState = {
         now: 0,
         players: [],
@@ -26,11 +29,12 @@ export class GameSystem {
         return this._state
     }
 
+    // 重设状态
     reset(state: GameSystemState) {
         this._state = Object.merge({}, state);
     }
 
-    // Input
+    // 应用输入，计算状态变更
     applyInput(input: GameSystemInput) {
         if (input.type === 'PlayerMove') {
             let player = this._state.players.find(v => v.id === input.playerId);

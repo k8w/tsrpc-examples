@@ -159,12 +159,13 @@ export class GameScene extends Component {
         let sceneOffset = playerNode.forward.clone().normalize().multiplyScalar(gameConfig.arrowDistance);
         // 攻击落点（逻辑层坐标）
         let targetPos = new Vec2(playerState.pos.x, playerState.pos.y).add2f(sceneOffset.x, -sceneOffset.z);
+        // 发送输入
         this.gameManager.sendClientInput({
             type: 'PlayerAttack',
             // 显示坐标 —> 逻辑坐标
             targetPos: { x: targetPos.x, y: targetPos.y },
             targetTime: this.gameManager.state.now + gameConfig.arrowFlyTime
-        } as any)
+        })
 
         // 冷却时间 1 秒
         this.btnAttack.getComponent(Button)!.interactable = false;

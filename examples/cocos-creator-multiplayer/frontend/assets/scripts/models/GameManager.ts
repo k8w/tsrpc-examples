@@ -4,11 +4,16 @@ import { ClientInput, MsgClientInput } from "../shared/protocols/client/MsgClien
 import { MsgFrame } from "../shared/protocols/server/MsgFrame";
 import { serviceProto, ServiceType } from "../shared/protocols/serviceProto";
 
+/**
+ * 前端游戏状态管理
+ * 主要用于实现前端的预测和和解
+ */
 export class GameManager {
 
     client: WsClient<ServiceType>;
-
+    
     gameSystem = new GameSystem();
+
     lastServerState: GameSystemState = this.gameSystem.state;
     lastRecvSetverStateTime = 0;
     selfPlayerId: number = -1;
