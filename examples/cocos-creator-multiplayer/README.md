@@ -52,12 +52,8 @@ npm run dev
 
 https://user-images.githubusercontent.com/1681689/144695691-c8c556dd-68c4-44bf-8a38-5c37e203dbda.mp4
 
-<img src="README_assets/1.jpg" style="width: 340px">
-
-<img src="README_assets/2.jpg" style="width: 340px">
-
-<img src="README_assets/3.jpg" style="width: 340px">
-
-<img src="README_assets/4.jpg" style="width: 340px">
-
-<img src="README_assets/5.jpg" style="width: 340px">
+<img src="README_assets/1.jpg" style="width: 300px; margin: 10px">
+<img src="README_assets/2.jpg" style="width: 300px; margin: 10px">
+<img src="README_assets/3.jpg" style="width: 300px; margin: 10px">
+<img src="README_assets/4.jpg" style="width: 300px; margin: 10px">
+<img src="README_assets/5.jpg" style="width: 300px; margin: 10px">
