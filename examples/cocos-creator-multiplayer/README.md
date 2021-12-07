@@ -13,6 +13,8 @@ https://tsrpc.cn/fight/index.html
 **在线教程**
 https://1drv.ms/p/s!AviSVsaYsolWnh7DCp2Y8g_NtDbA?e=67ZqqS
 
+<img src="README_assets/1.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/2.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/3.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/4.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/5.jpg" style="width: 300px; margin: 10px" />
+
 ## 启动
 
 ### 先启动后端
@@ -51,5 +53,3 @@ npm run dev
 ## 效果预览
 
 https://user-images.githubusercontent.com/1681689/144695691-c8c556dd-68c4-44bf-8a38-5c37e203dbda.mp4
-
-<img src="README_assets/1.jpg" style="width: 300px; margin: 10px"><img src="README_assets/2.jpg" style="width: 300px; margin: 10px"><img src="README_assets/3.jpg" style="width: 300px; margin: 10px"><img src="README_assets/4.jpg" style="width: 300px; margin: 10px"><img src="README_assets/5.jpg" style="width: 300px; margin: 10px">
