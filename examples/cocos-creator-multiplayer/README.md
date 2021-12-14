@@ -10,8 +10,15 @@
 https://tsrpc.cn/fight/index.html
 (可浏览器多开体验多人效果)
 
-**在线教程**
-https://1drv.ms/p/s!AviSVsaYsolWnh7DCp2Y8g_NtDbA?e=67ZqqS
+## 在线教程
+- 文章：
+    - [2 天做了个多人实时对战，200ms 延迟竟然也能丝滑流畅？](https://mp.weixin.qq.com/s/V1YWPF5LmY-l1L5LF2nR3A)
+- 视频：
+    - [2021-12-04 Cocos Star Meeting 深圳站](https://www.bilibili.com/video/BV16F411z7iP)
+- Github 源码地址
+    - https://github.com/k8w/tsrpc-examples/tree/main/examples/cocos-creator-multiplayer
+
+![](README_assets/wechat.png)
 
 <img src="README_assets/1.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/2.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/3.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/4.jpg" style="width: 300px; margin: 10px" /> <img src="README_assets/5.jpg" style="width: 300px; margin: 10px" />
 
@@ -41,14 +48,6 @@ npm run dev
 2. 然后用 Cocos Creator 3.3.2 以上版本打开前端项目（`frontend` 目录）
 
 **注意：前端项目需要先 `npm install` 后再打开 Cocos，如果报错，可以关闭 Cocos 后重启试一下。**
-
-## 微信交流群
-
-欢迎加入 TSRPC 和 TypeScript 全栈开发学习交流群：
-
-（请注明来意）
-
-![](README_assets/wechat.png)
 
 ## 效果预览
 
