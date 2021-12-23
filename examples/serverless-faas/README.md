@@ -21,7 +21,7 @@ Serverless 云函数支持示例
     ```
 1. 配置 **函数入口** 为 `aliyun-fc.handler`
 1. 配置 **初始化函数** 为 `aliyun-fc.initializer`
-1. 测试运行
+1. 修改前端项目下 `client.ts` 中的后端地址，测试运行
 
 ### 腾讯云
 
@@ -32,4 +32,4 @@ Serverless 云函数支持示例
     npm i
     ```
 1. 配置 **执行函数** 为 `txcloud-scf.handler`
-1. 测试运行
+1. 修改前端项目下 `client.ts` 中的后端地址，测试运行

@@ -3,7 +3,7 @@ import { serviceProto } from "./shared/protocols/serviceProto";
 
 // Create Client
 export const client = new HttpClient(serviceProto, {
-    server: "https://service-23pfz6cm-1253954497.gz.apigw.tencentcs.com/release/helloworld-1634897828/",
+    server: "http://127.0.0.1:3000",
     // Remove this to use binary mode (remove from the server too)
     json: true,
     logger: console,
