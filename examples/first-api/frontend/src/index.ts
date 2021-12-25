@@ -4,7 +4,8 @@ import { serviceProto } from './shared/protocols/serviceProto';
 // Create the Client
 let client = new HttpClient(serviceProto, {
     server: 'http://127.0.0.1:3000',
-    logger: console
+    json: true,
+    // logger: console
 });
 
 async function test() {
