@@ -4,11 +4,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "proto": "tsrpc proto --config tsrpc.config.ts",
-    "sync": "tsrpc sync --config tsrpc.config.ts",
-    "api": "tsrpc api --config tsrpc.config.ts",
-    "dev": "tsrpc dev --config tsrpc.config.ts",
-    "build": "tsrpc build --config tsrpc.config.ts"
+    "proto": "tsrpc proto",
+    "sync": "tsrpc sync",
+    "api": "tsrpc api",
+    "doc": "tsrpc doc",
+    "dev": "tsrpc dev",
+    "build": "tsrpc build"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.3",
