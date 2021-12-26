@@ -34,7 +34,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
+    "version": 4,
     "services": [
         {
             "id": 0,
@@ -254,12 +254,12 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "user",
                     "type": {
                         "type": "Reference",
-                        "target": "../../models/CurrentUser/CurrentUser"
+                        "target": "../models/CurrentUser/CurrentUser"
                     }
                 }
             ]
         },
-        "../../models/CurrentUser/CurrentUser": {
+        "../models/CurrentUser/CurrentUser": {
             "type": "Interface",
             "properties": [
                 {

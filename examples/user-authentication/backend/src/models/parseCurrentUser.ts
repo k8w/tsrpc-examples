@@ -1,6 +1,6 @@
 import { HttpServer } from "tsrpc";
 import { BaseRequest } from "../shared/protocols/base";
-import { CurrentUser } from "./CurrentUser";
+import { CurrentUser } from "../shared/models/CurrentUser";
 import { UserUtil } from "./UserUtil";
 
 export function parseCurrentUser(server: HttpServer) {

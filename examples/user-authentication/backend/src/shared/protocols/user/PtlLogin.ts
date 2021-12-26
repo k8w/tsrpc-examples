@@ -1,4 +1,4 @@
-import { CurrentUser } from '../../../models/CurrentUser';
+import { CurrentUser } from '../../models/CurrentUser';
 import { BaseConf, BaseRequest, BaseResponse } from '../base';
 
 export interface ReqLogin extends BaseRequest {
