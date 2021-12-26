@@ -1,5 +1,5 @@
 import * as uuid from "uuid";
-import { CurrentUser } from "./CurrentUser";
+import { CurrentUser } from "../shared/models/CurrentUser";
 
 const SSO_VALID_TIME = 86400000 * 7;
 
