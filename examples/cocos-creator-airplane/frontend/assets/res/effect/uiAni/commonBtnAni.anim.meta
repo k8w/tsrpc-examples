@@ -1,0 +1,13 @@
+{
+  "ver": "2.0.3",
+  "importer": "animation-clip",
+  "imported": true,
+  "uuid": "17efbff5-102c-4f68-a42d-6ae8e47a8166",
+  "files": [
+    ".cconb"
+  ],
+  "subMetas": {},
+  "userData": {
+    "name": "commonBtnAni"
+  }
+}

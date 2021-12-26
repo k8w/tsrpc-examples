@@ -1,0 +1,13 @@
+{
+  "ver": "2.0.3",
+  "importer": "animation-clip",
+  "imported": true,
+  "uuid": "7c260f26-3135-47d3-9703-46d4958cce56",
+  "files": [
+    ".cconb"
+  ],
+  "subMetas": {},
+  "userData": {
+    "name": "ballAni"
+  }
+}

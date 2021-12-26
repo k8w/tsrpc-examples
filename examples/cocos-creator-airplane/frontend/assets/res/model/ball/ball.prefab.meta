@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.32",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "34ba6b58-cba0-4e32-8257-34ec4e4874bb",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "ball"
+  }
+}

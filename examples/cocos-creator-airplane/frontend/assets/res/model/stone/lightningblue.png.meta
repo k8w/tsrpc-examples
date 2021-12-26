@@ -1,0 +1,40 @@
+{
+  "ver": "1.0.21",
+  "importer": "image",
+  "imported": true,
+  "uuid": "4f26bfc7-e421-4c56-850b-a9d3e603bac7",
+  "files": [
+    ".png",
+    ".json"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "4f26bfc7-e421-4c56-850b-a9d3e603bac7@6c48a",
+      "displayName": "lightningblue",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "4f26bfc7-e421-4c56-850b-a9d3e603bac7"
+      },
+      "ver": "1.0.21",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "redirect": "4f26bfc7-e421-4c56-850b-a9d3e603bac7@6c48a"
+  }
+}

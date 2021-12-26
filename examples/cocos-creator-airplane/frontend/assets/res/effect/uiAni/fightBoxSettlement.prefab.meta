@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.32",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "25aff15e-d05f-4a7c-a7c4-f665bd209961",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "fightBoxSettlement"
+  }
+}

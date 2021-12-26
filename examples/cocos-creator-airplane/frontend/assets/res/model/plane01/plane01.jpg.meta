@@ -1,0 +1,40 @@
+{
+  "ver": "1.0.21",
+  "importer": "image",
+  "imported": true,
+  "uuid": "e163c875-c8dd-4512-b96a-e6fd360a1b99",
+  "files": [
+    ".jpg",
+    ".json"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "e163c875-c8dd-4512-b96a-e6fd360a1b99@6c48a",
+      "displayName": "plane01",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "e163c875-c8dd-4512-b96a-e6fd360a1b99"
+      },
+      "ver": "1.0.21",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": false,
+    "type": "texture",
+    "redirect": "e163c875-c8dd-4512-b96a-e6fd360a1b99@6c48a"
+  }
+}

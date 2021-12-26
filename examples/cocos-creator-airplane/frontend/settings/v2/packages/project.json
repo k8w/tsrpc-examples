@@ -1,0 +1,51 @@
+{
+  "__version__": "1.0.1",
+  "general": {
+    "designResolution": {
+      "fitHeight": true,
+      "width": 720,
+      "height": 1280
+    }
+  },
+  "layer": [
+    {
+      "name": "SELF_BULLET",
+      "value": 2
+    },
+    {
+      "name": "SELF_PLANE",
+      "value": 1
+    },
+    {
+      "name": "ENEMY1",
+      "value": 4
+    }
+  ],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "BULLET"
+      },
+      {
+        "index": 2,
+        "name": "ENEMY1"
+      },
+      {
+        "index": 3,
+        "name": "SELF_PLANE"
+      },
+      {
+        "index": 4,
+        "name": "FIGHTBULLET"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 15,
+      "1": 13,
+      "2": 11,
+      "3": 23,
+      "4": 8
+    }
+  }
+}
