@@ -4582,6 +4582,11 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "60mknV9MFcv5S4/+J3ONMb"
+    "fileId": "60mknV9MFcv5S4/+J3ONMb",
+    "nestedPrefabInstanceRoots": [
+      {
+        "__id__": 9
+      }
+    ]
   }
 ]

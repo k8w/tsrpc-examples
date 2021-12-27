@@ -1,1 +1,11 @@
-{"ver":"1.0.9","importer":"material","imported":true,"uuid":"c9efee71-d22e-4dcd-bc13-99784429c25e","files":[".json"],"subMetas":{},"userData":{}}
+{
+  "ver": "1.0.11",
+  "importer": "material",
+  "imported": true,
+  "uuid": "c9efee71-d22e-4dcd-bc13-99784429c25e",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {}
+}
