@@ -38,6 +38,7 @@ export interface GameSystemState {
 // 玩家
 export interface PlayerState {
     id: uint,
+    nickname: string,
     // 得分
     score: number,
     // 生命值

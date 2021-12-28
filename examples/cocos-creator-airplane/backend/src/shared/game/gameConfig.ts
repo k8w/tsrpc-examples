@@ -1,8 +1,6 @@
 import { EnemyType } from "./GameSystemState";
 
 export const gameConfig = {
-    syncRate: 10,
-
     enemy: {
         bulletSpeed: 20,
         // 第一次发射子弹的延迟时间
@@ -22,5 +20,6 @@ export const gameConfig = {
 
     player: {
         bulletSpeed: 10,
+        totalLife: 10,
     },
 }
