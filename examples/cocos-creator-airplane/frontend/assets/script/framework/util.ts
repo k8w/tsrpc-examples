@@ -761,11 +761,11 @@ export class Util {
      * 获取当前机型性能是否为低端机
      */
     public static checkIsLowPhone(): Boolean {
-        if (window.wx) {
+        if ((window as any).wx) {
             //微信性能数值参考:https://developers.weixin.qq.com/minigame/dev/guide/performance/perf-benchmarkLevel.html
 
             let nowBenchmarkLevel: number = -1; //nowBenchmarkLevel = -1性能未知
-            const sys = window.wx.getSystemInfoSync();
+            const sys = (window as any).wx.getSystemInfoSync();
             const isIOS = sys.system.indexOf('iOS') >= 0;
             if (isIOS) {
                 //微信不支持IO性能等级

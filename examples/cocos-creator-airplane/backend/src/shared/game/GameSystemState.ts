@@ -1,4 +1,4 @@
-import { uint } from "tsrpc";
+import { uint } from "tsrpc-proto";
 
 // 坐标系：X-Y 原点在中间下方
 /*
@@ -26,12 +26,6 @@ export interface GameSystemState {
 
     // 上次创建敌机的时间
     lastCreateEnemyTime: number,
-
-    // 伪随机数发生器状态
-    random: {
-        seed: string,
-        state: object
-    }
 }
 
 

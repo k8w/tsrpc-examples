@@ -16,7 +16,7 @@ const tsrpcConf: TsrpcConfig = {
     sync: [
         {
             from: 'src/shared',
-            to: '../frontend/assets/scripts/shared',
+            to: '../frontend/assets/script/shared',
             type: 'symlink'     // Change this to 'copy' if your environment not support symlink
         }
     ],

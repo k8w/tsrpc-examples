@@ -43,7 +43,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 3,
+    "version": 4,
     "services": [
         {
             "id": 11,
@@ -700,29 +700,6 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "lastCreateEnemyTime",
                     "type": {
                         "type": "Number"
-                    }
-                },
-                {
-                    "id": 6,
-                    "name": "random",
-                    "type": {
-                        "type": "Interface",
-                        "properties": [
-                            {
-                                "id": 0,
-                                "name": "seed",
-                                "type": {
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "name": "state",
-                                "type": {
-                                    "type": "Object"
-                                }
-                            }
-                        ]
                     }
                 }
             ]

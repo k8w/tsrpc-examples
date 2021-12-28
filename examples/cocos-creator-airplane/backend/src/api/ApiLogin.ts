@@ -1,9 +1,9 @@
-import { ApiCallWs } from "tsrpc";
+import { ApiCall } from "tsrpc";
 import { ReqLogin, ResLogin } from "../shared/protocols/PtlLogin";
 
 let nextPlayerId = 1;
 
-export async function ApiLogin(call: ApiCallWs<ReqLogin, ResLogin>) {
+export async function ApiLogin(call: ApiCall<ReqLogin, ResLogin>) {
     let playerId = nextPlayerId++;
 
     call.conn.currentUser = {

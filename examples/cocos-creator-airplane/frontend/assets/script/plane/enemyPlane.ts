@@ -1,8 +1,7 @@
 
-import { _decorator, Component, Node, Collider, ITriggerEvent, physics, PhysicsSystem, find, Game, Prefab, NodePool, instantiate, Vec2, Vec3, AudioSource } from 'cc';
-import { bulletManager } from '../bullet/bulletManager';
+import { AudioSource, Collider, Component, ITriggerEvent, Node, Vec3, _decorator } from 'cc';
 import { Constant } from '../framework/constant';
-import { GameManager } from '../GameController';
+import { GameManager } from '../gameManager';
 const { ccclass, property } = _decorator;
 
 
@@ -18,7 +17,7 @@ export class enemyPlane extends Component {
     @property
     public enemyBulletSpeed: number = 60;
     @property(AudioSource)
-    public audio:AudioSource = null!
+    public audio: AudioSource = null!
 
     private _enemyplane;
     private _isDie: boolean = false;

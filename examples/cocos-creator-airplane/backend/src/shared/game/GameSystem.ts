@@ -1,4 +1,3 @@
-import seedrandom from "seedrandom";
 import { gameConfig } from "./gameConfig";
 import { GameSystemEvent } from "./GameSystemEvent";
 import { GameSystemInput } from "./GameSystemInput";
@@ -16,11 +15,7 @@ export class GameSystem {
     }
     set state(state: GameSystemState) {
         this._state = state;
-        this._seedRandom = seedrandom(state.random.seed, state.random.state);
     }
-
-    // 伪随机数发生器
-    private _seedRandom!: ReturnType<seedrandom>;
 
     constructor(state: GameSystemState) {
         this.state = state;
@@ -135,11 +130,11 @@ export class GameSystem {
         }
 
         let time = this.state.now - (this.state.now % gameConfig.enemy.bornGapTime);
-        let pos = { x: this._random() * 750 - 375, y: gameConfig.enemy.bornY };
+        let pos = { x: 0, y: gameConfig.enemy.bornY };
         let enemy: EnemyState = {
             id: this.state.nextId.enemy++,
             // 敌机类型
-            type: this._random() > 0.5 ? EnemyType.E1 : EnemyType.E2,
+            type: EnemyType.E1,
             pos: { ...pos },
             init: {
                 time: time,
@@ -154,12 +149,6 @@ export class GameSystem {
         }
 
         this.state.enemies.push(enemy);
-    }
-
-    private _random(): number {
-        let rand = this._seedRandom();
-        this.state.random.state = this._seedRandom.state();
-        return rand;
     }
 
     // 简易的事件侦听器

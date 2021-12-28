@@ -16,8 +16,8 @@ let _temp_quat = new Quat;
 
 
 
-@ccclass('GameController')
-export class GameController extends Component {
+@ccclass('GameManager')
+export class GameManager extends Component {
 
     @property(Node)
     public playerPlane: Node = null;    //玩家飞机节点

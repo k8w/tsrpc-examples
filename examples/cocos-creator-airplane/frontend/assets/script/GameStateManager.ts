@@ -1,12 +1,12 @@
 import { WsClient } from "tsrpc-browser";
-import { GameSystem } from "../scripts/shared/game/GameSystem";
-import { GameSystemState } from "../scripts/shared/game/GameSystemState";
-import { ClientInput, MsgGameInput } from "../scripts/shared/protocols/game/client/MsgGameInput";
-import { MsgGameStart } from "../scripts/shared/protocols/game/server/MsgGameStart";
-import { MsgServerFrame } from "../scripts/shared/protocols/game/server/MsgServerFrame";
-import { serviceProto, ServiceType } from "../scripts/shared/protocols/serviceProto";
-import { CurrentUser } from "../scripts/shared/types/CurrentUser";
-import { RoomState } from "../scripts/shared/types/RoomState";
+import { GameSystem } from "../script/shared/game/GameSystem";
+import { GameSystemState } from "../script/shared/game/GameSystemState";
+import { ClientInput, MsgGameInput } from "../script/shared/protocols/game/client/MsgGameInput";
+import { MsgGameStart } from "../script/shared/protocols/game/server/MsgGameStart";
+import { MsgServerFrame } from "../script/shared/protocols/game/server/MsgServerFrame";
+import { serviceProto, ServiceType } from "../script/shared/protocols/serviceProto";
+import { CurrentUser } from "../script/shared/types/CurrentUser";
+import { RoomState } from "../script/shared/types/RoomState";
 
 /**
  * 前端游戏状态管理

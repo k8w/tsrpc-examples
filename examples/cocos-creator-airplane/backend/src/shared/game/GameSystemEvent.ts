@@ -1,4 +1,4 @@
-import { uint } from "tsrpc";
+import { uint } from "tsrpc-proto";
 
 export interface GameSystemEvent {
     playerDie: {

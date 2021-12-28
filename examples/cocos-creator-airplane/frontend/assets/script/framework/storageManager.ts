@@ -1,4 +1,4 @@
-import { _decorator, sys, log } from "cc";
+import { log, sys, _decorator } from "cc";
 import { Util } from './util';
 
 const { ccclass, property } = _decorator;
@@ -7,7 +7,7 @@ const { ccclass, property } = _decorator;
 export class StorageManager {
     private static _instance: StorageManager;
 
-    public static get instance () {
+    public static get instance() {
         if (this._instance) {
             return this._instance;
         }
@@ -17,13 +17,13 @@ export class StorageManager {
         return this._instance;
     }
 
-    private _jsonData: {[key: string]: any} = {};
+    private _jsonData: { [key: string]: any } = {};
     private _path: any = null;
     private KEY_CONFIG: string = 'template';
     private _markSave: boolean = false;
     private _saveTimer: number = -1;
 
-    start () {
+    start() {
         this._jsonData = {
             "userId": "",
         };
@@ -49,14 +49,14 @@ export class StorageManager {
         if (content && content.length) {
             if (content.startsWith('@')) {
                 content = content.substring(1);
-                content = util.decrypt(content);
+                content = Util.decrypt(content);
             }
 
             try {
                 //初始化操作
                 var jsonData = JSON.parse(content);
                 this._jsonData = jsonData;
-            }catch (excepaiton) {
+            } catch (excepaiton) {
 
             }
 
@@ -68,7 +68,7 @@ export class StorageManager {
         // }, 500);
 
         //每隔5秒保存一次数据，主要是为了保存最新在线时间，方便离线奖励时间判定
-        this._saveTimer = setInterval(() =>{
+        this._saveTimer = setInterval(() => {
             this.scheduleSave();
         }, 5000);
     }
@@ -78,8 +78,8 @@ export class StorageManager {
      * @param {string}key  关键字
      * @param {any}value  存储值
      */
-    setConfigDataWithoutSave (key: string, value: any) {
-        let account: string= this._jsonData.userId;
+    setConfigDataWithoutSave(key: string, value: any) {
+        let account: string = this._jsonData.userId;
         if (this._jsonData[account]) {
             this._jsonData[account][key] = value;
         } else {
@@ -87,12 +87,12 @@ export class StorageManager {
         }
     }
 
-  /**
-     * 存储配置文件，保存到本地
-     * @param {string}key  关键字
-     * @param {any}value  存储值
-     */
-    setConfigData (key: string, value: any) {
+    /**
+       * 存储配置文件，保存到本地
+       * @param {string}key  关键字
+       * @param {any}value  存储值
+       */
+    setConfigData(key: string, value: any) {
         this.setConfigDataWithoutSave(key, value);
         this._markSave = true; //标记为需要存储，避免一直在写入，而是每隔一段时间进行写入
     }
@@ -102,7 +102,7 @@ export class StorageManager {
      * @param {string} key 关键字
      * @returns 
      */
-    getConfigData (key: string) {
+    getConfigData(key: string) {
         let account: string = this._jsonData.userId;
         if (this._jsonData[account]) {
             var value = this._jsonData[account][key];
@@ -119,7 +119,7 @@ export class StorageManager {
      * @param {any}value  存储值
      * @returns 
      */
-    public setGlobalData (key:string, value: any) {
+    public setGlobalData(key: string, value: any) {
         this._jsonData[key] = value;
         this.save();
     }
@@ -129,7 +129,7 @@ export class StorageManager {
      * @param {string} key 关键字
      * @returns 
      */
-    public getGlobalData (key:string) {
+    public getGlobalData(key: string) {
         return this._jsonData[key];
     }
 
@@ -139,7 +139,7 @@ export class StorageManager {
      * @param {any}value  存储值
      * @returns 
      */
-    public setUserId (userId:string) {
+    public setUserId(userId: string) {
         this._jsonData.userId = userId;
         if (!this._jsonData[userId]) {
             this._jsonData[userId] = {};
@@ -152,7 +152,7 @@ export class StorageManager {
      * 获取用户唯一标示符
      * @returns {string}
      */
-    public getUserId () {
+    public getUserId() {
         return this._jsonData.userId;
     }
 
@@ -160,7 +160,7 @@ export class StorageManager {
      * 定时存储
      * @returns 
      */
-    public scheduleSave () {
+    public scheduleSave() {
         if (!this._markSave) {
             return;
         }
@@ -171,7 +171,7 @@ export class StorageManager {
     /**
      * 标记为已修改
      */
-     public markModified () {
+    public markModified() {
         this._markSave = true;
     }
 
@@ -179,7 +179,7 @@ export class StorageManager {
      * 保存配置文件
      * @returns 
      */
-    public save () {
+    public save() {
         // 写入文件
         var str = JSON.stringify(this._jsonData);
 
@@ -192,7 +192,7 @@ export class StorageManager {
         // let zipStr = str;
 
         this._markSave = false;
-        
+
         if (!sys.isNative) {
             var ls = sys.localStorage;
             ls.setItem(this.KEY_CONFIG, zipStr);
@@ -201,6 +201,7 @@ export class StorageManager {
 
         var valueObj: any = {};
         valueObj[this.KEY_CONFIG] = zipStr;
+        // @ts-ignore
         jsb.fileUtils.writeToFile(valueObj, this._path);
         // jsb.fileUtils.writeToFile(valueObj);
     }
@@ -209,9 +210,9 @@ export class StorageManager {
      * 获取配置文件路径
      * @returns 获取配置文件路径
      */
-    private _getConfigPath () {
+    private _getConfigPath() {
 
-        let platform: any= sys.platform;
+        let platform: any = sys.platform;
 
         let path: string = "";
 

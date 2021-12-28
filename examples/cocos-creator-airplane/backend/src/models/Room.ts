@@ -1,4 +1,3 @@
-import seedrandom from "seedrandom";
 import { MsgCallWs, uint, WsConnection } from "tsrpc";
 import { server } from "..";
 import { gameConfig } from "../shared/game/gameConfig";
@@ -6,7 +5,6 @@ import { GameSystemInput } from "../shared/game/GameSystemInput";
 import { GameSystemState } from "../shared/game/GameSystemState";
 import { MsgGameInput } from "../shared/protocols/game/client/MsgGameInput";
 import { ServiceType } from "../shared/protocols/serviceProto";
-import { CurrentUser } from "../shared/types/CurrentUser";
 import { RoomState } from "../shared/types/RoomState";
 
 const MAX_ROOM_USER = 2;
@@ -111,8 +109,6 @@ export class Room {
         this._syncRoomState();
 
         // 生成游戏初始状态
-        let seed = '' + Math.random();
-        let prng = seedrandom(seed, { state: true });
         let initGameState: GameSystemState = {
             now: 0,
             players: this.conns.map(v => ({
@@ -137,13 +133,7 @@ export class Room {
             },
 
             // 上次创建敌机的时间
-            lastCreateEnemyTime: 3000,
-
-            // 伪随机数发生器状态
-            random: {
-                seed: '' + Math.random(),
-                state: prng.state()
-            }
+            lastCreateEnemyTime: 3000
         };
         this._lastSn = {};
         this._lastSyncTime = Date.now();
@@ -195,11 +185,4 @@ export class Room {
     }
     // #endregion
 
-}
-
-declare module 'tsrpc' {
-    export interface BaseConnection {
-        currentUser: CurrentUser,
-        room?: Room,
-    }
 }

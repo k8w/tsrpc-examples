@@ -1,7 +1,7 @@
 
-import { _decorator, Component, Node, Collider, find, ITriggerEvent, Script } from 'cc';
+import { Collider, Component, ITriggerEvent, _decorator } from 'cc';
 import { Constant } from '../framework/constant';
-import { GameManager } from '../GameController';
+import { GameManager } from '../gameManager';
 
 const { ccclass, property } = _decorator;
 
@@ -55,7 +55,7 @@ export class bulletManager extends Component {
             //console.log("敌人子弹的位置",this.node.getPosition());
 
             this.node.setPosition(this.node.position.x, this.node.position.y, this.node.position.z + 1);
-            
+
             //地图边界值为100，即子弹到达屏幕外以后
             if (this.node.position.z >= 100) {
                 if (this._bullet1) {
