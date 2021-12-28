@@ -1,11 +1,19 @@
 import { uint } from "tsrpc";
 
-// 坐标系：X-Y 原点在左下角
+// 坐标系：X-Y 原点在中间下方
+/*
+[ ]  [ ]  [ ]
+
+[ ]  [ ]  [ ]     
+                  ↑ y
+[ ]  [x]  [ ]     → x
+*/
 
 export interface GameSystemState {
     // 游戏时间
     now: number,
 
+    // 场景状态
     players: PlayerState[],
     enemies: EnemyState[],
     fightIcons: FightIconState[],
@@ -15,10 +23,17 @@ export interface GameSystemState {
         enemy: uint,
         fightIcon: uint
     },
+
     // 上次创建敌机的时间
     lastCreateEnemyTime: number,
-    randomSeed: number,
+
+    // 伪随机数发生器状态
+    random: {
+        seed: string,
+        state: object
+    }
 }
+
 
 // 玩家
 export interface PlayerState {
@@ -52,12 +67,12 @@ export type PlayerBulletType = 'M' | 'H' | 'S';
 // 敌机
 export interface EnemyState {
     id: uint,
-    type: uint,
+    // 敌机类型
+    type: EnemyType,
     pos: { x: number, y: number },
     init: {
         time: number,
         pos: { x: number, y: number },
-        speed: { y: number }
     }
     bullets: {
         id: uint,
@@ -75,6 +90,11 @@ export interface EnemyState {
         bullet: uint
     }
 }
+
+export enum EnemyType {
+    E1,
+    E2
+};
 
 // 子弹图标
 export interface FightIconState {

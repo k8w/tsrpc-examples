@@ -1,7 +1,8 @@
+import seedrandom from "seedrandom";
 import { gameConfig } from "./gameConfig";
 import { GameSystemEvent } from "./GameSystemEvent";
 import { GameSystemInput } from "./GameSystemInput";
-import { GameSystemState } from "./GameSystemState";
+import { EnemyState, EnemyType, GameSystemState } from "./GameSystemState";
 
 /**
  * 前后端复用的状态计算模块
@@ -9,7 +10,17 @@ import { GameSystemState } from "./GameSystemState";
 export class GameSystem {
 
     // 当前状态
-    state: GameSystemState;
+    private _state!: GameSystemState;
+    get state(): Readonly<GameSystemState> {
+        return this._state;
+    }
+    set state(state: GameSystemState) {
+        this._state = state;
+        this._seedRandom = seedrandom(state.random.seed, state.random.state);
+    }
+
+    // 伪随机数发生器
+    private _seedRandom!: ReturnType<seedrandom>;
 
     constructor(state: GameSystemState) {
         this.state = state;
@@ -89,7 +100,7 @@ export class GameSystem {
                 this.state.enemies.forEach(enemy => {
                     // 更新敌机位置
                     const enemyTime = this.state.now - enemy.init.time;
-                    enemy.pos.y = enemy.init.pos.y - gameConfig.enemy.speed * enemyTime;
+                    enemy.pos.y = enemy.init.pos.y - gameConfig.enemy.speed[enemy.type] * enemyTime;
 
                     // 更新敌机子弹位置
                     enemy.bullets.forEach(bullet => {
@@ -119,14 +130,36 @@ export class GameSystem {
     }
 
     private _createEnemies() {
-        // 前 10 秒
-        // 每 1 秒创建一个敌机
+        if (this.state.now < this.state.lastCreateEnemyTime + gameConfig.enemy.bornY) {
+            return;
+        }
 
-        // 10~20秒
-        // 每3秒一个组合，然后每秒一个敌机
+        let time = this.state.now - (this.state.now % gameConfig.enemy.bornGapTime);
+        let pos = { x: this._random() * 750 - 375, y: gameConfig.enemy.bornY };
+        let enemy: EnemyState = {
+            id: this.state.nextId.enemy++,
+            // 敌机类型
+            type: this._random() > 0.5 ? EnemyType.E1 : EnemyType.E2,
+            pos: { ...pos },
+            init: {
+                time: time,
+                pos: { ...pos },
+            },
+            bullets: [],
+            // 初次创建敌机，按 bulletDelayTime 倒推 lastBulletTime
+            lastBulletTime: time + gameConfig.enemy.bulletDelayTime - gameConfig.enemy.bulletGapTime,
+            nextId: {
+                bullet: 0
+            }
+        }
 
-        // 20秒以后
-        // 每 2 秒一个组合(组合1 / 组合2 / xxx)
+        this.state.enemies.push(enemy);
+    }
+
+    private _random(): number {
+        let rand = this._seedRandom();
+        this.state.random.state = this._seedRandom.state();
+        return rand;
     }
 
     // 简易的事件侦听器
