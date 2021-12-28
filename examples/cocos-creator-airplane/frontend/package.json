@@ -7,6 +7,10 @@
   "uuid": "c794458c-05f6-4c9f-909b-20d54897d219",
   "version": "3.4.0",
   "dependencies": {
+    "seedrandom": "^3.0.5",
     "tsrpc-browser": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/seedrandom": "^3.0.1"
   }
 }

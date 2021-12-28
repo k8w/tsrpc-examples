@@ -2,7 +2,7 @@
 import { _decorator, Component, Node, Collider, ITriggerEvent, physics, PhysicsSystem, find, Game, Prefab, NodePool, instantiate, Vec2, Vec3, AudioSource } from 'cc';
 import { bulletManager } from '../bullet/bulletManager';
 import { Constant } from '../framework/constant';
-import { GameManager } from '../gameManager';
+import { GameManager } from '../GameController';
 const { ccclass, property } = _decorator;
 
 

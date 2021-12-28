@@ -78,11 +78,11 @@ export class GameSystem {
             }
             // 子弹碰撞，抵消
             case 'BulletHit': {
-                let player = this.state.players.find(v => v.id === input.player.id);
-                let enemy = this.state.enemies.find(v => v.id === input.enemy.id);
+                let player = this.state.players.find(v => v.id === input.playerId);
+                let enemy = this.state.enemies.find(v => v.id === input.enemyId);
                 if (player && enemy) {
-                    player.bullets.removeOne(v => v.id === input.player.bulletId);
-                    enemy.bullets.removeOne(v => v.id === input.enemy.bulletId);
+                    player.bullets.removeOne(v => v.id === input.playerBulletId);
+                    enemy.bullets.removeOne(v => v.id === input.enemyBulletId);
                 }
                 break;
             }

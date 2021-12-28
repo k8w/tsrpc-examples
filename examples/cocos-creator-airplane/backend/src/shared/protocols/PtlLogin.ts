@@ -1,4 +1,4 @@
-import { uint } from "tsrpc";
+import { CurrentUser } from "../types/CurrentUser";
 import { BaseConf, BaseRequest, BaseResponse } from "./base";
 
 export interface ReqLogin extends BaseRequest {
@@ -6,7 +6,7 @@ export interface ReqLogin extends BaseRequest {
 }
 
 export interface ResLogin extends BaseResponse {
-    playerId: uint
+    currentUser: CurrentUser
 }
 
 export const conf: BaseConf = {

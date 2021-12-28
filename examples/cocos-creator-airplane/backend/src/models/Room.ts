@@ -7,14 +7,9 @@ import { GameSystemState } from "../shared/game/GameSystemState";
 import { MsgGameInput } from "../shared/protocols/game/client/MsgGameInput";
 import { ServiceType } from "../shared/protocols/serviceProto";
 import { CurrentUser } from "../shared/types/CurrentUser";
+import { RoomState } from "../shared/types/RoomState";
 
 const MAX_ROOM_USER = 2;
-
-export interface RoomState {
-    id: uint;
-    players: { id: uint, nickname: string, isReady: boolean }[];
-    status: 'wait' | 'ready' | 'start';
-}
 
 /**
  * 服务端 - 房间 - 逻辑系统

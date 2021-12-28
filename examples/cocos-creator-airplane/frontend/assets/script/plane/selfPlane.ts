@@ -1,7 +1,7 @@
 
 import { _decorator, Component, Node, Collider, ITriggerEvent } from 'cc';
 import { Constant } from '../framework/constant';
-import { GameManager } from '../gameManager';
+import { GameManager } from '../GameController';
 
 const { ccclass, property } = _decorator;
 

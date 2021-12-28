@@ -1,6 +1,6 @@
 
 import { _decorator, Component, Node, UITransform, Vec2, Vec3, find, Script, game, Label, CameraComponent, Camera, EventTouch, v3 } from 'cc';
-import { GameManager } from '../gameManager';
+import { GameManager } from '../GameController';
 import { MovingSceneBg } from './common/movingSceneBg';
 import { Tips } from './common/tips';
 

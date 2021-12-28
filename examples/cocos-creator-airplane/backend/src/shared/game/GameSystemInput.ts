@@ -1,4 +1,4 @@
-import { uint } from "tsrpc";
+import { uint } from "tsrpc-proto";
 import { PlayerState } from "./GameSystemState";
 
 // 移动并攻击
@@ -34,14 +34,10 @@ export interface PlayerHurt {
 // 子弹互相碰撞，双双消失
 export interface BulletHit {
     type: 'BulletHit',
-    player: {
-        id: uint,
-        bulletId: uint
-    },
-    enemy: {
-        id: uint,
-        bulletId: uint
-    },
+    playerId: uint,
+    playerBulletId: uint,
+    enemyId: uint,
+    enemyBulletId: uint
 }
 
 // 时间流逝

@@ -11,5 +11,7 @@ export async function ApiJoinRoom(call: ApiCallWs<ReqJoinRoom, ResJoinRoom>) {
         return call.error(op.errMsg);
     }
 
-    call.succ({});
+    call.succ({
+        roomState: room.state
+    });
 }

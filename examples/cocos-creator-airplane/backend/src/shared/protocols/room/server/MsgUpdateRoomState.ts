@@ -1,4 +1,4 @@
-import { RoomState } from "../../../../models/Room";
+import { RoomState } from "../../../types/RoomState";
 
 export interface MsgUpdateRoomState {
     state: RoomState
