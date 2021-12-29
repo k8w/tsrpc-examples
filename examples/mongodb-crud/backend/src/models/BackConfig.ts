@@ -1,4 +1,4 @@
 export const BackConfig = {
     // Please replace by your db
-    mongoDb: 'mongodb://username:password@xxx.com:27017/test?authSource=admin',
+    mongoDb: 'mongodb+srv://test:test@tsrpc-example.0gzai.mongodb.net/tsrpc-example?retryWrites=true&w=majority',
 }

@@ -1,11 +1,11 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { ApiCall } from "tsrpc";
 import { Global } from "../models/Global";
 import { ReqGetPost, ResGetPost } from "../shared/protocols/PtlGetPost";
 
 export async function ApiGetPost(call: ApiCall<ReqGetPost, ResGetPost>) {
     let op = await Global.collection('Post').findOne({
-        _id: new ObjectID(call.req._id)
+        _id: new ObjectId(call.req._id)
     });
 
     if (!op) {

@@ -4,5 +4,8 @@ module.exports = {
     ],
     timeout: 999999,
     exit: true,
-    'preserve-symlinks': true
+    'preserve-symlinks': true,
+    spec: [
+        './test/**/*.test.ts'
+    ]
 }
