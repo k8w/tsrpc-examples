@@ -1,3 +1,4 @@
+import { Document, ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
 import { Global } from "../models/Global";
 import { ReqAddPost, ResAddPost } from "../shared/protocols/PtlAddPost";

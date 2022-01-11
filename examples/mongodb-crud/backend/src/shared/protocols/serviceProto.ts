@@ -29,7 +29,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 16,
+    "version": 17,
     "services": [
         {
             "id": 0,
@@ -62,7 +62,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "target": {
                             "type": "Reference",
-                            "target": "models/Post/Post"
+                            "target": "../db/DbPost/DbPost"
                         },
                         "keys": [
                             "_id",
@@ -75,14 +75,15 @@ export const serviceProto: ServiceProto<ServiceType> = {
                 }
             ]
         },
-        "models/Post/Post": {
+        "../db/DbPost/DbPost": {
             "type": "Interface",
             "properties": [
                 {
                     "id": 0,
                     "name": "_id",
                     "type": {
-                        "type": "String"
+                        "type": "Reference",
+                        "target": "?mongodb/ObjectId"
                     }
                 },
                 {
@@ -181,7 +182,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "_id",
                     "type": {
-                        "type": "String"
+                        "type": "Reference",
+                        "target": "?bson/ObjectId"
                     }
                 }
             ]
@@ -196,7 +198,8 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "_id",
                     "type": {
-                        "type": "String"
+                        "type": "Reference",
+                        "target": "?bson/ObjectId"
                     }
                 }
             ]
@@ -209,7 +212,7 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "name": "post",
                     "type": {
                         "type": "Reference",
-                        "target": "models/Post/Post"
+                        "target": "../db/DbPost/DbPost"
                     }
                 }
             ]
@@ -224,28 +227,26 @@ export const serviceProto: ServiceProto<ServiceType> = {
                         "type": "Intersection",
                         "members": [
                             {
-                                "id": 1,
+                                "id": 4,
                                 "type": {
-                                    "type": "Interface",
-                                    "properties": [
-                                        {
-                                            "id": 0,
-                                            "name": "_id",
-                                            "type": {
-                                                "type": "String"
-                                            }
-                                        }
-                                    ]
+                                    "target": {
+                                        "type": "Reference",
+                                        "target": "../db/DbPost/DbPost"
+                                    },
+                                    "keys": [
+                                        "_id"
+                                    ],
+                                    "type": "Pick"
                                 }
                             },
                             {
-                                "id": 3,
+                                "id": 5,
                                 "type": {
                                     "type": "Partial",
                                     "target": {
                                         "target": {
                                             "type": "Reference",
-                                            "target": "models/Post/Post"
+                                            "target": "../db/DbPost/DbPost"
                                         },
                                         "keys": [
                                             "title",

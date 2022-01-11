@@ -1,5 +1,7 @@
-export interface Post {
-    _id: string;
+import { ObjectId } from "mongodb";
+
+export interface DbPost {
+    _id: ObjectId;
     author: string;
     title: string;
     content: string;

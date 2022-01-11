@@ -7,7 +7,7 @@ export async function ApiUpdatePost(call: ApiCall<ReqUpdatePost, ResUpdatePost>)
     let { _id, ...update } = call.req.update;
 
     let op = await Global.collection('Post').updateOne({
-        _id: new ObjectId(_id)
+        _id: _id
     }, {
         $set: {
             ...update,

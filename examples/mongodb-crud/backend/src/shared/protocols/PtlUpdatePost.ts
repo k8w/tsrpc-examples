@@ -1,7 +1,7 @@
-import { Post } from "./models/Post";
+import { DbPost } from "../db/DbPost";
 
 export interface ReqUpdatePost {
-    update: { _id: string } & Partial<Pick<Post, 'title' | 'content'>>;
+    update: Pick<DbPost, '_id'> & Partial<Pick<DbPost, 'title' | 'content'>>;
 }
 
 export interface ResUpdatePost {

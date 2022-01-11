@@ -1,5 +1,7 @@
+import { ObjectId } from "bson";
+
 export interface ReqDelPost {
-    _id: string;
+    _id: ObjectId;
 }
 
 export interface ResDelPost {

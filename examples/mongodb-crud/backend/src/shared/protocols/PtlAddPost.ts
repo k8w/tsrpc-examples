@@ -1,7 +1,7 @@
-import { Post } from "./models/Post";
+import { DbPost } from "../db/DbPost";
 
 export interface ReqAddPost {
-    newPost: Omit<Post, '_id' | 'create' | 'update' | 'visitedNum'>;
+    newPost: Omit<DbPost, '_id' | 'create' | 'update' | 'visitedNum'>;
 }
 
 export interface ResAddPost {

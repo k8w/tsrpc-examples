@@ -1,7 +1,7 @@
 import { Collection, Db, MongoClient } from "mongodb";
 import { Logger } from "tsrpc";
+import { DbPost } from "../shared/db/DbPost";
 import { BackConfig } from "./BackConfig";
-import { DbPost } from "./dbItems/DbPost";
 
 export class Global {
 
