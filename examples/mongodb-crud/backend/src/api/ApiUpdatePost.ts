@@ -4,13 +4,13 @@ import { Global } from "../models/Global";
 import { ReqUpdatePost, ResUpdatePost } from "../shared/protocols/PtlUpdatePost";
 
 export async function ApiUpdatePost(call: ApiCall<ReqUpdatePost, ResUpdatePost>) {
-    let { _id, ...update } = call.req.update;
+    let { _id, ...rest } = call.req.update;
 
     let op = await Global.collection('Post').updateOne({
         _id: _id
     }, {
         $set: {
-            ...update,
+            ...rest,
             update: {
                 uid: 'xxx',
                 time: new Date()
