@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tsrpc-browser": "^3.1.2",
-    "tsrpc-miniapp": "^3.1.2"
+    "tsrpc-browser": "^3.2.0",
+    "tsrpc-miniapp": "^3.2.0"
   }
 }
