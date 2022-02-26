@@ -6,7 +6,8 @@ import { serviceProto } from "./shared/protocols/serviceProto";
 // Create the Server
 const server = new HttpServer(serviceProto, {
     port: 3000,
-    cors: '*'
+    cors: '*',
+    json: true
 });
 
 // Flow: Serve static files
