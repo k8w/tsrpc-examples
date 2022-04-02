@@ -15,5 +15,4 @@ Start local frontend server:
 ```
 cd <example-dir>/frontend
 npm install
-npm run dev
 ```
