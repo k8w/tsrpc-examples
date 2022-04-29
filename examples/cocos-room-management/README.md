@@ -56,3 +56,8 @@ npm run dev:room2
 ## 加群交流
 
 ![image](https://user-images.githubusercontent.com/1681689/165915560-cbe2520a-b654-472b-828e-e42252d5e32f.png)
+
+## 版权声明
+
+本项目使用了以下模型：
+- https://sketchfab.com/3d-models/proportional-low-poly-man-free-download-0bfd0e2b49a348a4b64b20cc8196e3b3  （作者：Robin Butler）
