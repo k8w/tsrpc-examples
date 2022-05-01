@@ -1,6 +1,8 @@
 TSRPC 分布式房间管理架构示例
 ===
 
+![Group 7](https://user-images.githubusercontent.com/1681689/166127423-734e1fc4-4489-4b7c-98e1-2409172c24f7.png)
+
 MGOBE 即将停止运营，本项目提供的是一个轻量级的替代方案。
 
 [TSRPC](https://tsrpc.cn) 是专为 TypeScript 设计的 RPC 框架，如果还没有了解过，建议先阅读这篇文章：[《2 天做了个多人实时对战，200ms 延迟竟然也能丝滑流畅？》](https://mp.weixin.qq.com/s/V1YWPF5LmY-l1L5LF2nR3A)
