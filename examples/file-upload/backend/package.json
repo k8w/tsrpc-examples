@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/node": "^15.14.9",
     "onchange": "^7.1.0",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.7.0",
     "tsrpc-cli": "^2.4.0",
     "typescript": "^4.5.5"
   },
