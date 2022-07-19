@@ -1,12 +1,11 @@
 {
-  "ver": "4.0.22",
+  "ver": "4.0.23",
   "importer": "typescript",
   "imported": true,
   "uuid": "ccc7f4e3-1255-4442-a074-ec8d49bc2f8d",
   "files": [],
   "subMetas": {},
   "userData": {
-    "importAsPlugin": false,
     "moduleId": "project:///assets/scenes/GameScene/scripts/Joystick.js",
     "simulateGlobals": []
   }

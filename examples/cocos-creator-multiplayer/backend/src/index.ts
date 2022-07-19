@@ -7,7 +7,8 @@ import { serviceProto, ServiceType } from './shared/protocols/serviceProto';
 // 创建 TSRPC WebSocket Server
 export const server = new WsServer(serviceProto, {
     port: 3000,
-    json: true
+    json: true,
+    heartbeatWaitTime: 10000
 });
 
 // 断开连接后退出房间

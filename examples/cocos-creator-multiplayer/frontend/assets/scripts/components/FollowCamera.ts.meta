@@ -1,12 +1,11 @@
 {
-  "ver": "4.0.22",
+  "ver": "4.0.23",
   "importer": "typescript",
   "imported": true,
   "uuid": "db75b6cd-267c-4760-8771-a3adc24919ef",
   "files": [],
   "subMetas": {},
   "userData": {
-    "importAsPlugin": false,
     "moduleId": "project:///assets/scripts/components/FollowCamera.js",
     "simulateGlobals": []
   }

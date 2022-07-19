@@ -1,5 +1,5 @@
 {
-  "ver": "2.1.4",
+  "ver": "2.2.0",
   "importer": "fbx",
   "imported": true,
   "uuid": "e8fe9966-5f03-4cc0-ad69-01d536be6c21",
@@ -307,6 +307,9 @@
     },
     "dumpMaterials": false,
     "legacyFbxImporter": true,
-    "materialDumpDir": "db://assets/resources/subPackage/model/javelin/Materials_javelin01"
+    "materialDumpDir": "db://assets/resources/subPackage/model/javelin/Materials_javelin01",
+    "fbx": {
+      "smartMaterialEnabled": false
+    }
   }
 }

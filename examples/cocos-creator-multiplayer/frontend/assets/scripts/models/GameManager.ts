@@ -11,7 +11,7 @@ import { serviceProto, ServiceType } from "../shared/protocols/serviceProto";
 export class GameManager {
 
     client: WsClient<ServiceType>;
-    
+
     gameSystem = new GameSystem();
 
     lastServerState: GameSystemState = this.gameSystem.state;
@@ -27,7 +27,11 @@ export class GameManager {
         let client = this.client = new WsClient(serviceProto, {
             server: `ws://${location.hostname}:3000`,
             json: true,
-            // logger: console
+            // logger: console,
+            heartbeat: {
+                interval: 1000,
+                timeout: 5000
+            }
         });;
         client.listenMsg('server/Frame', msg => { this._onServerSync(msg) });
 
