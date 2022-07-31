@@ -1,4 +1,7 @@
-import { WsClient } from "tsrpc-browser";
+import { MINIGAME } from 'cc/env';
+import { BaseWsClient } from 'tsrpc-base-client';
+import { WsClient as WsClientBrowser } from "tsrpc-browser";
+import { WsClient as WsClientMiniapp } from "tsrpc-miniapp";
 import { GameSystem, GameSystemState } from "../shared/game/GameSystem";
 import { ClientInput, MsgClientInput } from "../shared/protocols/client/MsgClientInput";
 import { MsgFrame } from "../shared/protocols/server/MsgFrame";
@@ -10,7 +13,7 @@ import { serviceProto, ServiceType } from "../shared/protocols/serviceProto";
  */
 export class GameManager {
 
-    client: WsClient<ServiceType>;
+    client: BaseWsClient<ServiceType>;
 
     gameSystem = new GameSystem();
 
@@ -24,7 +27,8 @@ export class GameManager {
     }
 
     constructor() {
-        let client = this.client = new WsClient(serviceProto, {
+        // Use browser client or miniapp client depend on the platform 
+        let client = this.client = new (MINIGAME ? WsClientMiniapp : WsClientBrowser)(serviceProto, {
             server: `ws://${location.hostname}:3000`,
             json: true,
             // logger: console,
