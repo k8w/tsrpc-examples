@@ -65,8 +65,8 @@ export class FollowCamera extends Component {
         v3_1.set(this._targetWorldPos);
         let diff = v3_1.subtract(this.node.worldPosition);
         if (diff.lengthSqr() > 0.01) {
-            this.node.worldPosition.add(diff.multiplyScalar(this.speedFactor));
-            this.node.setWorldPosition(this.node.worldPosition);
+            let ret = this.node.worldPosition.add(diff.multiplyScalar(this.speedFactor));
+            this.node.setWorldPosition(ret);
         }
     }
 
