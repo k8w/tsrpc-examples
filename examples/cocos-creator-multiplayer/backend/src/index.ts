@@ -8,7 +8,9 @@ import { serviceProto, ServiceType } from './shared/protocols/serviceProto';
 export const server = new WsServer(serviceProto, {
     port: 3000,
     json: true,
-    heartbeatWaitTime: 10000
+    heartbeatWaitTime: 10000,
+    // Enable this to see send/recv message details
+    logMsg: false,
 });
 
 // 断开连接后退出房间
