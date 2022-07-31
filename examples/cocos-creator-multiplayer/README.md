@@ -1,5 +1,7 @@
 # TSRPC + Cocos 多人实时对战 Demo
 
+**中文** | [English](README_en.md)
+
 ## 介绍
 
 - 采用 [TSRPC](https://tsrpc.cn) 和 [Cocos Creator](https://www.cocos.com/) 开发的多人实时对战游戏 Demo
@@ -45,7 +47,7 @@ npm run dev
     # 安装依赖
     npm install
     ```
-2. 然后用 Cocos Creator 3.3.2 以上版本打开前端项目（`frontend` 目录）
+2. 然后用 Cocos Creator 3.5.2 以上版本打开前端项目（`frontend` 目录）
 
 **注意：前端项目需要先 `npm install` 后再打开 Cocos，如果报错，可以关闭 Cocos 后重启试一下。**
 
