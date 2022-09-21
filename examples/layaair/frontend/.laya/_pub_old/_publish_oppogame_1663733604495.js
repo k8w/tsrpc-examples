@@ -1,4 +1,4 @@
-// v1.9.8
+// v1.9.3
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -230,9 +230,6 @@ gulp.task("modifyFile_OPPO", ["deleteSignFile_OPPO"], function() {
 	manifestJson.package = config.oppoInfo.package;
 	manifestJson.name = config.oppoInfo.name;
 	manifestJson.orientation = config.oppoInfo.orientation;
-	if(null == manifestJson.config){
-		manifestJson.config = {};
-	}
 	manifestJson.config.logLevel = config.oppoInfo.logLevel || "off";
 	manifestJson.versionName = config.oppoInfo.versionName;
 	manifestJson.versionCode = config.oppoInfo.versionCode;
@@ -602,52 +599,8 @@ function extractZipFile(zipPath, extractDir) {
 	});
 }
 
-
-//mac下首先先检测和关闭9999端口号,防止端口被占用导致二维码无法显示的问题
-gulp.task("closePoint",["pluginEngin_OPPO"],function(){
-	return closePoint(9999);
-})
-function closePoint(point){
-	if (process.platform === "darwin") {
-		return new Promise((resolve, reject) => {
-			var cmd = 'lsof -i tcp:'+point;
-			childProcess.exec(cmd, (err, stdout, stderr) => {
-				if (null != stdout) {
-					var str = String(stdout);
-					var arr = str.split(" ");
-					var num = arr.indexOf('layabox');
-					if (0 < num) {
-						var pid = arr[num - 1];
-						try{
-							childProcess.execSync("kill -9 " + pid);
-						}catch(err){}
-					}
-				}
-				resolve();
-			});
-		});
-	} else {
-		return new Promise((resolve, reject) => {
-			var cmd = 'netstat -aon|findstr "'+point+'"';
-			childProcess.exec(cmd, (err, stdout, stderr) => {
-				if (null != stdout) {
-					var str = String(stdout);
-					var arr = str.split(" ");
-					var pid = Number(arr[arr.length - 1]);
-					if (!isNaN(pid) && 0 != pid) {
-						try{
-							childProcess.execSync("taskkill /f /pid " + pid);
-						}catch(err){}
-					}
-				}
-				resolve();
-			});
-		});
-	}
-}
-
 // 打包rpk
-gulp.task("buildRPK_OPPO", ["closePoint"], function() {
+gulp.task("buildRPK_OPPO", ["pluginEngin_OPPO"], function() {
 	// 在OPPO轻游戏项目目录中执行:
     // quickgame pack || quickgame pack release
     // quickgame subpack --no-build-js || quickgame subpack release --no-build-js
@@ -663,7 +616,7 @@ gulp.task("buildRPK_OPPO", ["closePoint"], function() {
     }
 	return new Promise((resolve, reject) => {
 		let cmd = path.join(toolkitPath, "lib", "bin", `quickgame${commandSuffix}`);
-		let args = [packStr, cmdStr, nobuildjs, "-q"];
+		let args = [packStr, cmdStr, nobuildjs];
 		let opts = {
 			cwd: projDir,
 			shell: true
@@ -671,11 +624,7 @@ gulp.task("buildRPK_OPPO", ["closePoint"], function() {
 		let cp = childProcess.spawn(`"${cmd}"`, args, opts);
 		// let cp = childProcess.spawn('npx.cmd', ['-v']);
 		cp.stdout.on('data', (data) => {
-			console.log(`${data}`);
-			if (`${data}`.includes("▄") || `${data}`.includes("█")) {
-				resolve();
-			}
-			console.log('oo_qrcode_pid:' + cp.pid);
+			console.log(`stdout: ${data}`);
 		});
 
 		cp.stderr.on('data', (data) => {

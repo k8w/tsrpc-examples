@@ -1,10 +1,10 @@
-// v1.8.26
+// v1.8.18
 //是否使用IDE自带的node环境和插件，设置false后，则使用自己环境(使用命令行方式执行)
 const useIDENode = process.argv[0].indexOf("LayaAir") > -1 ? true : false;
 const useCMDNode = process.argv[1].indexOf("layaair2-cmd") > -1 ? true : false;
 const pubLayame = process.argv.length >= 4 && process.argv[3].startsWith("--config") && process.argv[3].endsWith("layame.json");
-function useOtherNode() {
-	return useIDENode || useCMDNode || pubLayame;
+function useOtherNode(){
+	return useIDENode||useCMDNode ||pubLayame;
 }
 //获取Node插件和工作路径
 const ideModuleDir = useOtherNode() ? process.argv[1].replace("gulp\\bin\\gulp.js", "").replace("gulp/bin/gulp.js", "") : "";
@@ -24,14 +24,13 @@ const revdel = require(ideModuleDir + "gulp-rev-delete-original");
 const revCollector = require(ideModuleDir + 'gulp-rev-collector');
 const del = require(ideModuleDir + "del");
 const requireDir = require(ideModuleDir + 'require-dir');
-const babel = require(ideModuleDir + 'gulp-babel');
+const babel = require(ideModuleDir + 'gulp-babel'); 
 
-let versionJsonJsOrigin_tmp = '';
 // 结合compile.js使用
 global.publish = true;
 const fileList = ["compile.js", "pub_utils.js", "publish_xmgame.js", "publish_oppogame.js", "publish_vivogame.js", "publish_biligame.js",
-	"publish_alipaygame.js", "publish_wxgame.js", "publish_bdgame.js", "publish_qqgame.js", "publish_bytedancegame.js", "publish_hwgame.js",
-	"publish_taobaominiapp.js", "publish_youkugame.js", "publish_taobaowidget.js", "publish_layame.js"];
+				"publish_alipaygame.js", "publish_wxgame.js", "publish_bdgame.js", "publish_qqgame.js", "publish_bytedancegame.js", "publish_hwgame.js",
+				"publish_taobaominiapp.js", "publish_youkugame.js", "publish_taobaowidget.js", "publish_layame.js"];
 requireDir('./', {
 	filter: function (fullPath) {
 		// 只用到了compile.js和publish.js
@@ -98,13 +97,13 @@ function toBuildPart(part) {
 	if (!buildOptions) {
 		return true;
 	}
-	if ('all' == part) {
+	if ('all' == part ) {
 		return buildOptions.type == 'all';
-	}
-	if (buildOptions.type == 'all') {
-		return true;
-	}
-	return (buildOptions.buildList.includes(part));
+	} 
+    if (buildOptions.type == 'all') {
+        return true;
+    }
+    return (buildOptions.buildList.includes(part));
 }
 if (!useOtherNode() && process.argv.length > 5 && process.argv[4] == "--config") {
 	platform = process.argv[5].replace(".json", "");
@@ -127,13 +126,13 @@ gulp.task("loadConfig", function (cb) {
 		_path = path.join(workSpaceDir, ".laya", `${platform}.json`);
 		releaseDir = path.join(workSpaceDir, "release", platform).replace(/\\/g, "/");
 		binPath = path.join(workSpaceDir, "bin").replace(/\\/g, "/");
-	}
+	}  
 	global.platform = platform;
 	let file = fs.readFileSync(_path, "utf-8");
 	if (file) {
 		if (platform == 'layame') {
 			let tmpconfig = JSON.parse(file);
-			if (tmpconfig.debugLayaMe) {
+			if (tmpconfig.debugLayaMe) { 
 				// 如本地调试版layame
 				releaseDir = path.join(workSpaceDir, 'layaMe').replace(/\\/g, "/");
 				isDebugLayaMe = true;
@@ -165,7 +164,7 @@ gulp.task("loadConfig", function (cb) {
 			let projInfo = fs.readFileSync(projInfoPath, "utf8");
 			projInfo = projInfo && JSON.parse(projInfo);
 			isOpendataProj = projInfo.layaProType === 12;
-		} catch (e) { }
+		} catch (e) {}
 	}
 	// 其他变量的初始化
 	let layarepublicPath = path.join(ideModuleDir, "../", "code", "layarepublic");
@@ -239,7 +238,7 @@ gulp.task("clearReleaseDir", ["compile"], function (cb) {
 			let vvProjSrc = path.join(vvProj, "src");
 			// 这里不是node-glob语法，详见: https://github.com/sindresorhus/del
 			delList = [`${vvProj}/engine/**`, `${vvProj}/laya-library/**`, `${vvProj}/config/**`,
-			`${vvProjSrc}/**`, `!${vvProjSrc}`, `!${vvProjSrc}/{game.js,manifest.json}`];
+						`${vvProjSrc}/**`, `!${vvProjSrc}`, `!${vvProjSrc}/{game.js,manifest.json}`];
 		} else if (platform === "hwgame") {
 			let hwProjSrc = path.join(releaseDir, config.hwInfo.projName);
 			delList = [`${hwProjSrc}/**`, `!${hwProjSrc}`, `!${hwProjSrc}/{game.js,manifest.json}`];
@@ -258,10 +257,10 @@ gulp.task("clearReleaseDir", ["compile"], function (cb) {
 				// release/taobaominiapp/node_modules/layaengine/adapter.js 必更新
 				// 删除最外层除 .tea .mini-ide node_modules pages app.acss app.js app.json mini.project.json package.json
 				delList = [`${releaseDir}/node_modules/layaengine/libs`, `${releaseDir}/node_modules/layaengine/laya.js`,
-				`${releaseDir}/**`, `!${releaseDir}`, `!${releaseDir}/.tea/**`, `!${releaseDir}/.mini-ide/**·`,
-				`!${releaseDir}/node_modules/**`, `!${releaseDir}/pages/**`, `!${releaseDir}/{app.acss,app.js,app.json,mini.project.json,package.json}`,
-				// `${releaseDir}/node_modules/layaengine`, `!${releaseDir}/node_modules/layaengine`, `!${releaseDir}/node_modules/layaengine/{adapter.js,index.js/package.json}`,
-				`${releaseDir}/pages/index/**`, `!${releaseDir}/pages/index`, `!${releaseDir}/pages/index/{game.js,game.json,game.axml}`];
+							`${releaseDir}/**`, `!${releaseDir}`, `!${releaseDir}/.tea/**`, `!${releaseDir}/.mini-ide/**·`,
+							`!${releaseDir}/node_modules/**`, `!${releaseDir}/pages/**`, `!${releaseDir}/{app.acss,app.js,app.json,mini.project.json,package.json}`,
+							// `${releaseDir}/node_modules/layaengine`, `!${releaseDir}/node_modules/layaengine`, `!${releaseDir}/node_modules/layaengine/{adapter.js,index.js/package.json}`,
+							`${releaseDir}/pages/index/**`, `!${releaseDir}/pages/index`, `!${releaseDir}/pages/index/{game.js,game.json,game.axml}`];
 			} else if (platform === "taobaowidget") {
 				delList = [`${releaseDir}/widget/component/**`, `!${releaseDir}/widget/component`, `!${releaseDir}/widget/component/{game.js,game.json,game.axml,game.acss,package.json}`];
 			}
@@ -305,7 +304,7 @@ gulp.task("copyFile", ["clearReleaseDir"], function () {
 		releaseDir = global.tempReleaseDir = path.join(releaseDir, "temprelease").replace(/\\/g, "/");
 	}
 	if (config.exclude) { // 排除文件
-		config.excludeFilter.forEach(function (item, index, list) {
+		config.excludeFilter.forEach(function(item, index, list) {
 			releaseDir = releaseDir.replace(/\\/g, "/");
 			config.excludeFilter[index] = item.replace(releaseDir, binPath);
 		});
@@ -314,7 +313,7 @@ gulp.task("copyFile", ["clearReleaseDir"], function () {
 	global.releaseDir = releaseDir;
 	if (isDebugLayaMe) {
 		if (!toBuildPart('ui')) {
-			if (!fs.existsSync(releaseDir)) {
+			if(!fs.existsSync(releaseDir)) {
 				fs.mkdirSync(releaseDir);
 			}
 			return;
@@ -347,7 +346,7 @@ gulp.task("useMinJsLibs", ["copyFile"], function () {
 	if (!libsList) {
 		return;
 	}
-	let
+	let 
 		item,
 		libsName = "",
 		minLibsName = "";
@@ -385,7 +384,7 @@ gulp.task("copyLibsJsFile", ["useMinJsLibs"], function () {
 	if (!libsList) {
 		libsList = [];
 	}
-	let
+	let 
 		item,
 		libsName = "",
 		libsStr = "";
@@ -410,8 +409,8 @@ gulp.task("copyLibsJsFile", ["useMinJsLibs"], function () {
 	return stream.pipe(gulp.dest(releaseDir));
 });
 
-gulp.task("fitwasm", ["copyLibsJsFile"], function () {
-	let
+gulp.task("fitwasm", ["copyLibsJsFile"], function() {
+	let 
 		phy3dWasmJs = path.join(releaseDir, "libs", "laya.physics3D.wasm.js"),
 		phy3dWasmMinJs = path.join(releaseDir, "libs", "min", "laya.physics3D.wasm.min.js");
 	let isPhy3dWasmJsExist = fs.existsSync(phy3dWasmJs);
@@ -495,25 +494,25 @@ gulp.task("copyPlatformLibsJsFile", ["fitwasm"], function () {
 });
 
 // es6toes5
-gulp.task("es6toes5", platformCopyTask, function () {
+gulp.task("es6toes5", platformCopyTask, function() {
 	if (config.es6toes5) {
 		process.env.BROWSERSLIST_IGNORE_OLD_DATA = true;
 		return gulp.src(`${releaseDir}/**/*.js`, { base: releaseDir })
-			.pipe(babel({
-				presets: ['@babel/env'],
-				compact: false // 1) 为规避500K限制，不能为"auto" 2) 为便于调试，并防止开发者误解已经经过压缩，调整为false
-			}))
-			.on('error', function (err) {
-				console.warn(err.toString());
-			})
-			.pipe(gulp.dest(releaseDir));
+		.pipe(babel({
+			presets: ['@babel/env'],
+			compact: false // 1) 为规避500K限制，不能为"auto" 2) 为便于调试，并防止开发者误解已经经过压缩，调整为false
+		})) 
+		.on('error', function (err) {
+			console.warn(err.toString());
+		})
+		.pipe(gulp.dest(releaseDir));
 	}
 })
 
 // 压缩json
 gulp.task("compressJson", ["es6toes5"], function () {
 	if (platform === "layame" && isDebugLayaMe) {
-		if (!toBuildPart('all')) {
+		if (!toBuildPart('all')) { 
 			return;
 		}
 	}
@@ -528,7 +527,7 @@ gulp.task("compressJson", ["es6toes5"], function () {
 gulp.task("compressJs", ["compressJson"], function () {
 	let compressJsFilter = null;
 	if (platform === "layame" && isDebugLayaMe) {
-		if (!toBuildPart('all')) {
+		if (!toBuildPart('all')) { 
 			return;
 		}
 	}
@@ -555,13 +554,13 @@ gulp.task("compressJs", ["compressJson"], function () {
 
 	let options = {
 		mangle: {
-			keep_fnames: true
+			keep_fnames:true
 		}
 	}
 	if (["taobaominiapp", "taobaowidget"].includes(platform)) {
 		options = {
 			mangle: {
-				keep_fnames: true,
+				keep_fnames:true,
 				// sequences: false, // 不使用逗号
 				reserved: ["window"]
 			}
@@ -569,7 +568,6 @@ gulp.task("compressJs", ["compressJson"], function () {
 	}
 	console.log("compressJsFilter: ", compressJsFilter);
 	return gulp.src(compressJsFilter, { base: releaseDir })
-		.pipe(changeBundleJs())
 		.pipe(uglify(options))
 		.on('error', function (err) {
 			console.warn(err.toString());
@@ -577,48 +575,13 @@ gulp.task("compressJs", ["compressJson"], function () {
 		.pipe(gulp.dest(releaseDir));
 });
 
-var Stream = require('stream');
-function changeBundleJs() {
-	var stream = new Stream.Transform({ objectMode: true });
-	stream._transform = function (originalFile, unused, callback) {
-		let fPath = originalFile.path;
-		let file = null;
-		const getFile = () => {
-			if (!file) {
-				file = originalFile.clone({ contents: false });
-			}
-			return file;
-		}
-		// console.log('fPath',config.version, fPath);
-		if (config.version && fPath.indexOf('bundle.js') >= 0) {
-
-			file = getFile();
-			let stringData = String(file.contents);
-			// console.log(stringData);
-			if (stringData.indexOf('ResourceVersion.enable(\"version.json\"') > 0) {
-				stringData = stringData.replace('ResourceVersion.enable(\"version.json\"', 'ResourceVersion.enable(\"version.config_version_md5_name.json\"');
-				let finalBinaryData = Buffer.from(stringData);
-				file.contents = finalBinaryData;
-				// stringData = stringData.replace(/extends\s+[Laya.Script3D\.]+\s*{/mg, "extends Laya.Script {"); 
-			} else {
-				file = null;
-			}
-		}
-		if (file) {
-			callback(null, file);
-		} else {
-			callback(null, originalFile);
-		}
-	};
-	return stream;
-}
 // 压缩png，jpg
 gulp.task("compressImage", ["compressJs"], function () {
 	// if (platform === "layame") {
 	// 	return;
 	// }
 	if (platform === "layame" && isDebugLayaMe) {
-		if (!toBuildPart('ui')) {
+		if (!toBuildPart('ui')) { 
 			return;
 		}
 	}
@@ -651,7 +614,6 @@ gulp.task("version1", ["compressImage"], function () {
 	if (platform === "layame") {
 		return;
 	}
-
 	if (config.version) {
 		return gulp.src(config.versionFilter, { base: releaseDir })
 			.pipe(rev())
@@ -662,69 +624,8 @@ gulp.task("version1", ["compressImage"], function () {
 	}
 });
 
-
-
-
-gulp.task("renameVersion", ["version1"], function (cb) {
-	if (platform === "layame") {
-		return cb();
-	}
-	if (config.version) {
-		let versionJsonJsOrigin = path.join(releaseDir, "version.json");
-		let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
-		let versionCon = JSON.parse(versionConStr);
-		if (versionCon['version.json']) {
-			var srcVersionName = versionCon['version.json'];
-			let versionJsonPath = path.join(releaseDir, srcVersionName);
-			delete versionCon['version.json'];
-			fs.writeFileSync(versionJsonPath, JSON.stringify(versionCon), 'utf8');
-
-			gulp.src(versionJsonPath, { base: releaseDir })
-				.pipe(rev())
-				.pipe(gulp.dest(releaseDir))
-				.pipe(revdel())
-				.pipe(rev.manifest({
-					path: versionJsonJsOrigin,
-					merge: true
-				}))
-				.pipe(gulp.dest("./"))
-				.on('end', () => {
-					let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
-					let versionCon = JSON.parse(versionConStr);
-
-					var versionName = versionCon[srcVersionName];
-					var versionArr = versionName.split("-");
-					var newVersionName = versionArr[0] + "-" + versionArr[2];
-
-					fs.renameSync(releaseDir + "/" + versionName, releaseDir + "/" + newVersionName);
-
-					versionCon["version.json"] = newVersionName;
-					delete versionCon[srcVersionName];
-					fs.writeFileSync(versionJsonJsOrigin, JSON.stringify(versionCon), 'utf8');
-
-					cb();
-
-				})
-		} else {
-			cb();
-		}
-	} else {
-		cb();
-	}
-
-
-});
-
-
-
-
-
-
-
-
-
 // 更新index.js的hash值
-gulp.task("renameIndexJs", ["renameVersion"], function (cb) {
+gulp.task("renameIndexJs", ["version1"], function (cb) {
 	if (platform === "layame") {
 		return cb();
 	}
@@ -733,75 +634,76 @@ gulp.task("renameIndexJs", ["renameVersion"], function (cb) {
 		let versionCon = fs.readFileSync(versionPath, "utf8");
 		versionCon = JSON.parse(versionCon);
 		let indexJSPath;
-		let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] : "index.js";
+		let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
 		indexJSPath = releaseDir + "/" + indexJsStr;
 
 		return new Promise((resolve, reject) => {
 			let srcList = [versionPath, indexJSPath];
 			gulp.src(srcList)
 				.pipe(revCollector())
-				.pipe(gulp.dest(releaseDir))
-				.on("end", () => {
-					cb();
-				})
-		}).then(function () {
-			return new Promise(async function (resolve, reject) {
+				.pipe(gulp.dest(releaseDir));
+			setTimeout(resolve, 1500);
+		}).then(function() {
+			return new Promise(async function(resolve, reject) {
 				// index-xxx.js => index.js
-				if (versionCon["index.js"]) {
-					let indexJsOrigin = path.join(releaseDir, "index.js")
-					fs.renameSync(indexJSPath, indexJsOrigin);
-					gulp.src(indexJsOrigin, { base: releaseDir })
-						.pipe(rev())
-						.pipe(gulp.dest(releaseDir))
-						.pipe(revdel())
-						.pipe(rev.manifest({
-							path: versionPath,
-							merge: true
-						}))
-						.pipe(gulp.dest("./")) // 注意，这里不能是releaseDir (https://segmentfault.com/q/1010000002876613)
-						.on('end', () => {
-							cb();
-						})
-				} else {
-					cb();
-				}
+				let indexJsOrigin = path.join(releaseDir, "index.js")
+				fs.renameSync(indexJSPath, indexJsOrigin);
+				gulp.src(indexJsOrigin, { base: releaseDir })
+					.pipe(rev())
+					.pipe(gulp.dest(releaseDir))
+					.pipe(revdel())
+					.pipe(rev.manifest({
+						path: versionPath,
+						merge: true
+					}))
+					.pipe(gulp.dest("./")); // 注意，这里不能是releaseDir (https://segmentfault.com/q/1010000002876613)
+				setTimeout(cb, 2000);
 			})
-		}).catch(function (e) {
+		}).catch(function(e) {
 			throw e;
 		})
 	} else {
 		cb();
 	}
-});
+}); 
 // 修改版本文件名
-gulp.task("renameVersionJson", ["renameIndexJs"], function () {
-
+gulp.task("renameVersionJson", ["renameIndexJs"] , function () {
+	
 	if (platform === "layame") {
 		return;
 	}
-
 	if (config.version) {
 		// 如果启用版本管理，则修改version文件名
+		console.log('releaseDir', releaseDir);
 		let versionJsonJsOrigin = path.join(releaseDir, "version.json");
-		let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
-		let versionCon = JSON.parse(versionConStr);
-		var bundleJSPath = path.join(releaseDir, versionCon['js/bundle.js'] || "js/bundle.js");
-		bundleJSStr = fs.readFileSync(bundleJSPath, "utf8");
-		if (!versionCon['version.json']) {
-			//如果没有找到version.json也需要修改version.config_version_md5_name.json为version.json
-			bundleJSStr = bundleJSStr.replace('version.config_version_md5_name.json', 'version.json');
+		let versionPath = versionJsonJsOrigin;// releaseDir + "/version.json";
+		gulp.src(versionJsonJsOrigin, { base: releaseDir })
+		.pipe(rev()) 
+		.pipe(rev.manifest({
+			path: versionPath,
+			merge: true
+		}))
+		.pipe(gulp.dest("./"))
+		.on('end', function () {
+			
+			let versionJsonJsOrigin = path.join(releaseDir, "version.json");
+			let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
+			let versionCon = JSON.parse(versionConStr);
+			console.log('versionCon',versionCon );
+			let renameVersionJson = path.join(releaseDir, versionCon['version.json']);
+			// fs.renameSync(versionJsonJsOrigin, renameVersionJson); 
+			// 最后再删除versionjson
+			fs.writeFileSync(renameVersionJson, versionConStr, 'utf8');
+			
+
+			// 修改js/bundle.js里加载version.json路径
+			var bundleJSPath = path.join(releaseDir, versionCon['js/bundle.js']) ;
+			bundleJSStr = fs.readFileSync(bundleJSPath, "utf8"); 
+			bundleJSStr = bundleJSStr.replace('Laya.ResourceVersion.enable(\"version.json\"', `Laya.ResourceVersion.enable("${versionCon['version.json']}"`);
 			fs.writeFileSync(bundleJSPath, bundleJSStr, "utf8");
-			return;
-		}
-		let renameVersionJson = path.join(releaseDir, versionCon['version.json']);
-		// 最后再删除versionjson
-		fs.writeFileSync(renameVersionJson, versionConStr, 'utf8');
-
-		// 修改js/bundle.js里加载version.json路径
-
-		bundleJSStr = bundleJSStr.replace('ResourceVersion.enable(\"version.json\"', `ResourceVersion.enable("${versionCon['version.json']}"`);
-		bundleJSStr = bundleJSStr.replace('version.config_version_md5_name.json', `${versionCon['version.json']}`);
-		fs.writeFileSync(bundleJSPath, bundleJSStr, "utf8");
+			
+		});
+		
 	}
 });
 // 替换index.html/game.js/main.js以及index.js里面的变化的文件名
@@ -818,13 +720,13 @@ gulp.task("version2", ["renameVersionJson"], function () {
 		let indexJSPath;
 		let versionCon = fs.readFileSync(versionPath, "utf8");
 		versionCon = JSON.parse(versionCon);
-		let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] : "index.js";
+		let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
 		indexJSPath = releaseDir + "/" + indexJsStr;
 		// 替换config.packfileFullValue中的路径
 		let packfileStr = JSON.stringify(config.packfileFullValue).replace(/\\\\/g, "/");
 		let tempPackfile = `${workSpaceDir}/.laya/configTemp.json`;
 		fs.writeFileSync(tempPackfile, packfileStr, "utf8");
-		versionJsonJsOrigin_tmp = versionPath;
+
 		let srcList = [versionPath, indexJSPath, tempPackfile];
 		if (fs.existsSync(htmlPath)) {
 			srcList.push(htmlPath);
@@ -835,14 +737,14 @@ gulp.task("version2", ["renameVersionJson"], function () {
 		if (fs.existsSync(mainJSPath)) {
 			srcList.push(mainJSPath);
 		}
-		return gulp.src(srcList)
+		return gulp.src(srcList) 
 			.pipe(revCollector())
 			.pipe(gulp.dest(releaseDir));
 	}
 });
 
 // 筛选4M包
-gulp.task("packfile", platformTask, function () {
+gulp.task("packfile", platformTask, function() {
 	if (platform === "layame") {
 		return;
 	}
@@ -881,19 +783,12 @@ gulp.task("packfile", platformTask, function () {
 	if (platform === "layame") {
 		return;
 	}
-	if (config.version) {
-		let versionJsonJsOrigin = versionJsonJsOrigin_tmp.replace("/temprelease", `/${taobaoFolders}`);// path.join(releaseDir, "version.json");
-		let versionConStr = fs.readFileSync(versionJsonJsOrigin, "utf8");
-		let versionCon = JSON.parse(versionConStr);
-		if (!versionCon['version.json']) {
-			return;
-		}
-		if (fs.existsSync(versionJsonJsOrigin)) {
-			fs.unlinkSync(versionJsonJsOrigin);
-		}
+	if (config.version) { 
+		let versionJsonJsOrigin = path.join(releaseDir, "version.json");
+		fs.unlinkSync(versionJsonJsOrigin);
 	}
-});
+});  
 // 起始任务
-gulp.task("publish", ["packfile"], function () {
+gulp.task("publish", ["packfile"] , function () { 
 	console.log("All tasks completed!");
 });

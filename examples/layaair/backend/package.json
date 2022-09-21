@@ -14,11 +14,11 @@
   "devDependencies": {
     "@types/node": "^15.14.9",
     "onchange": "^7.1.0",
-    "ts-node": "^10.2.1",
-    "tsrpc-cli": "^2.0.8",
-    "typescript": "^4.4.3"
+    "ts-node": "^10.9.1",
+    "tsrpc-cli": "^2.4.5",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
-    "tsrpc": "^3.0.9"
+    "tsrpc": "^3.4.5"
   }
 }

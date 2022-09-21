@@ -1,4 +1,4 @@
-// v1.8.8
+// v1.8.7
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -125,7 +125,7 @@ gulp.task("pluginEngin_QQ", ["version_QQ"], function(cb) {
 
 			let gameJsPath = path.join(releaseDir, "game.js");
 			let gameJscontent = fs.readFileSync(gameJsPath, "utf8");
-			gameJscontent = gameJscontent.replace(/requirePlugin\("[\w\/\.]+"\)(;|,)?\n?/mg, "");
+			gameJscontent = gameJscontent.replace(/requirePlugin\("[\w\/\.]+"\);?\n?/mg, "");
 			fs.writeFileSync(gameJsPath, gameJscontent, "utf8");
 		}
 		return cb();

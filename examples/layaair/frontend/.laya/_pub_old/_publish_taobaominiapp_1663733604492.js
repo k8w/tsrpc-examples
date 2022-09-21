@@ -1,4 +1,4 @@
-// v1.1.7
+// v1.1.5
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -185,7 +185,7 @@ gulp.task("modifyMinJs_TBMini", ["rmsubpack_TBMini"], function() {
 });
 
 gulp.task("modifyLibsJs_TBMini", ["modifyMinJs_TBMini"], function() {
-	const NONCORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\nvar Laya = window.Laya;\nvar Config = window.Config;\nvar Config3D = window.Config3D;\nvar Laya3D = window.Laya3D;\nvar performance = window.performance;\nvar CANNON = window.CANNON;\nvar spine = window.spine;\n";
+	const NONCORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\nvar Laya = window.Laya;\nvar Config = window.Config;\nvar Config3D = window.Config3D;\nvar Laya3D = window.Laya3D;\nvar performance = window.performance;\nvar CANNON = window.CANNON;\nvar spine = window.spin;\n";
 	const CORESTR = "var window = $global.window;\nvar document = window.document;\nvar XMLHttpRequest = window.XMLHttpRequest;\n";
 	// libs
 	let libsPath = path.join(releaseDir, "node_modules", "layaengine", "libs", config.useMinJsLibs ? "min" : "");
@@ -198,14 +198,7 @@ gulp.task("modifyLibsJs_TBMini", ["modifyMinJs_TBMini"], function() {
 			con = CORESTR + con;
 		} else {
 			con = NONCORESTR + con;
-		} 
-
-		if (/domparserinone\./.test(libName)) {
-			con = con.replace(/htmlEntity = {};/, 'var htmlEntity = {};' );
-			con = con.replace(/SaxO = {};/, 'var SaxO = {};' ); 
-			con = con.replace(/,htmlEntity={},/, ';var htmlEntity={};' );
-			con = con.replace(/}SaxO={},/, '}var SaxO={};' );
-		} 
+		}
 		fs.writeFileSync(fullPath, con, "utf8");
 	}
 	// bundle.js

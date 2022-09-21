@@ -8,21 +8,18 @@
   },
   "dependencies": {
     "core-js": "^3.18.2",
-    "k8w-extend-native": "^1.4.5",
-    "k8w-linq-array": "^0.2.7",
-    "k8w-super-date": "^0.1.3",
-    "k8w-super-object": "^0.3.0",
-    "tsbuffer": "^2.0.4",
-    "tsbuffer-schema": "^2.0.2",
-    "tsbuffer-validator": "^2.0.4",
-    "tslib": "^2.3.1",
-    "tsrpc-base-client": "^1.0.11",
-    "tsrpc-browser": "^3.0.7",
-    "tsrpc-proto": "^1.3.4"
+    "tsrpc-browser": "^3.4.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "peerDependencies": {
+    "tsrpc-proto": "^1.4.3"
+  },
+  "devDependencies": {
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
 }

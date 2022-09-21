@@ -1,4 +1,4 @@
-// v1.8.5
+// v1.8.2
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -13,10 +13,10 @@ const revCollector = require(ideModuleDir + 'gulp-rev-collector');
 let copyLibsTask = ["copyPlatformLibsJsFile"];
 let versiontask = ["version2"];
 
-let
-	config,
+let 
+    config,
 	releaseDir,
-	tempReleaseDir, // 小米临时拷贝目录
+    tempReleaseDir, // 小米临时拷贝目录
 	projDir; // 小米快游戏工程目录
 let versionCon; // 版本管理version.json
 let commandSuffix,
@@ -24,7 +24,7 @@ let commandSuffix,
 	layarepublicPath;
 
 // 创建小米项目前，拷贝小米引擎库、修改index.js
-gulp.task("preCreate_XM", copyLibsTask, function () {
+gulp.task("preCreate_XM", copyLibsTask, function() {
 	releaseDir = global.releaseDir;
 	config = global.config;
 	commandSuffix = global.commandSuffix;
@@ -33,19 +33,19 @@ gulp.task("preCreate_XM", copyLibsTask, function () {
 	tempReleaseDir = global.tempReleaseDir;
 });
 
-gulp.task("copyPlatformFile_XM", ["preCreate_XM"], function () {
+gulp.task("copyPlatformFile_XM", ["preCreate_XM"], function() {
 	let xmAdapterPath = path.join(layarepublicPath, "LayaAirProjectPack", "lib", "data", "xmfiles");
 	let copyLibsList = [`${xmAdapterPath}/**/*.*`];
 	var stream = gulp.src(copyLibsList);
 	return stream.pipe(gulp.dest(tempReleaseDir));
 });
 
-gulp.task("createProj_XM", versiontask, function () {
+gulp.task("createProj_XM", versiontask, function() {
 	releaseDir = path.dirname(releaseDir);
 	projDir = path.join(releaseDir, config.xmInfo.projName);
 	// 如果有即存项目，不再新建
-	let isProjExist = fs.existsSync(projDir + "/node_modules") &&
-		fs.existsSync(projDir + "/sign");
+	let isProjExist = fs.existsSync(projDir + "/node_modules") && 
+					  fs.existsSync(projDir + "/sign");
 	if (isProjExist) {
 		return;
 	}
@@ -54,23 +54,23 @@ gulp.task("createProj_XM", versiontask, function () {
 		console.log("(proj)开始创建小米快游戏项目，请耐心等待(预计需要10分钟)...");
 		let cmd = `npx${commandSuffix}`;
 		let args = ["create-quickgame", config.xmInfo.projName, `path=${releaseDir}`,
-			`package=${config.xmInfo.package}`, `versionName=${config.xmInfo.versionName}`,
-			`versionCode=${config.xmInfo.versionCode}`, `minPlatformVersion=${config.xmInfo.minPlatformVersion}`,
-			`icon=/layaicon/${path.basename(config.xmInfo.icon)}`, `name=${config.xmInfo.name}`, `rebuild=true`];
-		let opts = {
+					`package=${config.xmInfo.package}`, `versionName=${config.xmInfo.versionName}`,
+					`versionCode=${config.xmInfo.versionCode}`, `minPlatformVersion=${config.xmInfo.minPlatformVersion}`,
+                    `icon=/layaicon/${path.basename(config.xmInfo.icon)}`, `name=${config.xmInfo.name}`, `rebuild=true`];
+        let opts = {
 			shell: true
 		};
-		let cp = childProcess.spawn(cmd, args, opts);
-
+        let cp = childProcess.spawn(cmd, args, opts);
+        
 		cp.stdout.on('data', (data) => {
 			console.log(`stdout: ${data}`);
 		});
-
+		
 		cp.stderr.on('data', (data) => {
 			console.log(`stderr: ${data}`);
 			// reject();
 		});
-
+		
 		cp.on('close', (code) => {
 			console.log(`子进程退出码：${code}`);
 			resolve();
@@ -79,7 +79,7 @@ gulp.task("createProj_XM", versiontask, function () {
 });
 
 // 拷贝文件到小米快游戏
-gulp.task("copyFileToProj_XM", ["createProj_XM"], function () {
+gulp.task("copyFileToProj_XM", ["createProj_XM"], function() {
 	// 将临时文件夹中的文件，拷贝到项目中去
 	let originalDir = `${tempReleaseDir}/**/*.*`;
 	let stream = gulp.src(originalDir);
@@ -87,28 +87,28 @@ gulp.task("copyFileToProj_XM", ["createProj_XM"], function () {
 });
 
 // 拷贝icon到小米快游戏
-gulp.task("copyIconToProj_XM", ["copyFileToProj_XM"], function () {
+gulp.task("copyIconToProj_XM", ["copyFileToProj_XM"], function() {
 	let originalDir = config.xmInfo.icon;
 	let stream = gulp.src(originalDir);
 	return stream.pipe(gulp.dest(path.join(projDir, "layaicon")));
 });
 
 // 清除小米快游戏临时目录
-gulp.task("clearTempDir_XM", ["copyIconToProj_XM"], function () {
+gulp.task("clearTempDir_XM", ["copyIconToProj_XM"], function() {
 	// 删掉临时目录
 	return del([tempReleaseDir], { force: true });
 });
 
 // 生成release签名(私钥文件 private.pem 和证书文件 certificate.pem )
-gulp.task("generateSign_XM", ["clearTempDir_XM"], function () {
-	if (!config.xmSign.generateSign) {
-		return;
-	}
+gulp.task("generateSign_XM", ["clearTempDir_XM"], function() {
+    if (!config.xmSign.generateSign) {
+        return;
+    }
 	// https://doc.quickapp.cn/tools/compiling-tools.html
 	return new Promise((resolve, reject) => {
 		let cmd = `${opensslPath}`;
-		let args = ["req", "-newkey", "rsa:2048", "-nodes", "-keyout", "private.pem",
-			"-x509", "-days", "3650", "-out", "certificate.pem"];
+		let args = ["req", "-newkey", "rsa:2048", "-nodes", "-keyout", "private.pem", 
+					"-x509", "-days", "3650", "-out", "certificate.pem"];
 		let opts = {
 			cwd: projDir,
 			shell: true
@@ -150,7 +150,7 @@ gulp.task("generateSign_XM", ["clearTempDir_XM"], function () {
 		cp.on('close', (code) => {
 			console.log(`子进程退出码：${code}`);
 			// 签名是否生成成功
-			let
+			let 
 				privatePem = path.join(projDir, "private.pem"),
 				certificatePem = path.join(projDir, "certificate.pem");
 			let isSignExits = fs.existsSync(privatePem) && fs.existsSync(certificatePem);
@@ -163,48 +163,48 @@ gulp.task("generateSign_XM", ["clearTempDir_XM"], function () {
 });
 
 // 拷贝sign文件到指定位置
-gulp.task("copySignFile_XM", ["generateSign_XM"], function () {
-	if (config.xmSign.generateSign) { // 新生成的签名
-		// 移动签名文件到项目中（Laya & 小米快游戏项目中）
-		let
-			privatePem = path.join(projDir, "private.pem"),
-			certificatePem = path.join(projDir, "certificate.pem");
-		let isSignExits = fs.existsSync(privatePem) && fs.existsSync(certificatePem);
-		if (!isSignExits) {
-			return;
-		}
-		let
-			xiaomiDest = `${projDir}/sign/release`,
-			layaDest = `${workSpaceDir}/sign/release`;
-		let stream = gulp.src([privatePem, certificatePem]);
-		return stream.pipe(gulp.dest(xiaomiDest))
-			.pipe(gulp.dest(layaDest));
-	} else if (config.xmInfo.useReleaseSign && !config.xmSign.generateSign) { // 使用release签名，并且没有重新生成
-		// 从项目中将签名拷贝到小米快游戏项目中
-		let
-			privatePem = path.join(workSpaceDir, "sign", "release", "private.pem"),
-			certificatePem = path.join(workSpaceDir, "sign", "release", "certificate.pem");
-		let isSignExits = fs.existsSync(privatePem) && fs.existsSync(certificatePem);
-		if (!isSignExits) {
-			return;
-		}
-		let
-			xiaomiDest = `${projDir}/sign/release`;
-		let stream = gulp.src([privatePem, certificatePem]);
-		return stream.pipe(gulp.dest(xiaomiDest));
-	}
+gulp.task("copySignFile_XM", ["generateSign_XM"], function() {
+    if (config.xmSign.generateSign) { // 新生成的签名
+        // 移动签名文件到项目中（Laya & 小米快游戏项目中）
+        let 
+            privatePem = path.join(projDir, "private.pem"),
+            certificatePem = path.join(projDir, "certificate.pem");
+        let isSignExits = fs.existsSync(privatePem) && fs.existsSync(certificatePem);
+        if (!isSignExits) {
+            return;
+        }
+        let 
+            xiaomiDest = `${projDir}/sign/release`,
+            layaDest = `${workSpaceDir}/sign/release`;
+        let stream = gulp.src([privatePem, certificatePem]);
+        return stream.pipe(gulp.dest(xiaomiDest))
+                    .pipe(gulp.dest(layaDest));
+    } else if (config.xmInfo.useReleaseSign && !config.xmSign.generateSign) { // 使用release签名，并且没有重新生成
+        // 从项目中将签名拷贝到小米快游戏项目中
+        let 
+            privatePem = path.join(workSpaceDir, "sign", "release", "private.pem"),
+            certificatePem = path.join(workSpaceDir, "sign", "release", "certificate.pem");
+        let isSignExits = fs.existsSync(privatePem) && fs.existsSync(certificatePem);
+        if (!isSignExits) {
+            return;
+        }
+        let 
+            xiaomiDest = `${projDir}/sign/release`;
+        let stream = gulp.src([privatePem, certificatePem]);
+        return stream.pipe(gulp.dest(xiaomiDest));
+    }
 });
 
-gulp.task("deleteSignFile_XM", ["copySignFile_XM"], function () {
+gulp.task("deleteSignFile_XM", ["copySignFile_XM"], function() {
 	if (config.xmSign.generateSign) { // 新生成的签名
-		let
-			privatePem = path.join(projDir, "private.pem"),
-			certificatePem = path.join(projDir, "certificate.pem");
+		let 
+            privatePem = path.join(projDir, "private.pem"),
+            certificatePem = path.join(projDir, "certificate.pem");
 		return del([privatePem, certificatePem], { force: true });
 	}
 });
 
-gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
+gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function() {
 	// 修改manifest.json文件
 	let manifestPath = path.join(projDir, "manifest.json");
 	if (!fs.existsSync(manifestPath)) {
@@ -224,9 +224,9 @@ gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
 		manifestJson.subpackages = config.xmSubpack;
 		// 检测分包目录是否有入口文件
 		console.log('检查分包文件...');
-
-		if (manifestJson.subpackages) {
-			for (let i = 0; i < manifestJson.subpackages.length; i++) {
+		 
+		if (manifestJson.subpackages) { 
+			for(let i = 0; i < manifestJson.subpackages.length; i ++) {
 				let conf = manifestJson.subpackages[i];
 				if (conf.root) {
 					let rootPath = path.join(projDir, conf.root);
@@ -236,8 +236,8 @@ gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
 					}
 					let jsIndex = rootPath.lastIndexOf('.js');
 					let jsPath = rootPath;
-					if (jsIndex < 0 || jsIndex != rootPath.length - 3) {
-						jsPath = path.join(rootPath, 'main.js');
+					if (jsIndex < 0 || jsIndex !=  rootPath.length - 3) {
+						jsPath =  path.join(rootPath, 'main.js'); 
 					}
 					if (!fs.existsSync(jsPath)) {
 
@@ -256,7 +256,7 @@ gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
 		versionCon = fs.readFileSync(versionPath, "utf8");
 		versionCon = JSON.parse(versionCon);
 	}
-	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] : "index.js";
+	let indexJsStr = (versionCon && versionCon["index.js"]) ? versionCon["index.js"] :  "index.js";
 	// 修改main.js文件
 	let mainJsPath = path.join(projDir, "main.js");
 	let mainJsCon = fs.existsSync(mainJsPath) && fs.readFileSync(mainJsPath, "utf8");
@@ -265,7 +265,7 @@ gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
 		mainJsCon = 'require("./qg-adapter.js");\nrequire("./libs/laya.xmmini.js");\nrequire("./index.js");';
 		fs.writeFileSync(mainJsPath, mainJsCon, "utf8");
 	}
-
+	
 	// 小米项目，修改index.js
 	let filePath = path.join(projDir, indexJsStr);
 	if (!fs.existsSync(filePath)) {
@@ -276,7 +276,7 @@ gulp.task("modifyFile_XM", ["deleteSignFile_XM"], function () {
 	fs.writeFileSync(filePath, fileContent, "utf8");
 })
 
-gulp.task("modifyMinJs_XM", ["modifyFile_XM"], function () {
+gulp.task("modifyMinJs_XM", ["modifyFile_XM"], function() {
 	let fileJsPath = path.join(projDir, "main.js");
 	let content = fs.readFileSync(fileJsPath, "utf-8");
 	if (!config.useMinJsLibs) { // 默认保留了平台文件，如果同时取消使用min类库，就会出现文件引用不正确的问题
@@ -306,13 +306,13 @@ gulp.task("version_XM", ["modifyMinJs_XM"], function () {
 });
 
 // 打包rpk
-gulp.task("buildRPK_XM", ["version_XM"], function () {
+gulp.task("buildRPK_XM", ["version_XM"], function() {
 	// 在小米轻游戏项目目录中执行:
-	// npm run build || npm run release
-	let cmdStr = "build";
-	if (config.xmInfo.useReleaseSign) {
-		cmdStr = "release";
-	}
+    // npm run build || npm run release
+    let cmdStr = "build";
+    if (config.xmInfo.useReleaseSign) {
+        cmdStr = "release";
+    }
 	return new Promise((resolve, reject) => {
 		let cmd = `npm${commandSuffix}`;
 		let args = ["run", cmdStr];
@@ -343,50 +343,7 @@ gulp.task("buildRPK_XM", ["version_XM"], function () {
 	});
 });
 
-//mac下首先先检测和关闭3000端口号,防止端口被占用导致二维码无法显示的问题
-gulp.task("closePoint_XM", ["buildRPK_XM"], function () {
-	return closePoint(3000);
-})
-function closePoint(point){
-	if (process.platform === "darwin") {
-		return new Promise((resolve, reject) => {
-			var cmd = 'lsof -i tcp:'+point;
-			childProcess.exec(cmd, (err, stdout, stderr) => {
-				if (null != stdout) {
-					var str = String(stdout);
-					var arr = str.split(" ");
-					var num = arr.indexOf('layabox');
-					if (0 < num) {
-						var pid = arr[num - 1];
-						try{
-							childProcess.execSync("kill -9 " + pid);
-						}catch(err){}
-					}
-				}
-				resolve();
-			});
-		});
-	} else {
-		return new Promise((resolve, reject) => {
-			var cmd = 'netstat -aon|findstr "'+point+'"';
-			childProcess.exec(cmd, (err, stdout, stderr) => {
-				if (null != stdout) {
-					var str = String(stdout);
-					var arr = str.split(" ");
-					var pid = Number(arr[arr.length - 1]);
-					if (!isNaN(pid) && 0 != pid) {
-						try{
-							childProcess.execSync("taskkill /f /pid " + pid);
-						}catch(err){}
-					}
-				}
-				resolve();
-			});
-		});
-	}
-}
-
-gulp.task("showQRCode_XM", ["closePoint_XM"], function () {
+gulp.task("showQRCode_XM", ["buildRPK_XM"], function() {
 	// 在小米轻游戏项目目录中执行:
 	// npm run server
 	return new Promise((resolve, reject) => {
@@ -402,14 +359,6 @@ gulp.task("showQRCode_XM", ["closePoint_XM"], function () {
 			console.log(`${data}`);
 			// 输出pid，macos要用: macos无法kill进程树，也无法执行命令获取3000端口pid(没有查询权限)，导致无法kill这个进程
 			console.log('xm_qrcode_pid:' + cp.pid);
-
-			// let cmd1 = `lsof -i tcp:3000 | awk '/\d/ {print $2}'`;
-			// let occupiedPort = childProcess.execSync(cmd1);
-			// occupiedPort = Number(occupiedPort);
-			// if (occupiedPort && Number.isInteger(occupiedPort)) {
-			// 	let cmd2 = `kill -9 ${occupiedPort}`;
-			// 	childProcess.execSync(cmd2);
-			// }
 		});
 
 		cp.stderr.on('data', (data) => {
@@ -425,6 +374,6 @@ gulp.task("showQRCode_XM", ["closePoint_XM"], function () {
 });
 
 
-gulp.task("buildXiaomiProj", ["showQRCode_XM"], function () {
+gulp.task("buildXiaomiProj", ["showQRCode_XM"], function() {
 	console.log("all tasks completed");
 });

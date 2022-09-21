@@ -1,6 +1,6 @@
 import GameConfig from "./GameConfig";
 import { serviceProto } from "./shared/protocols/serviceProto";
-import { HttpClient } from "./tsrpc_browser/index";
+import { HttpClient } from "tsrpc-browser";
 
 // TSRPC TEST
 let client = new HttpClient(serviceProto, {

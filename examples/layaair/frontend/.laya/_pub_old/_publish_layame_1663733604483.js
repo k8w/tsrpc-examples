@@ -1,4 +1,4 @@
-// v1.1.9
+// v1.1.5
 const ideModuleDir = global.ideModuleDir;
 const workSpaceDir = global.workSpaceDir;
 
@@ -131,7 +131,7 @@ function getFInfoByPath(path, list) {
 	}
 	return  null;
 }
-gulp.task("mergeToLayaMeMain", ["deletRuntime"], function() {
+gulp.task("mergrToLayaMeMain", ["deletRuntime"], function() {
 	if (!toBuildPart('LayaMeMain')) {
 		return;
 	}
@@ -267,127 +267,15 @@ gulp.task("mergeToLayaMeMain", ["deletRuntime"], function() {
 	}
 	if (scriptStrList.length > 0) {
 		let scriptStrAll = scriptStrList.join('\n');
-		layaMeMainStr = scriptStrAll + '\n' + layaMeMainStr;
+		layaMeMainStr = scriptStrAll + layaMeMainStr;
 	}       	
 	if (layaMeMainStr) { 
 		// console.log(jsList.length,'layaMeMainStr' , layaMeMainStr);
 		layaMeMainStr = layaMeMainStr.replace(/import/mg, "// import"); 
 		// 去掉class前面的字符
-		
-		layaMeMainStr = layaMeMainStr.replace(/export\s+default\s+[class\.]+\s*/mg, "export class ");
-		// layaMeMainStr = layaMeMainStr.replace(/export\s+default\s+[class\.]+\s*/mg, "class ");
-		// layaMeMainStr = layaMeMainStr.replace(/export\s+[class\.]+\s*/mg, "class ");
-		// layaMeMainStr = layaMeMainStr.replace(/export\s+[var\.]+\s*/mg, "var ");
+		layaMeMainStr = layaMeMainStr.replace(/export\s+default\s+[class\.]+\s*/mg, "class ");
+		layaMeMainStr = layaMeMainStr.replace(/export\s+[class\.]+\s*/mg, "class ");
 		fs.writeFileSync(`${releaseDir}/LayaMeMain.js`, layaMeMainStr, "utf8");
-	} 
-});
-gulp.task("mergeToLayaMeLib", ["mergeToLayaMeMain"], function() {
-	if (!toBuildPart('LayaMeMain')) {
-		return;
-	}
-	let source = "src";
-	if (isTS) {
-		source = "build";
-	}
-	let sourceFolder = path.join(workSpaceDir, source); 
-	const scriptPath = path.join(sourceFolder, "classLibs");
-	let jsList= [];
-	let scriptStrList = [];
-	let filePath, fileCon, deep;  
-	// 遍历所有的classLibs，合并到LayaMeLib.js 
-	jsList= [];
-	scriptStrList = [];
- 
-	getFolderList(scriptPath, jsList, ".js");
-	// sort jsList
-	let needSort = false;
-	let sortList = [];
-	let otherList = [];
-	for (let i = 0, len = jsList.length; i < len; i++) {
-		let jsInfo = jsList[i];
-		filePath = jsInfo.path; 
-		fileCon = fs.readFileSync(filePath, "utf8"); 
-		jsInfo.content = fileCon;  
-		let extendsCls = fileCon.match((/\ s*extends \s*(.+?)\{/));
-		if (extendsCls) { 
-			if (extendsCls[1]) {
-				extendsCls = extendsCls[1].trim();
-				if (extendsCls && !extendsCls.includes('.')) { // not include Laya.
-					let importCls = fileCon.match(`import\\s*[{| ]\\s*${extendsCls}\\s*[}| ]\\s*from (.+?)["']`)  ; 
-					// console.log( extendsCls,  jsInfo.path, !!importCls );
-					if (importCls && importCls[1]) { 
-						importCls = importCls[1].trim();
-						importCls = importCls.substr(1);	console.log( importCls);
-						let deep = jsInfo.deep;
-						let currPath = null; 
-						let _index = importCls.lastIndexOf('./');
-						let parenPath = '';
-						if (_index >= 0) {
-							let fPath = jsInfo.path;
-							let _index2 = fPath.indexOf('/') >= 0 ? fPath.lastIndexOf('/') : fPath.lastIndexOf('\\') ;
-							currPath = fPath.substring(0,_index2);
-							currPath = path.join(jsInfo.path,parenPath + '../', importCls) + '.js';
-							jsInfo.extendsCls = extendsCls;// currPath;
-							// console.log(jsInfo);
-							needSort = true;
-							if (!sortList.includes(jsInfo)) {
-								sortList.push(jsInfo); 
-							}
-							let importJs = getFInfoByPath(currPath, jsList);
-							if (!importJs) {
-								throw new Error('not found', currPath);
-							}
-							if (!jsInfo.c) {
-								jsInfo.c = 0;
-							} 
-							importJs.c = jsInfo.c + 1;
-							if (!sortList.includes(importJs)) {
-								sortList.push(importJs); 
-							} 
-							// console.log(currPath,_index,parenPath, jsInfo.path, importCls, extendsCls);
-
-						}
-						 
-					}
-				}
-			}
-		} 
- 
-	}  
-	// console.log('ssssssssss',sortList);
-	if (needSort) { 
-		sortList.sort(sortJS); 
-		for (let i = 0, len = sortList.length; i < len; i++) {
-			let jsInfo = sortList[i];
-			scriptStrList.push(jsInfo.content);   
-		}  
-	}   
-	for (let i = 0, len = jsList.length; i < len; i++) {
-		let jsInfo = jsList[i]; 
-		if (!needSort || !sortList.includes(jsInfo)) { 
-			scriptStrList.push(jsInfo.content); 
-		}  
-	}    
-	let layaMeLibStr = '';  
-	// const layaMeLibPath = path.join(sourceFolder, "LayaMeLib.js");
-	// if (fs.existsSync(layaMeLibPath)) { 
-	// 	layaMeLibStr = fs.readFileSync(layaMeLibPath, "utf8");
-	// }
-	if (scriptStrList.length > 0) {
-		let scriptStrAll = scriptStrList.join('\n');
-		layaMeLibStr = scriptStrAll + layaMeLibStr;
-	}       	
-	if (layaMeLibStr) { 
-		// console.log(jsList.length,'layaMeLibStr' , layaMeLibStr);
-		layaMeLibStr = layaMeLibStr.replace(/import/mg, "// import"); 
-		// 去掉class前面的字符
-
-		layaMeLibStr = layaMeLibStr.replace(/export\s+default\s+[class\.]+\s*/mg, "export class ");		
-		// layaMeLibStr = layaMeLibStr.replace(/export\s+default\s+[class\.]+\s*/mg, "class ");
-		// layaMeLibStr = layaMeLibStr.replace(/export\s+[class\.]+\s*/mg, "class ");
-		// layaMeLibStr = layaMeLibStr.replace(/export\s+[var\.]+\s*/mg, "var ");
-	 
-		fs.writeFileSync(`${releaseDir}/LayaMeLib.js`, layaMeLibStr, "utf8");
 	} 
 });
 // 修改extends Laya.Script3D 为 extends GameScript
@@ -451,59 +339,11 @@ function changeComponentsFile() {
 		if (fPath.endsWith('.js')) { 
 			file = getFile(); 
 			let stringData = String(file.contents); 
-			
-			stringData = stringData.replace(/export\s+default\s+[class\.]+\s*/mg, "export class ");	
-			// stringData = stringData.replace(/export\s+default\s+[class\.]+\s*/mg, "class ");
-			// stringData = stringData.replace(/export\s+[class\.]+\s*/mg, "class ");
-			// stringData = stringData.replace(/export\s+[var\.]+\s*/mg, "var ");
-			
+			stringData = stringData.replace(/export\s+default\s+[class\.]+\s*/mg, "class ");
+			stringData = stringData.replace(/export\s+[class\.]+\s*/mg, "class ");
 			let finalBinaryData = Buffer.from(stringData);
 			file.contents = finalBinaryData; 
 		}
-		if (fPath.endsWith('.js')) { 
-			file = getFile(); 
-			let filePath  = fPath;
-			let fileCon = String(file.contents); 
-			// .vs .fs 解析
-			let fileConTmp = fileCon + '';
-			let jsInfo = {content: fileCon};
-			let vsOrfsImport = fileConTmp.match(/import \s*(.+?) from \s*(.+?).[fv]s['"]/);
-			let hasVf = false;
-			while (vsOrfsImport) {
-				hasVf = true;
-				let importVar = vsOrfsImport[1];
-				let filetype = vsOrfsImport[0];
-				let importFile = vsOrfsImport[2];
-				importFile = importFile.replace("'", '');
-				importFile = importFile.replace('"', '');
-				if (filetype.indexOf('.vs') >= 0) {
-					filetype = '.vs';
-				} else { 
-					filetype = '.fs';
-				}
-				importFile = importFile + filetype; 
-				let importFilePath = path.join(filePath,'../',importFile );
-				console.log('importFilePath', importFilePath);
-				fileConTmp = fileConTmp.replace(vsOrfsImport[0], '');
-				// console.log('fileConTmp', fileConTmp);
-				vsOrfsImport = fileConTmp.match(/import \s*(.+?) from \s*(.+?).[fv]s['"]/);
-				let srcPath = path.join(workSpaceDir, 'src'); 
-				importFilePath = importFilePath.replace(sourceFolder, srcPath);
-
-				let importFileStr = fs.readFileSync(importFilePath, 'utf8');
-				importFileStr = importFileStr.replace(/\r?\n/gm, '\\n');
-				importFileStr = importFileStr.replace(/"/gm,'\'');
-				importFileStr = importFileStr.replace(/\t/gm,'\\t');
-				importFileStr = importFileStr.replace(/\\n\s*/g,'\\n');
-				importFileStr = importFileStr.replace(/\\n\\n/g,'\\n'); 
-				jsInfo.content =  `var ${importVar} = "${importFileStr}";\n` + jsInfo.content;
-			}	
-			if (hasVf) { 
-				let finalBinaryData = Buffer.from(jsInfo.content);
-				file.contents = finalBinaryData;
-			}		
-		}
-
 		if (file) {
 			callback(null, file); 
 		} else {
@@ -513,7 +353,7 @@ function changeComponentsFile() {
     return stream;
 }
 
-gulp.task("genPreloadMap", ["mergeToLayaMeLib"], function() {
+gulp.task("genPreloadMap", ["mergrToLayaMeMain"], function() {
 	let atlasList = [];
 	getFolderList(releaseDir,atlasList, '.atlas');
 	let preloadJson = {
